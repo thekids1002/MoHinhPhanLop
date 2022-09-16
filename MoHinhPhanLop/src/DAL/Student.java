@@ -95,7 +95,7 @@ public class Student{
 	
 	
 	public static void main(String[] args) {
-		Person person1 = new Person(35, "Voxasdasdasda", "Hoang", new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()));
+		Person person1 = new Person(33, "Voxasdasdasda", "Hoang", new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()));
 		Student student = new Student();
 		student.deleteStudent(35);
 		ArrayList<Person> arrayList  = student.readStudents();
