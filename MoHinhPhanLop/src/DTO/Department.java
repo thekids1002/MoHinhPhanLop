@@ -3,17 +3,17 @@ package DTO;
 import java.util.Date;
 
 public class Department {
-	private String DepartmentID;
+	private int DepartmentID;
 	private String Name;
 	private Double Budget;
 	private Date StartDate;
 	private int Administrator;
 
-	public String getDepartmentID() {
+	public int getDepartmentID() {
 		return DepartmentID;
 	}
 
-	public void setDepartmentID(String departmentID) {
+	public void setDepartmentID(int departmentID) {
 		DepartmentID = departmentID;
 	}
 
@@ -55,7 +55,7 @@ public class Department {
 				+ StartDate + ", Administrator=" + Administrator + "]";
 	}
 
-	public Department(String departmentID, String name, Double budget, Date startDate, int administrator) {
+	public Department(int departmentID, String name, Double budget, Date startDate, int administrator) {
 		super();
 		DepartmentID = departmentID;
 		Name = name;
