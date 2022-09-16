@@ -44,12 +44,12 @@ public class MyDataBaseManager {
 		return rs;
 	}
 
-//	public void doUpdateQuery() {
-//		try {
-//			p.executeUpdate();
-//		} catch (Exception ex) {
-//			Logger.getLogger(MyDataBaseManager.class.getName()).log(Level.SEVERE, null, ex);
-//		}
-//	}
+	public void doUpdateQuery() {
+		try {
+			p.executeUpdate();
+		} catch (Exception ex) {
+			Logger.getLogger(MyDataBaseManager.class.getName()).log(Level.SEVERE, null, ex);
+		}
+	}
 
 }
