@@ -8,8 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import DTO.Course;
-import DTO.CourseinStructor;
-import DTO.Person;
+
 public class CourseDAL {
 	
 	public CourseDAL() {
@@ -43,13 +42,12 @@ public class CourseDAL {
 	
 	public boolean addCourse(Course course) {
 		try {
-			String sql = "INSERT INTO `course`( `CourseID`, `Title`, `Credits`, `DepartmentID`) VALUES (?,?,?,?)";
+			String sql = "INSERT INTO `course`( `Title`, `Credits`, `DepartmentID`) VALUES (?,?,?)";
 			Connection conn = DBConnect.getConnection();
 			PreparedStatement pstm = conn.prepareStatement(sql);
-			pstm.setInt(1, course.getCourseID());
-			pstm.setString(2, course.getTitle());
-			pstm.setInt(3, course.getCredits());
-			pstm.setInt(4, course.getDepartmentID());
+			pstm.setString(1, course.getTitle());
+			pstm.setInt(2, course.getCredits());
+			pstm.setInt(3, course.getDepartmentID());
 			int i = pstm.executeUpdate();
 			conn.close();
 			return i > 0 ;
@@ -93,16 +91,16 @@ public class CourseDAL {
 		return false;
 	}
 	
-	public static void main(String[] args) {
-		Course course = new Course(1045, "Calculus", 3, 7);
-		CourseDAL c1 = new CourseDAL();
-		//c1.addCourse(course);
-		//c1.deleteCourse(1111);
-		c1.editCourse(course);
-		ArrayList<Course> arrayList  = c1.readCourses();
-		for (Course c : arrayList) {
-			System.out.println(c.toString());
-		}
-	}
+//	public static void main(String[] args) {
+//		Course course = new Course(1045, "Calculus", 3, 7);
+//		CourseDAL c1 = new CourseDAL();
+//		//c1.addCourse(course);
+//		//c1.deleteCourse(1111);
+//		c1.editCourse(course);
+//		ArrayList<Course> arrayList  = c1.readCourses();
+//		for (Course c : arrayList) {
+//			System.out.println(c.toString());
+//		}
+//	}
 	
 }
