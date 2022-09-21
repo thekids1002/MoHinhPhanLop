@@ -20,7 +20,7 @@ public class Student{
 			Connection conn = DBConnect.getConnection();
 			Statement stmt = conn.createStatement();
 			ArrayList<Person> listStudents = new ArrayList<>();
-			String query = "SELECT * FROM person WHERE person.PersonID NOT IN (SELECT courseinstructor.PersonID FROM courseinstructor);";
+			String query = "SELECT * FROM person WHERE HireDate = NULL  ;";
 			ResultSet rs = stmt.executeQuery(query);
 			if (rs != null) {
 				int i = 1;
