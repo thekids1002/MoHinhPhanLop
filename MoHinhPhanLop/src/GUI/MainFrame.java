@@ -92,7 +92,6 @@ public class MainFrame extends JFrame {
 	private Container btnDeleteCourse;
 	private JButton btnReloadCourse;
 	private JDateChooser dateCourse;
-	private JComboBox cmbLocation;
 	private JComboBox cmbDepartment;
 
 	/**
@@ -224,7 +223,7 @@ public class MainFrame extends JFrame {
 		StudentCard.add(txtStudentLastName);
 
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(94, 334, 769, 305);
+		scrollPane_1.setBounds(88, 358, 769, 305);
 		StudentCard.add(scrollPane_1);
 
 		dtmStudent = new DefaultTableModel();
@@ -238,23 +237,33 @@ public class MainFrame extends JFrame {
 
 		btnAddStudent = new JButton("Thêm");
 		btnAddStudent.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnAddStudent.setBounds(144, 267, 111, 38);
+		btnAddStudent.setBounds(88, 267, 111, 38);
 		StudentCard.add(btnAddStudent);
 
 		btnEditStudent = new JButton("Sửa");
 		btnEditStudent.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnEditStudent.setBounds(326, 267, 111, 38);
+		btnEditStudent.setBounds(249, 267, 111, 38);
 		StudentCard.add(btnEditStudent);
 
 		btnDeleteStudent = new JButton("Xoá");
 		btnDeleteStudent.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnDeleteStudent.setBounds(510, 270, 111, 38);
+		btnDeleteStudent.setBounds(414, 267, 111, 38);
 		StudentCard.add(btnDeleteStudent);
 
 		btnReloadStudents = new JButton("Tải Lại");
 		btnReloadStudents.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnReloadStudents.setBounds(699, 270, 111, 38);
+		btnReloadStudents.setBounds(587, 267, 111, 38);
 		StudentCard.add(btnReloadStudents);
+		
+		btnSreachStudent = new JButton("Tìm Kiếm");
+		btnSreachStudent.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(null, "Chức năng đang được cập nhật");
+			}
+		});
+		btnSreachStudent.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnSreachStudent.setBounds(745, 267, 111, 38);
+		StudentCard.add(btnSreachStudent);
 
 		LectureCard = new JPanel();
 		pnCards.add(LectureCard, "LectureCard");
@@ -309,24 +318,34 @@ public class MainFrame extends JFrame {
 		btnLectureAdd = new JButton("Thêm");
 
 		btnLectureAdd.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnLectureAdd.setBounds(140, 268, 111, 38);
+		btnLectureAdd.setBounds(94, 268, 111, 38);
 		LectureCard.add(btnLectureAdd);
 
 		btnLectureEdit = new JButton("Sửa");
 		btnLectureEdit.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnLectureEdit.setBounds(329, 268, 111, 38);
+		btnLectureEdit.setBounds(258, 268, 111, 38);
 		LectureCard.add(btnLectureEdit);
 
 		btnLectureDelete = new JButton("Xoá");
 
 		btnLectureDelete.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnLectureDelete.setBounds(513, 271, 111, 38);
+		btnLectureDelete.setBounds(421, 268, 111, 38);
 		LectureCard.add(btnLectureDelete);
 		btnLectureReload = new JButton("Tải Lại");
 
 		btnLectureReload.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnLectureReload.setBounds(702, 271, 111, 38);
+		btnLectureReload.setBounds(590, 268, 111, 38);
 		LectureCard.add(btnLectureReload);
+		
+		btnLectureSreach = new JButton("Tìm Kiếm");
+		btnLectureSreach.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(null, "Chức năng đang được cập nhật");
+			}
+		});
+		btnLectureSreach.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnLectureSreach.setBounds(752, 268, 111, 38);
+		LectureCard.add(btnLectureSreach);
 
 		/* END LECTURE CARD */
 
@@ -394,10 +413,6 @@ public class MainFrame extends JFrame {
 		cmbDepartment.setBounds(145, 86, 249, 35);
 		panel_1.add(cmbDepartment);
 
-		cmbLocation = new JComboBox();
-		cmbLocation.setBounds(601, 28, 249, 35);
-		panel_1.add(cmbLocation);
-
 		dateCourse = new JDateChooser();
 		dateCourse.setBounds(601, 86, 249, 33);
 		panel_1.add(dateCourse);
@@ -429,6 +444,11 @@ public class MainFrame extends JFrame {
 		btnReloadCourse.setFont(new Font("SansSerif", Font.BOLD, 15));
 		btnReloadCourse.setBounds(680, 217, 117, 42);
 		panel_1.add(btnReloadCourse);
+		
+		txtLocation = new JTextField();
+		txtLocation.setColumns(10);
+		txtLocation.setBounds(601, 25, 249, 36);
+		panel_1.add(txtLocation);
 
 		JPanel panel_2 = new JPanel();
 		panel_2.setBounds(25, 356, 920, 307);
@@ -802,13 +822,44 @@ public class MainFrame extends JFrame {
 			cmbDepartment.addItem(department);
 		}
 	}
-
+    public void LoadComboTime() {
+    	cmbTimeCourse.removeAllItems();
+    	String hours = "00";
+    	String miniutes = "00";
+    	String seconds = "00";
+    	int inthours = Integer.parseInt(hours);
+    	for(int i = 0 ; i < 24 ; i++) {
+    		if(i < 10) {
+    			hours = "0" + i;
+    		}
+    		else {
+    			hours = i+"";
+    		}
+    		miniutes = "00";
+    		String time = hours + ":" + miniutes + ":" +seconds;
+    		cmbTimeCourse.addItem(time);
+    		int intminiutes = 15;
+    		while(intminiutes <= 50 && intminiutes > 0) {
+    			miniutes = String.valueOf(intminiutes);
+    			if(intminiutes != 60) {
+    				time = hours + ":" + miniutes + ":" +seconds;
+    			}
+    			intminiutes+=15;
+    			cmbTimeCourse.addItem(time);
+    		}
+    		
+    	
+    	}
+    }
 	
 	private JPanel panel_1;
 	private JTextField txtCourseName;
 	private JTextField txtUrl;
 	private JComboBox cmbTimeCourse;
 	private JTable tblCourse;
+	private JButton btnSreachStudent;
+	private JButton btnLectureSreach;
+	private JTextField txtLocation;
 
 	
 
@@ -816,5 +867,6 @@ public class MainFrame extends JFrame {
 		LoadListLecture();
 		LoadListStudents();
 		LoadListDepartments();
+		LoadComboTime();
 	}
 }
