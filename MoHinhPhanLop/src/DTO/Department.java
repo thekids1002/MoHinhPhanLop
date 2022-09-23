@@ -51,8 +51,7 @@ public class Department {
 
 	@Override
 	public String toString() {
-		return "Department [DepartmentID=" + DepartmentID + ", Name=" + Name + ", Budget=" + Budget + ", StartDate="
-				+ StartDate + ", Administrator=" + Administrator + "]";
+		return DepartmentID + " - " + Name;
 	}
 
 	public Department(int departmentID, String name, Double budget, Date startDate, int administrator) {

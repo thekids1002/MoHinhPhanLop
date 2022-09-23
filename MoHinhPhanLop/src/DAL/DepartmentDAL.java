@@ -9,12 +9,21 @@ import java.util.Date;
 
 import DTO.Course;
 import DTO.Department;
+
 public class DepartmentDAL {
-	
+	public static DepartmentDAL gI;
+
+	public static DepartmentDAL gI() {
+		if (gI == null) {
+			gI = new DepartmentDAL();
+		}
+		return gI;
+	}
+
 	public DepartmentDAL() {
 		super();
 	}
-	
+
 	public ArrayList<Department> readDepartments() {
 		try {
 			Connection conn = DBConnect.getConnection();
@@ -40,7 +49,7 @@ public class DepartmentDAL {
 		}
 		return null;
 	}
-	
+
 	public boolean addDepartment(Department depart) {
 		try {
 			String sql = "INSERT INTO `department`( `DepartmentID`, `Name`, `Budget`, `StartDate`, `Administrator`) VALUES (?,?,?,?,?)";
@@ -53,14 +62,13 @@ public class DepartmentDAL {
 			pstm.setInt(5, depart.getAdministrator());
 			int i = pstm.executeUpdate();
 			conn.close();
-			return i > 0 ;
+			return i > 0;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return false;
 	}
-	
-	
+
 	public boolean editDepartment(Department depart) {
 		try {
 			String sql = "UPDATE `department` SET `Name`= ? ,`Budget`= ? ,`StartDate`= ? ,`Adinistrator`= ? WHERE DepartmentID = ? ";
@@ -70,16 +78,16 @@ public class DepartmentDAL {
 			pstm.setDouble(2, depart.getBudget());
 			pstm.setDate(3, new java.sql.Date(depart.getStartDate().getTime()));
 			pstm.setInt(4, depart.getAdministrator());
-			pstm.setInt(5,depart.getDepartmentID());
+			pstm.setInt(5, depart.getDepartmentID());
 			int i = pstm.executeUpdate();
 			conn.close();
-			return i > 0 ;
+			return i > 0;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return false;
 	}
-	
+
 	public boolean deleteDepartment(int idDepartment) {
 		try {
 			String sql = "DELETE FROM `department` WHERE DepartmentID = ? ";
@@ -88,11 +96,11 @@ public class DepartmentDAL {
 			pstm.setInt(1, idDepartment);
 			int i = pstm.executeUpdate();
 			conn.close();
-			return i > 0 ;
+			return i > 0;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return false;
 	}
-	
+
 }
