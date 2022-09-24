@@ -1,6 +1,6 @@
 package DTO;
 
-public class CourseinStructor {
+public class CourseInstructor {
 	private int CourseID;
 	private int PersonID;
 
@@ -25,13 +25,13 @@ public class CourseinStructor {
 		return "CourseinStructor [CourseID=" + CourseID + ", PersonID=" + PersonID + "]";
 	}
 
-	public CourseinStructor(int courseID, int personID) {
+	public CourseInstructor(int courseID, int personID) {
 		super();
 		CourseID = courseID;
 		PersonID = personID;
 	}
 
-	public CourseinStructor() {
+	public CourseInstructor() {
 		super();
 		// TODO Auto-generated constructor stub
 	}

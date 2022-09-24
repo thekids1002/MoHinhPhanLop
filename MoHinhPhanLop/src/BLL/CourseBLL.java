@@ -33,6 +33,6 @@ public class CourseBLL {
 			JOptionPane.showMessageDialog(null, "Tên khoa không được để trống");
 			return false;
 		}
-		return new CourseDAL().addCourse(course);
+		return new CourseDAL().editCourse(course);
 	}
 }

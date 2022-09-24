@@ -7,19 +7,19 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 
-import DTO.CourseinStructor;
+import DTO.CourseInstructor;
 
-public class CourseinStructorDAL {
+public class CourseInstructorDAL {
 	
-	public CourseinStructorDAL() {
+	public CourseInstructorDAL() {
 		super();
 	}
 	
-	public ArrayList<CourseinStructor> readCourseinStructors() {
+	public ArrayList<CourseInstructor> readCourseInstructors() {
 		try {
 			Connection conn = DBConnect.getConnection();
 			Statement stmt = conn.createStatement();
-			ArrayList<CourseinStructor> listCourseinStructors = new ArrayList<>();
+			ArrayList<CourseInstructor> listCourseinStructors = new ArrayList<>();
 			String query = "SELECT * FROM `courseinstructor`";
 			ResultSet rs = stmt.executeQuery(query);
 			if (rs != null) {
@@ -27,7 +27,7 @@ public class CourseinStructorDAL {
 				while (rs.next()) {
 					int idCourse = rs.getInt("CourseID");
 					int idPerson = rs.getInt("PersonId");
-					CourseinStructor course = new CourseinStructor(idCourse, idPerson);
+					CourseInstructor course = new CourseInstructor(idCourse, idPerson);
 					listCourseinStructors.add(course);
 				}
 			}
@@ -38,7 +38,7 @@ public class CourseinStructorDAL {
 		return null;
 	}
 	
-	public boolean addCourseinStructor(CourseinStructor course) {
+	public boolean addCourseInstructor(CourseInstructor course) {
 		try {
 			String sql = "INSERT INTO `courseinstructor`( `CourseID`, `PersonID`) VALUES (?,?)";
 			Connection conn = DBConnect.getConnection();
@@ -55,7 +55,7 @@ public class CourseinStructorDAL {
 	}
 	
 	//Hai thằng đều là khóa chính thì hơi khó sửa
-	public boolean editCourseinStructor(CourseinStructor c) {
+	public boolean editCourseInstructor(CourseInstructor c) {
 		try {
 			String sql = "UPDATE `courseinstructor` SET `CourseID`= ? ,`PersonID`= ? WHERE CourseID = ? AND PersonID = ?";
 			Connection conn = DBConnect.getConnection();
@@ -71,7 +71,7 @@ public class CourseinStructorDAL {
 		return false;
 	}
 	
-	public boolean deleteCourseinStructor(int idCourse, int idPerson) {
+	public boolean deleteCourseInstructor(int idCourse, int idPerson) {
 		try {
 			String sql = "DELETE FROM `courseinstructor` WHERE CourseID = ? AND PersonID = ? ";
 			Connection conn = DBConnect.getConnection();
