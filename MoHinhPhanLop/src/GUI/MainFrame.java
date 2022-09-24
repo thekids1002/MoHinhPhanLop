@@ -966,7 +966,7 @@ public class MainFrame extends JFrame {
 						}
 					}
 				});
-				// add Students
+				// add Student Grade
 				btnAddStudent.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						float grade = Float.parseFloat(txtGrade.getText()); 
@@ -974,7 +974,7 @@ public class MainFrame extends JFrame {
 						int idStudent = cmbStudent.getSelectedIndex();
 						StudentGrade studentGrade = new StudentGrade(0, idCourse, idStudent, grade);
 						if (StudentGradeBLL.gI().addGrade(studentGrade)) {
-							LoadListStudents();
+							LoadListGrade();
 							JOptionPane.showMessageDialog(null, "Đã thêm thành công");
 						} else {
 							JOptionPane.showMessageDialog(null, "Đã có lỗi xảy ra khi thêm điểm khóa học");
@@ -982,7 +982,7 @@ public class MainFrame extends JFrame {
 
 					}
 				});
-				// edit Students
+				// edit Student Grade
 				btnEditStudent.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 
@@ -995,7 +995,7 @@ public class MainFrame extends JFrame {
 								int idPerson = Integer.parseInt(dtmStudentGrade.getValueAt(i, 2).toString());
 								StudentGrade studentGrade = new StudentGrade(idEnrollment, idCourse, idPerson, grade);
 								if (StudentGradeBLL.gI().editGrade(studentGrade)) {
-									LoadListStudents();
+									LoadListGrade();
 									JOptionPane.showMessageDialog(null, "Đã sửa thành công");
 								} else {
 									JOptionPane.showMessageDialog(null, "Đã có lỗi xảy ra");
@@ -1009,28 +1009,27 @@ public class MainFrame extends JFrame {
 						}
 					}
 				});
-				// delete Students
-				// delete Lecture
-				btnDeleteStudent.addActionListener(new ActionListener() {
+				// delete Student Grade
+				btnDeleteStudentGrade.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						int i = tblStudents.getSelectedRow();
+						int i = tblStudentGrade.getSelectedRow();
 						try {
 							if (i >= 0) {
-								int ID = Integer.parseInt(dtmStudent.getValueAt(i, 0).toString());
+								int idEnrollment = Integer.parseInt(dtmStudentGrade.getValueAt(i, 0).toString());
 								int dialogButton = JOptionPane.YES_NO_OPTION;
 								int dialogResult = JOptionPane.showConfirmDialog(null, "Bạn có muốn xoá không?", "Warning",
 										dialogButton);
 								if (dialogResult == JOptionPane.YES_OPTION) {
-									if (StudentBLL.gI().deleteLecture(ID)) {
-										LoadListStudents();
+									if (StudentGradeBLL.gI().deleteGrade(idEnrollment)) {
+										LoadListGrade();
 										JOptionPane.showMessageDialog(null, "Đã xoá thành công");
 									} else {
-										JOptionPane.showMessageDialog(null, "Đã có lỗi xảy ra khi xoá sinh viên");
+										JOptionPane.showMessageDialog(null, "Đã có lỗi xảy ra khi xoá điểm");
 									}
 								}
 
 							} else {
-								JOptionPane.showMessageDialog(null, "Bạn chưa chọn sinh viên cần xoá");
+								JOptionPane.showMessageDialog(null, "Bạn chưa chọn điểm cần xoá");
 							}
 						} catch (Exception e2) {
 							// TODO: handle exception
@@ -1038,25 +1037,41 @@ public class MainFrame extends JFrame {
 						}
 					}
 				});
-				// reload Lecture
-				btnReloadStudents.addActionListener(new ActionListener() {
+				// reload student grade
+				btnReloadStudentGrade.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						try {
-							LoadListStudents();
+							LoadListGrade();
 							JOptionPane.showMessageDialog(null, "Đã tải lại danh sách thành công");
 						} catch (Exception e2) {
 							e2.printStackTrace();
-							JOptionPane.showMessageDialog(null, "Có lỗi khi tải danh sách giáo viên");
+							JOptionPane.showMessageDialog(null, "Có lỗi khi tải danh sách điểm");
 						}
 
 					}
 				});
-				// END EVENT STUDENTS		
+				// END EVENT STUDENT GRADE	
 	}
 
 	public static ArrayList<DTO.Person> lecturesList;
 	public static ArrayList<DTO.Person> studentsList;
 	public static ArrayList<DTO.Department> departmentsList;
+	public static ArrayList<DTO.StudentGrade> studentGradeList;
+	
+	public void LoadListGrade() {
+		studentGradeList = null;
+		studentGradeList = BLL.StudentGradeBLL.gI().readAllGrade();
+		dtmStudentGrade.setRowCount(0);
+		for (StudentGrade studentGrade : studentGradeList) {
+			Vector<Object> vec = new Vector<Object>();
+			vec.add(studentGrade.getEnrollmentID());
+			vec.add(studentGrade.getCourseID());
+			vec.add(studentGrade.getStudentID());
+			vec.add(studentGrade.getGrade());
+			dtmStudentGrade.addRow(vec);
+		}
+	}
+	
 	public void LoadListLecture() {
 		lecturesList = null;
 		lecturesList = BLL.LectureBLL.gI().readLectures();
@@ -1070,6 +1085,7 @@ public class MainFrame extends JFrame {
 			dtmLecture.addRow(vec);
 		}
 	}
+	
 	public void LoadListStudents() {
 		studentsList = null;
 		studentsList = BLL.StudentBLL.gI().readStudens();
@@ -1146,6 +1162,7 @@ public class MainFrame extends JFrame {
 		LoadListLecture();
 		LoadListStudents();
 		LoadListDepartments();
+		LoadListGrade();
 		LoadComboTime();
 	}
 }
