@@ -3,11 +3,20 @@ package BLL;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
+import DAL.StudentDAL;
 import DAL.StudentGradeDAL;
 import DTO.StudentGrade;
 
 public class StudentGradeBLL {
 
+	public static StudentGradeBLL gI;
+
+	public static StudentGradeBLL gI() {
+		if (gI == null) {
+			gI = new StudentGradeBLL();
+		}
+		return gI;
+	}
 	public static ArrayList<DTO.StudentGrade> readAllGrade() {
 		return new StudentGradeDAL().gI().readStudentGrades();
 	}
@@ -42,5 +51,12 @@ public class StudentGradeBLL {
 			return false;
 		}
 		return new StudentGradeDAL().gI().editStudentGrade(grade);
+	}
+	
+	public static boolean deleteGrade (int id) {
+		if (id < 0) {
+			return false;
+		}
+		return StudentGradeDAL.gI().deleteStudentGrade(id);
 	}
 }

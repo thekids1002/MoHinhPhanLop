@@ -36,6 +36,9 @@ import BLL.LectureBLL;
 import BLL.StudentBLL;
 import DTO.Department;
 import DTO.Person;
+import DTO.StudentGrade;
+import BLL.StudentGradeBLL;
+import BLL.CourseInstructorBLL;
 
 import java.awt.Font;
 import javax.swing.JTextField;
@@ -91,6 +94,17 @@ public class MainFrame extends JFrame {
 	private JButton btnReloadCourse;
 	private JDateChooser dateCourse;
 	private JComboBox cmbDepartment;
+	private DefaultTableModel dtmStudentGrade;
+	private JButton btnAddStudentGrade;
+	private JButton btnEditStudentGrade;
+	private JButton btnDeleteStudentGrade;
+	private JButton btnReloadStudentGrade;
+	private DefaultTableModel dtmCourseInstructor;
+	private JButton btnAddCourseInstructor;
+	private JButton btnEditCourseInstructor;
+	private JButton btnDeleteCourseInstructor;
+	private JButton btnReloadCourseInstructor;
+	
 
 	/**
 	 * Launch the application.
@@ -460,6 +474,7 @@ public class MainFrame extends JFrame {
 		tblCourse = new JTable();
 		scrollPane_3.setViewportView(tblCourse);
 
+		// Course Instructor Card start
 		CourseIntructorCard = new JPanel();
 		pnCards.add(CourseIntructorCard, "CourseIntructorCard");
 		CourseIntructorCard.setLayout(null);
@@ -495,22 +510,22 @@ public class MainFrame extends JFrame {
 		cmbInstructor.setBounds(444, 135, 131, 35);
 		panel_3.add(cmbInstructor);
 		
-		JButton btnAddCourseInstructor = new JButton("Thêm");
+		btnAddCourseInstructor = new JButton("Thêm");
 		btnAddCourseInstructor.setFont(new Font("SansSerif", Font.BOLD, 15));
 		btnAddCourseInstructor.setBounds(86, 217, 117, 42);
 		panel_3.add(btnAddCourseInstructor);
 		
-		JButton btnEditCourseInstructor = new JButton("Sửa");
+		btnEditCourseInstructor = new JButton("Sửa");
 		btnEditCourseInstructor.setFont(new Font("SansSerif", Font.BOLD, 15));
 		btnEditCourseInstructor.setBounds(273, 217, 117, 42);
 		panel_3.add(btnEditCourseInstructor);
 		
-		JButton btnDeleteCourseInstructor = new JButton("Xoá");
+		btnDeleteCourseInstructor = new JButton("Xoá");
 		btnDeleteCourseInstructor.setFont(new Font("SansSerif", Font.BOLD, 15));
 		btnDeleteCourseInstructor.setBounds(478, 217, 117, 42);
 		panel_3.add(btnDeleteCourseInstructor);
 		
-		JButton btnReloadCourseInstructor = new JButton("Tải Lại");
+		btnReloadCourseInstructor = new JButton("Tải Lại");
 		btnReloadCourseInstructor.setFont(new Font("SansSerif", Font.BOLD, 15));
 		btnReloadCourseInstructor.setBounds(680, 217, 117, 42);
 		panel_3.add(btnReloadCourseInstructor);
@@ -523,13 +538,13 @@ public class MainFrame extends JFrame {
 		JScrollPane scrollPane_3_1 = new JScrollPane();
 		scrollPane_3_1.setBounds(6, 6, 908, 295);
 		panel_4.add(scrollPane_3_1);
-		
-		tblCourseInstructor = new MyTable();
-		scrollPane_3_1.setViewportView(tblCourseInstructor);
 
-		DefaultTableModel dtm = new DefaultTableModel();
-		dtm.addColumn("tets");
-		dtm.addColumn("adhhsahdah");
+		dtmCourseInstructor = new DefaultTableModel();
+		dtmCourseInstructor.addColumn("Mã khóa học");
+		dtmCourseInstructor.addColumn("Mã người hướng dẫn");
+		
+		tblCourseInstructor = new MyTable(dtmCourseInstructor);
+		scrollPane_3_1.setViewportView(tblCourseInstructor);
 
 		GradeCard = new JPanel();
 		pnCards.add(GradeCard, "GradeCard");
@@ -575,17 +590,17 @@ public class MainFrame extends JFrame {
 		panel_5.add(txtGrade);
 		txtGrade.setColumns(10);
 		
-		JButton btnAddStudentGrade = new JButton("Thêm");
+		btnAddStudentGrade = new JButton("Thêm");
 		btnAddStudentGrade.setFont(new Font("SansSerif", Font.BOLD, 15));
 		btnAddStudentGrade.setBounds(86, 217, 117, 42);
 		panel_5.add(btnAddStudentGrade);
 		
-		JButton btnEditStudentGrade = new JButton("Sửa");
+		btnEditStudentGrade = new JButton("Sửa");
 		btnEditStudentGrade.setFont(new Font("SansSerif", Font.BOLD, 15));
 		btnEditStudentGrade.setBounds(273, 217, 117, 42);
 		panel_5.add(btnEditStudentGrade);
 		
-		JButton btnDeleteStudentGrade = new JButton("Xoá");
+		btnDeleteStudentGrade = new JButton("Xoá");
 		btnDeleteStudentGrade.setFont(new Font("SansSerif", Font.BOLD, 15));
 		btnDeleteStudentGrade.setBounds(478, 217, 117, 42);
 		panel_5.add(btnDeleteStudentGrade);
@@ -604,6 +619,7 @@ public class MainFrame extends JFrame {
 		scrollPane_4.setBounds(0, 0, 2, 2);
 		panel_6.add(scrollPane_4);
 		
+		dtmStudentGrade = new DefaultTableModel();
 		tblStudentGrade = new MyTable();
 		scrollPane_4.setViewportView(tblStudentGrade);
 
@@ -904,6 +920,138 @@ public class MainFrame extends JFrame {
 			}
 		});
 		// END EVENT STUDENTS
+		
+		// START EVENT STUDENT GRADE
+				// click table student grade
+				tblStudentGrade.addMouseListener(new MouseListener() {
+					@Override
+					public void mouseReleased(MouseEvent e) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void mousePressed(MouseEvent e) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void mouseExited(MouseEvent e) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void mouseEntered(MouseEvent e) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						int i = tblStudentGrade.getSelectedRow();
+						if (i >= 0) {
+							try {
+								String idCourse = dtmStudentGrade.getValueAt(i, 1).toString();
+								String idStudent = dtmStudent.getValueAt(i, 2).toString();
+								String grade = dtmStudent.getValueAt(i, 3).toString();
+								cmbCourseGrade.setSelectedIndex(i);
+								cmbStudent.setSelectedIndex(i);
+								txtGrade.setText(grade);
+							} catch (Exception e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+						}
+					}
+				});
+				// add Students
+				btnAddStudent.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						float grade = Float.parseFloat(txtGrade.getText()); 
+						int idCourse = cmbCourseGrade.getSelectedIndex();
+						int idStudent = cmbStudent.getSelectedIndex();
+						StudentGrade studentGrade = new StudentGrade(0, idCourse, idStudent, grade);
+						if (StudentGradeBLL.gI().addGrade(studentGrade)) {
+							LoadListStudents();
+							JOptionPane.showMessageDialog(null, "Đã thêm thành công");
+						} else {
+							JOptionPane.showMessageDialog(null, "Đã có lỗi xảy ra khi thêm điểm khóa học");
+						}
+
+					}
+				});
+				// edit Students
+				btnEditStudent.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+
+						float grade = Float.parseFloat(txtGrade.getText());
+						int i = tblStudentGrade.getSelectedRow();
+						try {
+							if (i >= 0) {
+								int idEnrollment = Integer.parseInt(dtmStudentGrade.getValueAt(i, 0).toString());
+								int idCourse = Integer.parseInt(dtmStudentGrade.getValueAt(i, 1).toString());
+								int idPerson = Integer.parseInt(dtmStudentGrade.getValueAt(i, 2).toString());
+								StudentGrade studentGrade = new StudentGrade(idEnrollment, idCourse, idPerson, grade);
+								if (StudentGradeBLL.gI().editGrade(studentGrade)) {
+									LoadListStudents();
+									JOptionPane.showMessageDialog(null, "Đã sửa thành công");
+								} else {
+									JOptionPane.showMessageDialog(null, "Đã có lỗi xảy ra");
+								}
+							} else {
+								JOptionPane.showMessageDialog(null, "Bạn chưa chọn điểm cần sửa");
+							}
+						} catch (Exception e2) {
+							// TODO: handle exception
+							e2.printStackTrace();
+						}
+					}
+				});
+				// delete Students
+				// delete Lecture
+				btnDeleteStudent.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						int i = tblStudents.getSelectedRow();
+						try {
+							if (i >= 0) {
+								int ID = Integer.parseInt(dtmStudent.getValueAt(i, 0).toString());
+								int dialogButton = JOptionPane.YES_NO_OPTION;
+								int dialogResult = JOptionPane.showConfirmDialog(null, "Bạn có muốn xoá không?", "Warning",
+										dialogButton);
+								if (dialogResult == JOptionPane.YES_OPTION) {
+									if (StudentBLL.gI().deleteLecture(ID)) {
+										LoadListStudents();
+										JOptionPane.showMessageDialog(null, "Đã xoá thành công");
+									} else {
+										JOptionPane.showMessageDialog(null, "Đã có lỗi xảy ra khi xoá sinh viên");
+									}
+								}
+
+							} else {
+								JOptionPane.showMessageDialog(null, "Bạn chưa chọn sinh viên cần xoá");
+							}
+						} catch (Exception e2) {
+							// TODO: handle exception
+							e2.printStackTrace();
+						}
+					}
+				});
+				// reload Lecture
+				btnReloadStudents.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						try {
+							LoadListStudents();
+							JOptionPane.showMessageDialog(null, "Đã tải lại danh sách thành công");
+						} catch (Exception e2) {
+							e2.printStackTrace();
+							JOptionPane.showMessageDialog(null, "Có lỗi khi tải danh sách giáo viên");
+						}
+
+					}
+				});
+				// END EVENT STUDENTS		
 	}
 
 	public static ArrayList<DTO.Person> lecturesList;
@@ -991,7 +1139,6 @@ public class MainFrame extends JFrame {
 	private JComboBox cmbCourseGrade;
 	private JComboBox cmbStudent;
 	private JTextField txtGrade;
-	private JButton btnReloadStudentGrade;
 
 	
 
