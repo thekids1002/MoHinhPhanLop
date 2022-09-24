@@ -99,21 +99,26 @@ public class CourseDAL {
 		return null;
 	}
 
-	public boolean addCourse(Course course) {
+	public int addCourse(Course course) {
 		try {
 			String sql = "INSERT INTO `course`( `Title`, `Credits`, `DepartmentID`) VALUES (?,?,?)";
 			Connection conn = DBConnect.getConnection();
-			PreparedStatement pstm = conn.prepareStatement(sql);
+			PreparedStatement pstm = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			pstm.setString(1, course.getTitle());
 			pstm.setInt(2, course.getCredits());
 			pstm.setInt(3, course.getDepartmentID());
-			int i = pstm.executeUpdate();
+			pstm.execute();
+			ResultSet rs = pstm.getGeneratedKeys();
+			int generatedKey = 0;
+			if (rs.next()) {
+			    generatedKey = rs.getInt(1);
+			}
 			conn.close();
-			return i > 0;
+			return generatedKey;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return false;
+		return -1;
 	}
 
 	public boolean editCourse(Course c) {

@@ -45,4 +45,7 @@ public class OnsiteCourseBLL {
 		return new OnsiteCourseDAL().editOnsiteCourse(course);
 
 	}
+	public boolean deleteSiteCourse(int id) {
+		return new OnsiteCourseDAL().deleteOnsiteCourse(id);
+	}
 }

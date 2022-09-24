@@ -33,4 +33,8 @@ public class OnlineCourseBLL {
 		}
 		return new OnlineCourseDAL().editOnlineCourse(course);
 	}
+	
+	public boolean deleteOnlineCourse(int id) {
+		return new OnlineCourseDAL().deleteOnlineCourse(id);
+	}
 }

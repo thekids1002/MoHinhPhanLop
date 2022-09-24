@@ -19,6 +19,7 @@ import java.awt.Container;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -38,6 +39,8 @@ import BLL.StudentBLL;
 import DTO.Course;
 import DTO.CourseInstructor;
 import DTO.Department;
+import DTO.OnlineCourse;
+import DTO.OnsiteCourse;
 import DTO.Person;
 import DTO.StudentGrade;
 import BLL.StudentGradeBLL;
@@ -93,7 +96,7 @@ public class MainFrame extends JFrame {
 	private JButton btnReloadStudents;
 	private JButton btnAddCourse;
 	private JButton btnEditCourse;
-	private Container btnDeleteCourse;
+	private JButton btnDeleteCourse;
 	private JButton btnReloadCourse;
 	private JComboBox cmbDepartment;
 	private DefaultTableModel dtmStudentGrade;
@@ -463,6 +466,36 @@ public class MainFrame extends JFrame {
 		btnAddCourse = new JButton("Thêm");
 		btnAddCourse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				String url = txtUrl.getText();
+				String TenKH;
+				int Khoa;
+
+				TenKH = txtCourseName.getText();
+				String department = cmbDepartment.getSelectedItem().toString();
+				Khoa = Integer.parseInt(department.substring(0, department.indexOf("-")).trim());
+				Course course = new Course(0, TenKH, 1, Khoa);
+				int id = BLL.CourseBLL.addCourse(course);
+				if (id != -1) {
+					JOptionPane.showMessageDialog(null, "Đã thêm thành công");
+					if (url.isBlank() || url.isEmpty()) {
+						String location = txtLocation.getText();
+						String days = txtdateCourse.getText();
+						String timestr = cmbTimeCourse.getSelectedItem().toString();
+						Time time = java.sql.Time.valueOf(timestr);
+						OnsiteCourse onsiteCourse = new OnsiteCourse(id, location, days, time);
+						if (new BLL.OnsiteCourseBLL().addOnSiteCourse(onsiteCourse)) {
+							JOptionPane.showMessageDialog(null, "Đã thêm thành công khoá học Onsite");
+							LoadListOnsiteCourse();
+						}
+					} else {
+						OnlineCourse onlineCourse = new OnlineCourse(id, url);
+						if (new BLL.OnlineCourseBLL().addOnlineCourse(onlineCourse)) {
+							JOptionPane.showMessageDialog(null, "Đã thêm thành công khoá học Online");
+							LoadListOnlineCourse();
+						}
+					}
+				}
+
 			}
 		});
 		btnAddCourse.setFont(new Font("SansSerif", Font.BOLD, 15));
@@ -470,6 +503,78 @@ public class MainFrame extends JFrame {
 		panel_1.add(btnAddCourse);
 
 		btnEditCourse = new JButton("Sửa");
+		btnEditCourse.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int i = tblCourseOnsite.getSelectedRow();
+				int j = tblCourseOnline.getSelectedRow();
+				if (i >= 0) {
+					j = -1;
+					String url = txtUrl.getText();
+					String TenKH;
+					int Khoa;
+					TenKH = txtCourseName.getText();
+					String department = cmbDepartment.getSelectedItem().toString();
+					Khoa = Integer.parseInt(department.substring(0, department.indexOf("-")).trim());
+					int id = Integer.parseInt(dtmcourseSite.getValueAt(i, 1).toString());
+					Course course = new Course(id, TenKH, 1, Khoa);
+					if (BLL.CourseBLL.editCourse(course)) {
+						JOptionPane.showMessageDialog(null, "Đã sửa thành công");
+						if (url.isBlank() || url.isEmpty()) {
+							String location = txtLocation.getText();
+							String days = txtdateCourse.getText();
+							String timestr = cmbTimeCourse.getSelectedItem().toString();
+							Time time = java.sql.Time.valueOf(timestr);
+							OnsiteCourse onsiteCourse = new OnsiteCourse(id, location, days, time);
+							if (new BLL.OnsiteCourseBLL().editOnSiteCourse(onsiteCourse)) {
+								JOptionPane.showMessageDialog(null, "Đã sửa thành công khoá học Onsite");
+								LoadListOnsiteCourse();
+							}
+						} else {
+							OnlineCourse onlineCourse = new OnlineCourse(id, url);
+							if (new BLL.OnlineCourseBLL().editOnlineCourse(onlineCourse)) {
+								JOptionPane.showMessageDialog(null, "Đã thêm thành công khoá học Online");
+								LoadListOnlineCourse();
+							}
+						}
+					} else {
+						JOptionPane.showMessageDialog(null, "Sửa khoá học onsite không thành công");
+					}
+				}
+				if (j >= 0) {
+					i = -1;
+					String url = txtUrl.getText();
+					String TenKH;
+					int Khoa;
+					TenKH = txtCourseName.getText();
+					String department = cmbDepartment.getSelectedItem().toString();
+					Khoa = Integer.parseInt(department.substring(0, department.indexOf("-")).trim());
+					int id = Integer.parseInt(dtmcourseOnline.getValueAt(j, 1).toString());
+					Course course = new Course(id, TenKH, 1, Khoa);
+					if (BLL.CourseBLL.editCourse(course)) {
+						JOptionPane.showMessageDialog(null, "Đã sửa thành công");
+						if (url.isBlank() || url.isEmpty()) {
+							String location = txtLocation.getText();
+							String days = txtdateCourse.getText();
+							String timestr = cmbTimeCourse.getSelectedItem().toString();
+							Time time = java.sql.Time.valueOf(timestr);
+							OnsiteCourse onsiteCourse = new OnsiteCourse(id, location, days, time);
+							if (new BLL.OnsiteCourseBLL().editOnSiteCourse(onsiteCourse)) {
+								JOptionPane.showMessageDialog(null, "Đã sửa thành công khoá học Onsite");
+								LoadListOnsiteCourse();
+							}
+						} else {
+							OnlineCourse onlineCourse = new OnlineCourse(id, url);
+							if (new BLL.OnlineCourseBLL().editOnlineCourse(onlineCourse)) {
+								JOptionPane.showMessageDialog(null, "Đã thêm thành công khoá học Online");
+								LoadListOnlineCourse();
+							}
+						}
+					} else {
+						JOptionPane.showMessageDialog(null, "Có lỗi xảy ra");
+					}
+				}
+			}
+		});
 		btnEditCourse.setFont(new Font("SansSerif", Font.BOLD, 15));
 		btnEditCourse.setBounds(273, 217, 117, 42);
 		panel_1.add(btnEditCourse);
@@ -477,9 +582,54 @@ public class MainFrame extends JFrame {
 		btnDeleteCourse = new JButton("Xoá");
 		btnDeleteCourse.setFont(new Font("SansSerif", Font.BOLD, 15));
 		btnDeleteCourse.setBounds(478, 217, 117, 42);
+		btnDeleteCourse.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int i = tblCourseOnline.getSelectedRow();
+				int j = tblCourseOnsite.getSelectedRow();
+				int ID;
+				if(i >= 0) {
+					ID = Integer.parseInt(dtmcourseOnline.getValueAt(i, 1).toString());
+					if (new BLL.OnlineCourseBLL().deleteOnlineCourse(ID)) {
+						if(new BLL.CourseBLL().deleteCourse(ID)) {
+							JOptionPane.showMessageDialog(null, "Đã xoá khoá học online thành công");
+							LoadListOnlineCourse();
+						}
+						else {
+							JOptionPane.showMessageDialog(null, "Đã xoá khoá học online thất bại");
+						}
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "Đã xoá khoá học thất bại");
+					}
+				}
+				if(j >= 0) {
+					ID = Integer.parseInt(dtmcourseSite.getValueAt(j, 1).toString());
+					if (new BLL.OnsiteCourseBLL().deleteSiteCourse(ID)) {
+						if(new BLL.CourseBLL().deleteCourse(ID)) {
+							JOptionPane.showMessageDialog(null, "Đã xoá khoá học onsite thành công");
+							LoadListOnsiteCourse();
+						}
+						else {
+							JOptionPane.showMessageDialog(null, "Đã xoá khoá học onsite thất bại");
+							
+						}
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "Đã xoá khoá học thất bại");
+					}
+				}
+			}
+		});
 		panel_1.add(btnDeleteCourse);
 
 		btnReloadCourse = new JButton("Tải Lại");
+		btnReloadCourse.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(null,"Đã tải lại danh sách khoá học thành công");
+				LoadListOnlineCourse();
+				LoadListOnsiteCourse();
+			}
+		});
 		btnReloadCourse.setFont(new Font("SansSerif", Font.BOLD, 15));
 		btnReloadCourse.setBounds(680, 217, 117, 42);
 		panel_1.add(btnReloadCourse);

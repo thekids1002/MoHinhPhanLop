@@ -20,14 +20,14 @@ public class CourseBLL {
 		return new CourseDAL().readOnlineCourse();
 	}
 
-	public static boolean addCourse(Course course) {
+	public static int addCourse(Course course) {
 		if (course.getTitle().isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Tên khoá học không được để trống");
-			return false;
+			return -1;
 		}
 		if (course.getDepartmentID() < 0) {
 			JOptionPane.showMessageDialog(null, "Tên khoa không được để trống");
-			return false;
+			return -1;
 		}
 		return new CourseDAL().addCourse(course);
 	}
@@ -42,5 +42,8 @@ public class CourseBLL {
 			return false;
 		}
 		return new CourseDAL().editCourse(course);
+	}
+	public boolean deleteCourse(int ID) {
+		return new CourseDAL().deleteCourse(ID);
 	}
 }
