@@ -11,6 +11,15 @@ import DTO.CourseInstructor;
 
 public class CourseInstructorBLL {
 
+	public static CourseInstructorBLL gI;
+
+	public static CourseInstructorBLL gI() {
+		if (gI == null) {
+			gI = new CourseInstructorBLL();
+		}
+		return gI;
+	}
+	
 	public static ArrayList<DTO.CourseInstructor> readAllCourseInstructor() {
 		return new CourseInstructorDAL().gI().readCourseInstructors();
 	}

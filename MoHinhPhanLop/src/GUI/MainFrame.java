@@ -34,6 +34,7 @@ import com.toedter.calendar.JDateChooser;
 
 import BLL.LectureBLL;
 import BLL.StudentBLL;
+import DTO.CourseInstructor;
 import DTO.Department;
 import DTO.Person;
 import DTO.StudentGrade;
@@ -104,6 +105,26 @@ public class MainFrame extends JFrame {
 	private JButton btnEditCourseInstructor;
 	private JButton btnDeleteCourseInstructor;
 	private JButton btnReloadCourseInstructor;
+	private JPanel panel_1;
+	private JTextField txtCourseName;
+	private JTextField txtUrl;
+	private JComboBox cmbTimeCourse;
+	private JTable tblCourse;
+	private JButton btnSreachStudent;
+	private JButton btnLectureSreach;
+	private JTextField txtLocation;
+	private JLabel lblNewLabel_5;
+	private JTable tblCourseInstructor;
+	private JPanel panel_5;
+	private JPanel panel_6;
+	private JTable tblStudentGrade;
+	private JLabel lblNewLabel_7;
+	private JLabel lblNewLabel_8;
+	private JComboBox cmbCourseGrade;
+	private JComboBox cmbStudent;
+	private JTextField txtGrade;
+	private JComboBox cmbInstructor;
+	private JComboBox cmbCourse;
 	
 
 	/**
@@ -502,11 +523,11 @@ public class MainFrame extends JFrame {
 		lblNewLabel_5.setBounds(294, 75, 131, 38);
 		panel_3.add(lblNewLabel_5);
 		
-		JComboBox cmbCourse = new JComboBox();
+		cmbCourse = new JComboBox();
 		cmbCourse.setBounds(444, 75, 131, 35);
 		panel_3.add(cmbCourse);
 		
-		JComboBox cmbInstructor = new JComboBox();
+		cmbInstructor = new JComboBox();
 		cmbInstructor.setBounds(444, 135, 131, 35);
 		panel_3.add(cmbInstructor);
 		
@@ -546,6 +567,7 @@ public class MainFrame extends JFrame {
 		tblCourseInstructor = new MyTable(dtmCourseInstructor);
 		scrollPane_3_1.setViewportView(tblCourseInstructor);
 
+		//Sudent Grade Card
 		GradeCard = new JPanel();
 		pnCards.add(GradeCard, "GradeCard");
 		GradeCard.setLayout(null);
@@ -616,11 +638,17 @@ public class MainFrame extends JFrame {
 		panel_6.setLayout(null);
 		
 		JScrollPane scrollPane_4 = new JScrollPane();
-		scrollPane_4.setBounds(0, 0, 2, 2);
+		scrollPane_4.setLocation(5, 5);
+		scrollPane_4.setSize(900, 285);
 		panel_6.add(scrollPane_4);
 		
 		dtmStudentGrade = new DefaultTableModel();
-		tblStudentGrade = new MyTable();
+		dtmStudentGrade.addColumn("Mã điểm");
+		dtmStudentGrade.addColumn("Mã khóa học");
+		dtmStudentGrade.addColumn("Mã học viên");
+		dtmStudentGrade.addColumn("Điểm");
+		
+		tblStudentGrade = new MyTable(dtmStudentGrade);
 		scrollPane_4.setViewportView(tblStudentGrade);
 
 	}
@@ -954,10 +982,10 @@ public class MainFrame extends JFrame {
 						if (i >= 0) {
 							try {
 								String idCourse = dtmStudentGrade.getValueAt(i, 1).toString();
-								String idStudent = dtmStudent.getValueAt(i, 2).toString();
-								String grade = dtmStudent.getValueAt(i, 3).toString();
-								cmbCourseGrade.setSelectedIndex(i);
-								cmbStudent.setSelectedIndex(i);
+								String idStudent = dtmStudentGrade.getValueAt(i, 2).toString();
+								String grade = dtmStudentGrade.getValueAt(i, 3).toString();
+								cmbCourseGrade.setSelectedItem(idCourse);
+								cmbStudent.setSelectedItem(idStudent);
 								txtGrade.setText(grade);
 							} catch (Exception e1) {
 								// TODO Auto-generated catch block
@@ -1051,12 +1079,154 @@ public class MainFrame extends JFrame {
 					}
 				});
 				// END EVENT STUDENT GRADE	
+				
+				// START EVENT COURSE INSTRUCTOR
+				// click table course instructor
+				tblCourseInstructor.addMouseListener(new MouseListener() {
+					@Override
+					public void mouseReleased(MouseEvent e) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void mousePressed(MouseEvent e) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void mouseExited(MouseEvent e) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void mouseEntered(MouseEvent e) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						int i = tblCourseInstructor.getSelectedRow();
+						if (i >= 0) {
+							try {
+								String idCourse = dtmCourseInstructor.getValueAt(i, 1).toString();
+								String idInstructor = dtmCourseInstructor.getValueAt(i, 2).toString();
+								cmbCourse.setSelectedItem(idCourse);
+								cmbInstructor.setSelectedItem(idInstructor);
+							} catch (Exception e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+						}
+					}
+				});
+				// add Course Instructor
+				btnAddCourseInstructor.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						int idCourse = cmbCourse.getSelectedIndex();
+						int idInstructor = cmbInstructor.getSelectedIndex();
+						CourseInstructor courseInstructor = new CourseInstructor(idCourse, idInstructor);
+						if (CourseInstructorBLL.gI().addCourseInstructor(courseInstructor)) {
+							LoadListInstructor();
+							JOptionPane.showMessageDialog(null, "Đã thêm thành công");
+						} else {
+							JOptionPane.showMessageDialog(null, "Đã có lỗi xảy ra khi thêm phân công");
+						}
+
+					}
+				});
+				// edit Course Instructor
+				btnEditCourseInstructor.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+
+						int i = tblCourseInstructor.getSelectedRow();
+						try {
+							if (i >= 0) {
+								int idCourse = Integer.parseInt(dtmCourseInstructor.getValueAt(i, 0).toString());
+								int idPerson = Integer.parseInt(dtmCourseInstructor.getValueAt(i, 1).toString());
+								CourseInstructor courseInstructor = new CourseInstructor(idCourse, idPerson);
+								if (CourseInstructorBLL.gI().editCourseInstructor(courseInstructor)) {
+									LoadListInstructor();
+									JOptionPane.showMessageDialog(null, "Đã sửa thành công");
+								} else {
+									JOptionPane.showMessageDialog(null, "Đã có lỗi xảy ra");
+								}
+							} else {
+								JOptionPane.showMessageDialog(null, "Bạn chưa chọn phân công cần sửa");
+							}
+						} catch (Exception e2) {
+							// TODO: handle exception
+							e2.printStackTrace();
+						}
+					}
+				});
+				// delete Course Instructor
+				btnDeleteCourseInstructor.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						int i = tblCourseInstructor.getSelectedRow();
+						try {
+							if (i >= 0) {
+								int idCourse = Integer.parseInt(dtmCourseInstructor.getValueAt(i, 0).toString());
+								int idPerson = Integer.parseInt(dtmCourseInstructor.getValueAt(i, 1).toString());
+								int dialogButton = JOptionPane.YES_NO_OPTION;
+								int dialogResult = JOptionPane.showConfirmDialog(null, "Bạn có muốn xoá không?", "Warning",
+										dialogButton);
+								if (dialogResult == JOptionPane.YES_OPTION) {
+									if (CourseInstructorBLL.gI().deleteCourseInstructor(idCourse, idPerson)) {
+										LoadListInstructor();
+										JOptionPane.showMessageDialog(null, "Đã xoá thành công");
+									} else {
+										JOptionPane.showMessageDialog(null, "Đã có lỗi xảy ra khi xoá phân công");
+									}
+								}
+
+							} else {
+								JOptionPane.showMessageDialog(null, "Bạn chưa chọn phân công cần xoá");
+							}
+						} catch (Exception e2) {
+							// TODO: handle exception
+							e2.printStackTrace();
+						}
+					}
+				});
+				// reload Course Instructor
+				btnReloadCourseInstructor.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						try {
+							LoadListInstructor();
+							JOptionPane.showMessageDialog(null, "Đã tải lại danh sách thành công");
+						} catch (Exception e2) {
+							e2.printStackTrace();
+							JOptionPane.showMessageDialog(null, "Có lỗi khi tải danh sách phân công");
+						}
+
+					}
+				});
+				// END EVENT COURSE INSTRUCTOR
+				
+								
 	}
 
 	public static ArrayList<DTO.Person> lecturesList;
 	public static ArrayList<DTO.Person> studentsList;
 	public static ArrayList<DTO.Department> departmentsList;
 	public static ArrayList<DTO.StudentGrade> studentGradeList;
+	public static ArrayList<DTO.CourseInstructor> courseInstructorList;
+	
+	public void LoadListInstructor() {
+		courseInstructorList = null;
+		courseInstructorList = BLL.CourseInstructorBLL.gI().readAllCourseInstructor();
+		dtmCourseInstructor.setRowCount(0);
+		for (CourseInstructor courseInstructor : courseInstructorList) {
+			Vector<Object> vec = new Vector<Object>();
+			vec.add(courseInstructor.getCourseID());
+			vec.add(courseInstructor.getPersonID());
+			dtmCourseInstructor.addRow(vec);
+		}
+	}
 	
 	public void LoadListGrade() {
 		studentGradeList = null;
@@ -1137,24 +1307,7 @@ public class MainFrame extends JFrame {
     	}
     }
 	
-	private JPanel panel_1;
-	private JTextField txtCourseName;
-	private JTextField txtUrl;
-	private JComboBox cmbTimeCourse;
-	private JTable tblCourse;
-	private JButton btnSreachStudent;
-	private JButton btnLectureSreach;
-	private JTextField txtLocation;
-	private JLabel lblNewLabel_5;
-	private JTable tblCourseInstructor;
-	private JPanel panel_5;
-	private JPanel panel_6;
-	private JTable tblStudentGrade;
-	private JLabel lblNewLabel_7;
-	private JLabel lblNewLabel_8;
-	private JComboBox cmbCourseGrade;
-	private JComboBox cmbStudent;
-	private JTextField txtGrade;
+	
 
 	
 
@@ -1163,6 +1316,7 @@ public class MainFrame extends JFrame {
 		LoadListStudents();
 		LoadListDepartments();
 		LoadListGrade();
+		LoadListInstructor();
 		LoadComboTime();
 	}
 }

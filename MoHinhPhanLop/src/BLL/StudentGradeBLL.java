@@ -17,6 +17,7 @@ public class StudentGradeBLL {
 		}
 		return gI;
 	}
+	
 	public static ArrayList<DTO.StudentGrade> readAllGrade() {
 		return new StudentGradeDAL().gI().readStudentGrades();
 	}
