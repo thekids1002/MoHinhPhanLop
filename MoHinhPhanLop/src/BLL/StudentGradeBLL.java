@@ -9,7 +9,7 @@ import DTO.StudentGrade;
 public class StudentGradeBLL {
 
 	public static ArrayList<DTO.StudentGrade> readAllGrade() {
-		return new StudentGradeDAL().readStudentGrades();
+		return new StudentGradeDAL().gI().readStudentGrades();
 	}
 
 	public static boolean addGrade(StudentGrade grade) {
@@ -25,7 +25,7 @@ public class StudentGradeBLL {
 			JOptionPane.showMessageDialog(null, "Tên học viên không được để trống");
 			return false;
 		}
-		return new StudentGradeDAL().addStudentGrade(grade);
+		return new StudentGradeDAL().gI().addStudentGrade(grade);
 	}
 
 	public static boolean editGrade(StudentGrade grade) {
@@ -41,6 +41,6 @@ public class StudentGradeBLL {
 			JOptionPane.showMessageDialog(null, "Tên học viên không được để trống");
 			return false;
 		}
-		return new StudentGradeDAL().editStudentGrade(grade);
+		return new StudentGradeDAL().gI().editStudentGrade(grade);
 	}
 }

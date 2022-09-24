@@ -52,7 +52,7 @@ public class MainFrame extends JFrame {
 	private JPanel CourseIntructorCard;
 	private JLabel lblCourseIntructor;
 	private JPanel GradeCard;
-	private JLabel label;
+	private JLabel lblStudentGrade;
 	private JPanel panel;
 	private JButton btnStudent;
 	private JButton btnLecture;
@@ -64,8 +64,6 @@ public class MainFrame extends JFrame {
 	private JLabel lblStudents;
 	private JPanel LectureCard;
 	private JLabel lblLecture;
-	private JScrollPane scrollPane;
-	private JTable table;
 	private JTextField txtStudentsFirstName;
 	private JTextField txtStudentLastName;
 	private JTable tblStudents;
@@ -466,25 +464,148 @@ public class MainFrame extends JFrame {
 		pnCards.add(CourseIntructorCard, "CourseIntructorCard");
 		CourseIntructorCard.setLayout(null);
 
-		lblCourseIntructor = new JLabel("lblCourseIntructor");
-		lblCourseIntructor.setBounds(440, 5, 82, 13);
+		lblCourseIntructor = new JLabel("Quản lý Phân công");
+		lblCourseIntructor.setForeground(Color.RED);
+		lblCourseIntructor.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblCourseIntructor.setBounds(377, 0, 326, 36);
 		CourseIntructorCard.add(lblCourseIntructor);
-
-		scrollPane = new JScrollPane();
-		scrollPane.setBounds(150, 254, 670, 358);
-		CourseIntructorCard.add(scrollPane);
+		
+		JPanel panel_3 = new JPanel();
+		panel_3.setBorder(new LineBorder(new Color(0, 0, 0)));
+		panel_3.setBackground(Color.WHITE);
+		panel_3.setBounds(25, 46, 920, 290);
+		CourseIntructorCard.add(panel_3);
+		panel_3.setLayout(null);
+		
+		JLabel lblNewLabel_6 = new JLabel("Mã giảng viên");
+		lblNewLabel_6.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblNewLabel_6.setBounds(294, 131, 140, 38);
+		panel_3.add(lblNewLabel_6);
+		
+		lblNewLabel_5 = new JLabel("Mã khóa học");
+		lblNewLabel_5.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblNewLabel_5.setBounds(294, 75, 131, 38);
+		panel_3.add(lblNewLabel_5);
+		
+		JComboBox cmbCourse = new JComboBox();
+		cmbCourse.setBounds(444, 75, 131, 35);
+		panel_3.add(cmbCourse);
+		
+		JComboBox cmbInstructor = new JComboBox();
+		cmbInstructor.setBounds(444, 135, 131, 35);
+		panel_3.add(cmbInstructor);
+		
+		JButton btnAddCourseInstructor = new JButton("Thêm");
+		btnAddCourseInstructor.setFont(new Font("SansSerif", Font.BOLD, 15));
+		btnAddCourseInstructor.setBounds(86, 217, 117, 42);
+		panel_3.add(btnAddCourseInstructor);
+		
+		JButton btnEditCourseInstructor = new JButton("Sửa");
+		btnEditCourseInstructor.setFont(new Font("SansSerif", Font.BOLD, 15));
+		btnEditCourseInstructor.setBounds(273, 217, 117, 42);
+		panel_3.add(btnEditCourseInstructor);
+		
+		JButton btnDeleteCourseInstructor = new JButton("Xoá");
+		btnDeleteCourseInstructor.setFont(new Font("SansSerif", Font.BOLD, 15));
+		btnDeleteCourseInstructor.setBounds(478, 217, 117, 42);
+		panel_3.add(btnDeleteCourseInstructor);
+		
+		JButton btnReloadCourseInstructor = new JButton("Tải Lại");
+		btnReloadCourseInstructor.setFont(new Font("SansSerif", Font.BOLD, 15));
+		btnReloadCourseInstructor.setBounds(680, 217, 117, 42);
+		panel_3.add(btnReloadCourseInstructor);
+		
+		JPanel panel_4 = new JPanel();
+		panel_4.setLayout(null);
+		panel_4.setBounds(25, 356, 920, 307);
+		CourseIntructorCard.add(panel_4);
+		
+		JScrollPane scrollPane_3_1 = new JScrollPane();
+		scrollPane_3_1.setBounds(6, 6, 908, 295);
+		panel_4.add(scrollPane_3_1);
+		
+		tblCourseInstructor = new MyTable();
+		scrollPane_3_1.setViewportView(tblCourseInstructor);
 
 		DefaultTableModel dtm = new DefaultTableModel();
 		dtm.addColumn("tets");
 		dtm.addColumn("adhhsahdah");
-		table = new MyTable(dtm);
-		scrollPane.setViewportView(table);
 
 		GradeCard = new JPanel();
 		pnCards.add(GradeCard, "GradeCard");
+		GradeCard.setLayout(null);
 
-		label = new JLabel("GradeCard");
-		GradeCard.add(label);
+		lblStudentGrade = new JLabel("Quản lý kết quả");
+		lblStudentGrade.setForeground(Color.RED);
+		lblStudentGrade.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblStudentGrade.setBounds(377, 0, 326, 36);
+		GradeCard.add(lblStudentGrade);
+		
+		panel_5 = new JPanel();
+		panel_5.setBackground(Color.WHITE);
+		panel_5.setBounds(25, 46, 920, 290);
+		GradeCard.add(panel_5);
+		panel_5.setLayout(null);
+		
+		lblNewLabel_7 = new JLabel("Mã học viên");
+		lblNewLabel_7.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblNewLabel_7.setBounds(294, 97, 140, 38);
+		panel_5.add(lblNewLabel_7);
+		
+		lblNewLabel_8 = new JLabel("Mã khóa học");
+		lblNewLabel_8.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblNewLabel_8.setBounds(294, 35, 131, 38);
+		panel_5.add(lblNewLabel_8);
+		
+		cmbCourseGrade = new JComboBox();
+		cmbCourseGrade.setBounds(453, 39, 131, 35);
+		panel_5.add(cmbCourseGrade);
+		
+		cmbStudent = new JComboBox();
+		cmbStudent.setBounds(454, 101, 131, 35);
+		panel_5.add(cmbStudent);
+		
+		JLabel lblNewLabel_5_1 = new JLabel("Điểm");
+		lblNewLabel_5_1.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblNewLabel_5_1.setBounds(294, 154, 110, 38);
+		panel_5.add(lblNewLabel_5_1);
+		
+		txtGrade = new JTextField();
+		txtGrade.setBounds(453, 155, 131, 35);
+		panel_5.add(txtGrade);
+		txtGrade.setColumns(10);
+		
+		JButton btnAddStudentGrade = new JButton("Thêm");
+		btnAddStudentGrade.setFont(new Font("SansSerif", Font.BOLD, 15));
+		btnAddStudentGrade.setBounds(86, 217, 117, 42);
+		panel_5.add(btnAddStudentGrade);
+		
+		JButton btnEditStudentGrade = new JButton("Sửa");
+		btnEditStudentGrade.setFont(new Font("SansSerif", Font.BOLD, 15));
+		btnEditStudentGrade.setBounds(273, 217, 117, 42);
+		panel_5.add(btnEditStudentGrade);
+		
+		JButton btnDeleteStudentGrade = new JButton("Xoá");
+		btnDeleteStudentGrade.setFont(new Font("SansSerif", Font.BOLD, 15));
+		btnDeleteStudentGrade.setBounds(478, 217, 117, 42);
+		panel_5.add(btnDeleteStudentGrade);
+		
+		btnReloadStudentGrade = new JButton("Tải Lại");
+		btnReloadStudentGrade.setFont(new Font("SansSerif", Font.BOLD, 15));
+		btnReloadStudentGrade.setBounds(680, 217, 117, 42);
+		panel_5.add(btnReloadStudentGrade);
+		
+		panel_6 = new JPanel();
+		panel_6.setBounds(25, 356, 920, 357);
+		GradeCard.add(panel_6);
+		panel_6.setLayout(null);
+		
+		JScrollPane scrollPane_4 = new JScrollPane();
+		scrollPane_4.setBounds(0, 0, 2, 2);
+		panel_6.add(scrollPane_4);
+		
+		tblStudentGrade = new MyTable();
+		scrollPane_4.setViewportView(tblStudentGrade);
 
 	}
 
@@ -860,6 +981,17 @@ public class MainFrame extends JFrame {
 	private JButton btnSreachStudent;
 	private JButton btnLectureSreach;
 	private JTextField txtLocation;
+	private JLabel lblNewLabel_5;
+	private JTable tblCourseInstructor;
+	private JPanel panel_5;
+	private JPanel panel_6;
+	private JTable tblStudentGrade;
+	private JLabel lblNewLabel_7;
+	private JLabel lblNewLabel_8;
+	private JComboBox cmbCourseGrade;
+	private JComboBox cmbStudent;
+	private JTextField txtGrade;
+	private JButton btnReloadStudentGrade;
 
 	
 

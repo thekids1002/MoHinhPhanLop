@@ -10,6 +10,14 @@ import java.util.Date;
 import DTO.StudentGrade;
 
 public class StudentGradeDAL {
+	public static StudentGradeDAL gI;
+	
+	public static StudentGradeDAL gI() {
+		if (gI == null) {
+			gI = new StudentGradeDAL();
+		}
+		return gI;
+	}
 	
 	public StudentGradeDAL() {
 		super();
