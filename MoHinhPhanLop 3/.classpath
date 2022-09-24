@@ -18,7 +18,5 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="jcalendar-1.4.jar"/>
-	<classpathentry kind="lib" path="C:/PhanLop/MoHinhPhanLop/MoHinhPhanLop/jcalendar-1.4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Admin/Downloads/Compressed/lib/mysql-connector-java-8.0.23.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

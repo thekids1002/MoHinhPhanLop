@@ -55,13 +55,15 @@ public class CourseInstructorDAL {
 	}
 	
 	//Hai thằng đều là khóa chính thì hơi khó sửa
-	public boolean editCourseInstructor(CourseInstructor c) {
+	public boolean editCourseInstructor(CourseInstructor c, CourseInstructor c2) {
 		try {
 			String sql = "UPDATE `courseinstructor` SET `CourseID`= ? ,`PersonID`= ? WHERE CourseID = ? AND PersonID = ?";
 			Connection conn = DBConnect.getConnection();
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setInt(1, c.getCourseID());
 			pstm.setInt(2, c.getPersonID());
+			pstm.setInt(3, c2.getCourseID());
+			pstm.setInt(4, c2.getPersonID());
 			int i = pstm.executeUpdate();
 			conn.close();
 			return i > 0 ;

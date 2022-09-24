@@ -4,17 +4,20 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 
 import DTO.Course;
+import DTO.OnlineCourse;
+import DTO.OnsiteCourse;
 
 public class CourseDAL {
-	
+
 	public CourseDAL() {
 		super();
 	}
-	
+
 	public ArrayList<Course> readCourses() {
 		try {
 			Connection conn = DBConnect.getConnection();
@@ -39,7 +42,63 @@ public class CourseDAL {
 		}
 		return null;
 	}
-	
+
+	public ArrayList<Course> readOnsiteCourse() {
+		try {
+			Connection conn = DBConnect.getConnection();
+			Statement stmt = conn.createStatement();
+			ArrayList<Course> listCourses = new ArrayList<>();
+			String query = "SELECT course.CourseID, course.Title, course.Credits, course.DepartmentID, onsitecourse.Location, onsitecourse.Days, onsitecourse.Time FROM `course` , onsitecourse WHERE course.CourseID = onsitecourse.CourseID";
+			ResultSet rs = stmt.executeQuery(query);
+			if (rs != null) {
+				int i = 1;
+				while (rs.next()) {
+					int idCourse = rs.getInt("CourseID");
+					String title = rs.getString("Title");
+					int credit = rs.getInt("Credits");
+					int department = rs.getInt("DepartmentID");
+					String location = rs.getString("Location");
+					String Days = rs.getString("Days");
+					Time time = rs.getTime("Time");
+					OnsiteCourse onsiteCourse = new OnsiteCourse(idCourse, location, Days, time);
+					Course course = new Course(idCourse, title, credit, department, onsiteCourse);
+					listCourses.add(course);
+				}
+			}
+			conn.close();
+			return listCourses;
+		} catch (Exception e) {
+		}
+		return null;
+	}
+
+	public ArrayList<Course> readOnlineCourse() {
+		try {
+			Connection conn = DBConnect.getConnection();
+			Statement stmt = conn.createStatement();
+			ArrayList<Course> listCourses = new ArrayList<>();
+			String query = "SELECT course.CourseID, course.Title, course.Credits, course.DepartmentID, onlinecourse.url FROM `course` , onlinecourse WHERE course.CourseID = onlinecourse.CourseID;";
+			ResultSet rs = stmt.executeQuery(query);
+			if (rs != null) {
+				int i = 1;
+				while (rs.next()) {
+					int idCourse = rs.getInt("CourseID");
+					String title = rs.getString("Title");
+					int credit = rs.getInt("Credits");
+					int department = rs.getInt("DepartmentID");
+					String url = rs.getString("url");
+					OnlineCourse onlineCourse = new OnlineCourse(idCourse, url);
+					Course course = new Course(idCourse, title, credit, department, onlineCourse);
+					listCourses.add(course);
+				}
+			}
+			conn.close();
+			return listCourses;
+		} catch (Exception e) {
+		}
+		return null;
+	}
+
 	public boolean addCourse(Course course) {
 		try {
 			String sql = "INSERT INTO `course`( `Title`, `Credits`, `DepartmentID`) VALUES (?,?,?)";
@@ -50,14 +109,13 @@ public class CourseDAL {
 			pstm.setInt(3, course.getDepartmentID());
 			int i = pstm.executeUpdate();
 			conn.close();
-			return i > 0 ;
+			return i > 0;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return false;
 	}
-	
-	
+
 	public boolean editCourse(Course c) {
 		try {
 			String sql = "UPDATE `course` SET `Title`= ? ,`Credits`= ? ,`DepartmentID`= ? WHERE CourseID = ? ";
@@ -69,13 +127,13 @@ public class CourseDAL {
 			pstm.setInt(4, c.getCourseID());
 			int i = pstm.executeUpdate();
 			conn.close();
-			return i > 0 ;
+			return i > 0;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return false;
 	}
-	
+
 	public boolean deleteCourse(int idCourse) {
 		try {
 			String sql = "DELETE FROM `course` WHERE CourseID = ? ";
@@ -84,13 +142,13 @@ public class CourseDAL {
 			pstm.setInt(1, idCourse);
 			int i = pstm.executeUpdate();
 			conn.close();
-			return i > 0 ;
+			return i > 0;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return false;
 	}
-	
+
 //	public static void main(String[] args) {
 //		Course course = new Course(1045, "Calculus", 3, 7);
 //		CourseDAL c1 = new CourseDAL();
@@ -102,5 +160,5 @@ public class CourseDAL {
 //			System.out.println(c.toString());
 //		}
 //	}
-	
+
 }

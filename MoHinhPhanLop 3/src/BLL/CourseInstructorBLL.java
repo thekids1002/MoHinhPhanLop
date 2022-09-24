@@ -21,7 +21,7 @@ public class CourseInstructorBLL {
 	}
 	
 	public static ArrayList<DTO.CourseInstructor> readAllCourseInstructor() {
-		return new CourseInstructorDAL().gI().readCourseInstructors();
+		return new CourseInstructorDAL().readCourseInstructors();
 	}
 	
 	public static boolean addCourseInstructor(CourseInstructor instructor) {
@@ -33,10 +33,10 @@ public class CourseInstructorBLL {
 			JOptionPane.showMessageDialog(null, "Mã giảng viên không được để trống");
 			return false;
 		}
-		return new CourseInstructorDAL().gI().addCourseInstructor(instructor);
+		return new CourseInstructorDAL().addCourseInstructor(instructor);
 	}
 
-	public static boolean editCourseInstructor(CourseInstructor instructor) {
+	public static boolean editCourseInstructor(CourseInstructor instructor, CourseInstructor instructor2) {
 		if (instructor.getCourseID() < 0) {
 			JOptionPane.showMessageDialog(null, "Mã khóa học không được để trống ");
 			return false;
@@ -45,14 +45,14 @@ public class CourseInstructorBLL {
 			JOptionPane.showMessageDialog(null, "Mã giảng viên không được để trống");
 			return false;
 		}
-		return new CourseInstructorDAL().gI().editCourseInstructor(instructor);
+		return new CourseInstructorDAL().editCourseInstructor(instructor,instructor2);
 	}
 	
 	public boolean deleteCourseInstructor(int idCourse, int idPerson) {
 		if (idCourse < 0 || idPerson < 0) {
 			return false;
 		}
-		return new CourseInstructorDAL().gI().deleteCourseInstructor(idCourse, idPerson);
+		return new CourseInstructorDAL().deleteCourseInstructor(idCourse, idPerson);
 	}
 
 }

@@ -22,8 +22,7 @@ public class Person {
 
 	@Override
 	public String toString() {
-		return "Person [ID=" + ID + ", Lastname=" + Lastname + ", Firstname=" + Firstname + ", HireDate=" + HireDate
-				+ ", EnrollmentDate=" + EnrollmentDate + "]";
+		return ID + " - " + Firstname + " " + Lastname;
 	}
 
 	public Person() {

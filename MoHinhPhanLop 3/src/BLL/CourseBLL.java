@@ -12,6 +12,14 @@ public class CourseBLL {
 		return new CourseDAL().readCourses();
 	}
 
+	public static ArrayList<DTO.Course> readOnsiteCourse() {
+		return new CourseDAL().readOnsiteCourse();
+	}
+
+	public static ArrayList<DTO.Course> readOnlineCourse() {
+		return new CourseDAL().readOnlineCourse();
+	}
+
 	public static boolean addCourse(Course course) {
 		if (course.getTitle().isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Tên khoá học không được để trống");
