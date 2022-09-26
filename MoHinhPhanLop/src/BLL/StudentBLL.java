@@ -22,6 +22,14 @@ public class StudentBLL {
 		return StudentDAL.gI().readStudents();
 	}
 
+	public ArrayList<Person> searchByID(int ID) {
+		return StudentDAL.gI().searchByID(ID);
+	}
+
+	public ArrayList<Person> searchByName(String name) {
+		return StudentDAL.gI().searchByName(name);
+	}
+
 	public boolean editStudents(Person person) {
 		if (person.getFirstname().isEmpty() || person.getLastname().isBlank()) {
 			JOptionPane.showMessageDialog(null, "Bạn không được để trống tên");
@@ -60,4 +68,5 @@ public class StudentBLL {
 		}
 		return StudentDAL.gI().deleteStudent(id);
 	}
+
 }

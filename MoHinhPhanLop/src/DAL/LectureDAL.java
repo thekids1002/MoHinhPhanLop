@@ -23,6 +23,60 @@ public class LectureDAL {
 		super();
 	}
 
+	public ArrayList<Person> searchByID(int ID) {
+		try {
+			Connection conn = DBConnect.getConnection();
+			Statement stmt = conn.createStatement();
+			ArrayList<Person> listStudents = new ArrayList<>();
+			String query = "SELECT * FROM person WHERE HireDate IS NOT NULL AND PersonID =?";
+			PreparedStatement pstm = conn.prepareStatement(query);
+			pstm.setInt(1, ID);
+			ResultSet rs = pstm.executeQuery();
+			if (rs != null) {
+				while (rs.next()) {
+					int id = rs.getInt("PersonID");
+					String lastName = rs.getString("Lastname");
+					String Firstname = rs.getString("Firstname");
+					Date HireDate = rs.getDate("HireDate");
+					Date EnrollmentDate = rs.getDate("EnrollmentDate");
+					Person person = new Person(id, lastName, Firstname, HireDate, EnrollmentDate);
+					listStudents.add(person);
+				}
+			}
+			conn.close();
+			return listStudents;
+		} catch (Exception e) {
+		}
+		return null;
+	}
+
+	public ArrayList<Person> searchByName(String name) {
+		try {
+			Connection conn = DBConnect.getConnection();
+			Statement stmt = conn.createStatement();
+			ArrayList<Person> listStudents = new ArrayList<>();
+			String query = "SELECT * FROM person WHERE HireDate IS NOT NULL AND Firstname like ?";
+			PreparedStatement pstm = conn.prepareStatement(query);
+			pstm.setString(1, "%" + name + "%");
+			ResultSet rs = pstm.executeQuery();
+			if (rs != null) {
+				while (rs.next()) {
+					int id = rs.getInt("PersonID");
+					String lastName = rs.getString("Lastname");
+					String Firstname = rs.getString("Firstname");
+					Date HireDate = rs.getDate("HireDate");
+					Date EnrollmentDate = rs.getDate("EnrollmentDate");
+					Person person = new Person(id, lastName, Firstname, HireDate, EnrollmentDate);
+					listStudents.add(person);
+				}
+			}
+			conn.close();
+			return listStudents;
+		} catch (Exception e) {
+		}
+		return null;
+	}
+
 	public ArrayList<Person> readLecture() {
 		try {
 			Connection conn = DBConnect.getConnection();
@@ -57,7 +111,7 @@ public class LectureDAL {
 			pstm.setString(1, s.getLastname());
 			pstm.setString(2, s.getFirstname());
 			pstm.setDate(3, new java.sql.Date(s.getHireDate().getTime()));
-			//pstm.setDate(4, new java.sql.Date(s.getEnrollmentDate().getTime()));
+			// pstm.setDate(4, new java.sql.Date(s.getEnrollmentDate().getTime()));
 			pstm.setDate(4, null);
 			int i = pstm.executeUpdate();
 			conn.close();
@@ -76,7 +130,7 @@ public class LectureDAL {
 			pstm.setString(1, s.getLastname());
 			pstm.setString(2, s.getFirstname());
 			pstm.setDate(3, new java.sql.Date(s.getHireDate().getTime()));
-	//		pstm.setDate(4, new java.sql.Date(s.getEnrollmentDate().getTime()));
+			// pstm.setDate(4, new java.sql.Date(s.getEnrollmentDate().getTime()));
 			pstm.setDate(4, null);
 			pstm.setInt(5, s.getID());
 			int i = pstm.executeUpdate();

@@ -51,84 +51,93 @@ import javax.swing.JTextField;
 import java.awt.SystemColor;
 import javax.swing.JComboBox;
 import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
+import javax.swing.UIManager;
+import javax.swing.ImageIcon;
 
 public class MainFrame extends JFrame {
-
-	private JPanel contentPane;
+	public  static MainFrame gI = null;
+	public  static MainFrame gI() {
+		if(gI == null) {
+			gI = new MainFrame();
+		}
+		return gI;
+	}
+	public JPanel contentPane;
 	CardLayout cardLayout;
-	private JPanel CourseCard;
-	private JLabel lblCourseCard;
-	private JPanel CourseIntructorCard;
-	private JLabel lblCourseIntructor;
-	private JPanel GradeCard;
-	private JLabel lblStudentGrade;
-	private JPanel panel;
-	private JButton btnStudent;
-	private JButton btnLecture;
-	private JButton btnCourse;
-	private JButton btnCourseIntructor;
-	private JButton btnGrade;
-	private JPanel pnCards;
-	private JPanel StudentCard;
-	private JLabel lblStudents;
-	private JPanel LectureCard;
-	private JLabel lblLecture;
-	private JTextField txtStudentsFirstName;
-	private JTextField txtStudentLastName;
-	private JTable tblStudents;
-	private JLabel lblNewLabel_1;
-	private JLabel lblNewLabel_2;
-	private JLabel lblNewLabel_3;
-	private JTextField txtLectureFirstName;
-	private JTextField txtLectureLastName;
-	private JTable tblLectures;
-	private DefaultTableModel dtmLecture;
-	private JButton btnLectureEdit;
-	private JButton btnLectureAdd;
-	private JDateChooser dateLectures;
-	private JButton btnLectureDelete;
-	private JButton btnLectureReload;
-	private JButton btnAddStudent;
-	private JButton btnEditStudent;
-	private DefaultTableModel dtmStudent;
-	private JDateChooser dateEnrollment;
-	private JButton btnDeleteStudent;
-	private JButton btnReloadStudents;
-	private JButton btnAddCourse;
-	private JButton btnEditCourse;
-	private JButton btnDeleteCourse;
-	private JButton btnReloadCourse;
-	private JComboBox cmbDepartment;
-	private DefaultTableModel dtmStudentGrade;
-	private JButton btnAddStudentGrade;
-	private JButton btnEditStudentGrade;
-	private JButton btnDeleteStudentGrade;
-	private JButton btnReloadStudentGrade;
-	private DefaultTableModel dtmCourseInstructor;
-	private JButton btnAddCourseInstructor;
-	private JButton btnEditCourseInstructor;
-	private JButton btnDeleteCourseInstructor;
-	private JButton btnReloadCourseInstructor;
-	private JPanel panel_1;
-	private JTextField txtCourseName;
-	private JTextField txtUrl;
-	private JComboBox cmbTimeCourse;
-	private JTable tblCourseOnsite;
-	private JButton btnSreachStudent;
-	private JButton btnLectureSreach;
-	private JTextField txtLocation;
-	private JLabel lblNewLabel_5;
-	private JTable tblCourseInstructor;
-	private JPanel panel_5;
-	private JPanel panel_6;
-	private JTable tblStudentGrade;
-	private JLabel lblNewLabel_7;
-	private JLabel lblNewLabel_8;
-	private JComboBox cmbCourseGrade;
-	private JComboBox cmbStudent;
-	private JTextField txtGrade;
-	private JComboBox cmbLectureIntructor;
-	private JComboBox cmbCourseIntructor;
+	public JPanel CourseCard;
+	public JLabel lblCourseCard;
+	public JPanel CourseIntructorCard;
+	public JLabel lblCourseIntructor;
+	public JPanel GradeCard;
+	public JLabel lblStudentGrade;
+	public JPanel panel;
+	public JButton btnStudent;
+	public JButton btnLecture;
+	public JButton btnCourse;
+	public JButton btnCourseIntructor;
+	public JButton btnGrade;
+	public JPanel pnCards;
+	public JPanel StudentCard;
+	public JLabel lblStudents;
+	public JPanel LectureCard;
+	public JLabel lblLecture;
+	public JTextField txtStudentsFirstName;
+	public JTextField txtStudentLastName;
+	public JTable tblStudents;
+	public JLabel lblNewLabel_1;
+	public JLabel lblNewLabel_2;
+	public JLabel lblNewLabel_3;
+	public JTextField txtLectureFirstName;
+	public JTextField txtLectureLastName;
+	public JTable tblLectures;
+	public static DefaultTableModel dtmLecture;
+	public JButton btnLectureEdit;
+	public JButton btnLectureAdd;
+	public JDateChooser dateLectures;
+	public JButton btnLectureDelete;
+	public JButton btnLectureReload;
+	public JButton btnAddStudent;
+	public JButton btnEditStudent;
+	public static DefaultTableModel dtmStudent;
+	public JDateChooser dateEnrollment;
+	public JButton btnDeleteStudent;
+	public JButton btnReloadStudents;
+	public JButton btnAddCourse;
+	public JButton btnEditCourse;
+	public JButton btnDeleteCourse;
+	public JButton btnReloadCourse;
+	public JComboBox cmbDepartment;
+	public static DefaultTableModel dtmStudentGrade;
+	public JButton btnAddStudentGrade;
+	public JButton btnEditStudentGrade;
+	public JButton btnDeleteStudentGrade;
+	public JButton btnReloadStudentGrade;
+	public static DefaultTableModel dtmCourseInstructor;
+	public JButton btnAddCourseInstructor;
+	public JButton btnEditCourseInstructor;
+	public JButton btnDeleteCourseInstructor;
+	public JButton btnReloadCourseInstructor;
+	public JPanel panel_1;
+	public JTextField txtCourseName;
+	public JTextField txtUrl;
+	public JComboBox cmbTimeCourse;
+	public JTable tblCourseOnsite;
+	public JButton btnSreachStudent;
+	public JButton btnLectureSreach;
+	public JTextField txtLocation;
+	public JLabel lblNewLabel_5;
+	public JTable tblCourseInstructor;
+	public JPanel panel_5;
+	public JPanel panel_6;
+	public JTable tblStudentGrade;
+	public JLabel lblNewLabel_7;
+	public JLabel lblNewLabel_8;
+	public JComboBox cmbCourseGrade;
+	public JComboBox cmbStudent;
+	public JTextField txtGrade;
+	public JComboBox cmbLectureIntructor;
+	public JComboBox cmbCourseIntructor;
 	protected Person lectureSelected;
 	protected Course courseSelected;
 	protected Person lectureSelectedinTalbe;
@@ -137,8 +146,8 @@ public class MainFrame extends JFrame {
 	protected Course coursegradeSelectedinTable;
 	protected Person studentGradeSelected;
 	protected Course courseGradeSelected;
-	private DefaultTableModel dtmcourseOnline;
-	private DefaultTableModel dtmcourseSite;
+	public static DefaultTableModel dtmcourseOnline;
+	public static DefaultTableModel dtmcourseSite;
 
 	/**
 	 * Launch the application.
@@ -192,7 +201,7 @@ public class MainFrame extends JFrame {
 
 	}
 
-	private void addControl() {
+	public void addControl() {
 		panel = new JPanel();
 		panel.setBackground(SystemColor.scrollbar);
 		panel.setBounds(0, 0, 291, 683);
@@ -200,26 +209,31 @@ public class MainFrame extends JFrame {
 		panel.setLayout(null);
 
 		btnStudent = new JButton("Quản Lý Sinh Viên");
+		btnStudent.setFont(new Font("Tahoma", Font.BOLD, 15));
 
 		btnStudent.setBounds(35, 59, 237, 49);
 		panel.add(btnStudent);
 
 		btnLecture = new JButton("Quản Lý Giáo Viên");
+		btnLecture.setFont(new Font("Tahoma", Font.BOLD, 15));
 
 		btnLecture.setBounds(35, 134, 237, 49);
 		panel.add(btnLecture);
 
 		btnCourse = new JButton("Quản Lý Khoá Học");
+		btnCourse.setFont(new Font("Tahoma", Font.BOLD, 15));
 
 		btnCourse.setBounds(35, 214, 237, 49);
 		panel.add(btnCourse);
 
 		btnCourseIntructor = new JButton("Quản Lý Phân Công");
+		btnCourseIntructor.setFont(new Font("Tahoma", Font.BOLD, 15));
 
 		btnCourseIntructor.setBounds(35, 290, 237, 49);
 		panel.add(btnCourseIntructor);
 
 		btnGrade = new JButton("Quản Lý Kết Quả");
+		btnGrade.setFont(new Font("Tahoma", Font.BOLD, 15));
 
 		btnGrade.setBounds(35, 366, 237, 49);
 		panel.add(btnGrade);
@@ -269,7 +283,7 @@ public class MainFrame extends JFrame {
 		StudentCard.add(txtStudentLastName);
 
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(88, 358, 769, 305);
+		scrollPane_1.setBounds(88, 345, 769, 305);
 		StudentCard.add(scrollPane_1);
 
 		dtmStudent = new DefaultTableModel();
@@ -282,34 +296,48 @@ public class MainFrame extends JFrame {
 		scrollPane_1.setViewportView(tblStudents);
 
 		btnAddStudent = new JButton("Thêm");
+		btnAddStudent.setIcon(new ImageIcon("img\\Add.png"));
 		btnAddStudent.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnAddStudent.setBounds(88, 267, 111, 38);
 		StudentCard.add(btnAddStudent);
 
 		btnEditStudent = new JButton("Sửa");
+		btnEditStudent.setIcon(new ImageIcon("img\\Edit.png"));
 		btnEditStudent.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnEditStudent.setBounds(249, 267, 111, 38);
 		StudentCard.add(btnEditStudent);
 
 		btnDeleteStudent = new JButton("Xoá");
+		btnDeleteStudent.setIcon(new ImageIcon("img\\Delete.png"));
 		btnDeleteStudent.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnDeleteStudent.setBounds(414, 267, 111, 38);
 		StudentCard.add(btnDeleteStudent);
 
 		btnReloadStudents = new JButton("Tải Lại");
+		btnReloadStudents.setIcon(new ImageIcon("img\\update.png"));
 		btnReloadStudents.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnReloadStudents.setBounds(587, 267, 111, 38);
 		StudentCard.add(btnReloadStudents);
 
 		btnSreachStudent = new JButton("Tìm Kiếm");
+		btnSreachStudent.setIcon(new ImageIcon("img\\Search.png"));
 		btnSreachStudent.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, "Chức năng đang được cập nhật");
+				dlgSearchStudent frame = new dlgSearchStudent();
+				
+				frame.setLocationRelativeTo(null);
+				frame.setVisible(true);
 			}
 		});
 		btnSreachStudent.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnSreachStudent.setBounds(745, 267, 111, 38);
 		StudentCard.add(btnSreachStudent);
+		
+		panel_8 = new JPanel();
+		panel_8.setBackground(UIManager.getColor("Button.highlight"));
+		panel_8.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, Color.RED));
+		panel_8.setBounds(48, 49, 860, 286);
+		StudentCard.add(panel_8);
 
 		LectureCard = new JPanel();
 		pnCards.add(LectureCard, "LectureCard");
@@ -351,7 +379,7 @@ public class MainFrame extends JFrame {
 		LectureCard.add(dateLectures);
 
 		JScrollPane scrollPane_2 = new JScrollPane();
-		scrollPane_2.setBounds(94, 334, 769, 305);
+		scrollPane_2.setBounds(94, 348, 769, 305);
 		LectureCard.add(scrollPane_2);
 		dtmLecture = new DefaultTableModel();
 		dtmLecture.addColumn("Mã Giáo Viên");
@@ -362,36 +390,47 @@ public class MainFrame extends JFrame {
 		scrollPane_2.setViewportView(tblLectures);
 
 		btnLectureAdd = new JButton("Thêm");
+		btnLectureAdd.setIcon(new ImageIcon("img\\Add.png"));
 
 		btnLectureAdd.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnLectureAdd.setBounds(94, 268, 111, 38);
 		LectureCard.add(btnLectureAdd);
 
 		btnLectureEdit = new JButton("Sửa");
+		btnLectureEdit.setIcon(new ImageIcon("img\\Edit.png"));
 		btnLectureEdit.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnLectureEdit.setBounds(258, 268, 111, 38);
 		LectureCard.add(btnLectureEdit);
 
 		btnLectureDelete = new JButton("Xoá");
+		btnLectureDelete.setIcon(new ImageIcon("img\\Delete.png"));
 
 		btnLectureDelete.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnLectureDelete.setBounds(421, 268, 111, 38);
 		LectureCard.add(btnLectureDelete);
 		btnLectureReload = new JButton("Tải Lại");
+		btnLectureReload.setIcon(new ImageIcon("img\\update.png"));
 
 		btnLectureReload.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnLectureReload.setBounds(590, 268, 111, 38);
 		LectureCard.add(btnLectureReload);
 
 		btnLectureSreach = new JButton("Tìm Kiếm");
+		btnLectureSreach.setIcon(new ImageIcon("img\\Search.png"));
 		btnLectureSreach.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, "Chức năng đang được cập nhật");
+				new dlgSearchLecture().setVisible(true);
 			}
 		});
 		btnLectureSreach.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnLectureSreach.setBounds(752, 268, 111, 38);
 		LectureCard.add(btnLectureSreach);
+		
+		panel_9 = new JPanel();
+		panel_9.setBackground(UIManager.getColor("Button.highlight"));
+		panel_9.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, Color.RED));
+		panel_9.setBounds(48, 49, 860, 286);
+		LectureCard.add(panel_9);
 
 		/* END LECTURE CARD */
 
@@ -407,11 +446,12 @@ public class MainFrame extends JFrame {
 		lblCourseCard.setFont(new Font("Tahoma", Font.BOLD, 20));
 		lblCourseCard.setBounds(377, 0, 326, 36);
 		CourseCard.add(lblCourseCard);
-
+		
 		panel_1 = new JPanel();
-		panel_1.setBorder(new LineBorder(new Color(153, 255, 255), 2));
-		panel_1.setBackground(new Color(255, 255, 255));
-		panel_1.setBounds(25, 46, 920, 290);
+		
+		panel_1.setBackground(UIManager.getColor("Button.highlight"));
+		panel_1.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, Color.RED));
+		panel_1.setBounds(48, 49, 860, 286);
 		CourseCard.add(panel_1);
 		panel_1.setLayout(null);
 
@@ -464,6 +504,7 @@ public class MainFrame extends JFrame {
 		panel_1.add(cmbTimeCourse);
 
 		btnAddCourse = new JButton("Thêm");
+		btnAddCourse.setIcon(new ImageIcon("img\\Add.png"));
 		btnAddCourse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String url = txtUrl.getText();
@@ -503,6 +544,7 @@ public class MainFrame extends JFrame {
 		panel_1.add(btnAddCourse);
 
 		btnEditCourse = new JButton("Sửa");
+		btnEditCourse.setIcon(new ImageIcon("img\\Edit.png"));
 		btnEditCourse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int i = tblCourseOnsite.getSelectedRow();
@@ -580,6 +622,7 @@ public class MainFrame extends JFrame {
 		panel_1.add(btnEditCourse);
 
 		btnDeleteCourse = new JButton("Xoá");
+		btnDeleteCourse.setIcon(new ImageIcon("img\\Delete.png"));
 		btnDeleteCourse.setFont(new Font("SansSerif", Font.BOLD, 15));
 		btnDeleteCourse.setBounds(478, 217, 117, 42);
 		btnDeleteCourse.addActionListener(new ActionListener() {
@@ -623,6 +666,7 @@ public class MainFrame extends JFrame {
 		panel_1.add(btnDeleteCourse);
 
 		btnReloadCourse = new JButton("Tải Lại");
+		btnReloadCourse.setIcon(new ImageIcon("img\\update.png"));
 		btnReloadCourse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JOptionPane.showMessageDialog(null,"Đã tải lại danh sách khoá học thành công");
@@ -645,12 +689,13 @@ public class MainFrame extends JFrame {
 		panel_1.add(txtdateCourse);
 
 		JPanel panel_2 = new JPanel();
-		panel_2.setBounds(25, 356, 515, 307);
+		panel_2.setBorder(new TitledBorder(null, "Kho\u00E1 H\u1ECDc Onsite", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_2.setBounds(25, 341, 525, 322);
 		CourseCard.add(panel_2);
 		panel_2.setLayout(null);
 
 		JScrollPane scrollPane_3 = new JScrollPane();
-		scrollPane_3.setBounds(6, 6, 501, 295);
+		scrollPane_3.setBounds(10, 27, 501, 285);
 		panel_2.add(scrollPane_3);
 
 		dtmcourseSite = new DefaultTableModel();
@@ -667,12 +712,13 @@ public class MainFrame extends JFrame {
 		scrollPane_3.setViewportView(tblCourseOnsite);
 
 		JPanel panel_7 = new JPanel();
-		panel_7.setBounds(550, 356, 395, 307);
+		panel_7.setBorder(new TitledBorder(null, "Kho\u00E1 H\u1ECDc Online", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_7.setBounds(550, 345, 395, 318);
 		CourseCard.add(panel_7);
 		panel_7.setLayout(null);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 10, 375, 287);
+		scrollPane.setBounds(10, 25, 375, 283);
 		panel_7.add(scrollPane);
 
 		dtmcourseOnline = new DefaultTableModel();
@@ -696,24 +742,25 @@ public class MainFrame extends JFrame {
 		CourseIntructorCard.add(lblCourseIntructor);
 
 		JPanel panel_3 = new JPanel();
-		panel_3.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel_3.setBackground(Color.WHITE);
-		panel_3.setBounds(25, 46, 920, 290);
+		panel_3.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, Color.RED));
+		panel_3.setBackground(UIManager.getColor("Button.highlight"));
+		panel_3.setBounds(48, 49, 860, 286);
+		
 		CourseIntructorCard.add(panel_3);
 		panel_3.setLayout(null);
 
 		JLabel lblNewLabel_6 = new JLabel("Mã giảng viên");
 		lblNewLabel_6.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblNewLabel_6.setBounds(294, 131, 140, 38);
+		lblNewLabel_6.setBounds(273, 116, 140, 38);
 		panel_3.add(lblNewLabel_6);
 
 		lblNewLabel_5 = new JLabel("Mã khóa học");
 		lblNewLabel_5.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblNewLabel_5.setBounds(294, 75, 131, 38);
+		lblNewLabel_5.setBounds(273, 60, 131, 38);
 		panel_3.add(lblNewLabel_5);
 
 		cmbCourseIntructor = new JComboBox();
-		cmbCourseIntructor.setBounds(444, 75, 131, 35);
+		cmbCourseIntructor.setBounds(423, 60, 164, 35);
 		cmbCourseIntructor.addActionListener(new ActionListener() {
 
 			@Override
@@ -728,7 +775,7 @@ public class MainFrame extends JFrame {
 		panel_3.add(cmbCourseIntructor);
 
 		cmbLectureIntructor = new JComboBox();
-		cmbLectureIntructor.setBounds(444, 135, 131, 35);
+		cmbLectureIntructor.setBounds(423, 120, 164, 35);
 		cmbLectureIntructor.addActionListener(new ActionListener() {
 
 			@Override
@@ -743,32 +790,37 @@ public class MainFrame extends JFrame {
 		panel_3.add(cmbLectureIntructor);
 
 		btnAddCourseInstructor = new JButton("Thêm");
+		btnAddCourseInstructor.setIcon(new ImageIcon("img\\Add.png"));
 		btnAddCourseInstructor.setFont(new Font("SansSerif", Font.BOLD, 15));
 		btnAddCourseInstructor.setBounds(86, 217, 117, 42);
 		panel_3.add(btnAddCourseInstructor);
 
 		btnEditCourseInstructor = new JButton("Sửa");
+		btnEditCourseInstructor.setIcon(new ImageIcon("img\\Edit.png"));
 		btnEditCourseInstructor.setFont(new Font("SansSerif", Font.BOLD, 15));
 		btnEditCourseInstructor.setBounds(273, 217, 117, 42);
 		panel_3.add(btnEditCourseInstructor);
 
 		btnDeleteCourseInstructor = new JButton("Xoá");
+		btnDeleteCourseInstructor.setIcon(new ImageIcon("img\\Delete.png"));
 		btnDeleteCourseInstructor.setFont(new Font("SansSerif", Font.BOLD, 15));
 		btnDeleteCourseInstructor.setBounds(478, 217, 117, 42);
 		panel_3.add(btnDeleteCourseInstructor);
 
 		btnReloadCourseInstructor = new JButton("Tải Lại");
+		btnReloadCourseInstructor.setIcon(new ImageIcon("img\\update.png"));
 		btnReloadCourseInstructor.setFont(new Font("SansSerif", Font.BOLD, 15));
 		btnReloadCourseInstructor.setBounds(680, 217, 117, 42);
 		panel_3.add(btnReloadCourseInstructor);
 
 		JPanel panel_4 = new JPanel();
+		panel_4.setBorder(new TitledBorder(null, "Qu\u1EA3n L\u00FD Ph\u00E2n C\u00F4ng", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel_4.setLayout(null);
-		panel_4.setBounds(25, 356, 920, 307);
+		panel_4.setBounds(25, 336, 920, 327);
 		CourseIntructorCard.add(panel_4);
 
 		JScrollPane scrollPane_3_1 = new JScrollPane();
-		scrollPane_3_1.setBounds(6, 6, 908, 295);
+		scrollPane_3_1.setBounds(10, 22, 908, 295);
 		panel_4.add(scrollPane_3_1);
 
 		dtmCourseInstructor = new DefaultTableModel();
@@ -791,23 +843,25 @@ public class MainFrame extends JFrame {
 		GradeCard.add(lblStudentGrade);
 
 		panel_5 = new JPanel();
-		panel_5.setBackground(Color.WHITE);
-		panel_5.setBounds(25, 46, 920, 290);
+		panel_5.setBackground(UIManager.getColor("Button.highlight"));
+		panel_5.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, Color.RED));
+		
+		panel_5.setBounds(48, 49, 860, 286);
 		GradeCard.add(panel_5);
 		panel_5.setLayout(null);
 
 		lblNewLabel_7 = new JLabel("Mã học viên");
 		lblNewLabel_7.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblNewLabel_7.setBounds(294, 97, 140, 38);
+		lblNewLabel_7.setBounds(267, 98, 140, 38);
 		panel_5.add(lblNewLabel_7);
 
 		lblNewLabel_8 = new JLabel("Mã khóa học");
 		lblNewLabel_8.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblNewLabel_8.setBounds(294, 35, 131, 38);
+		lblNewLabel_8.setBounds(267, 36, 131, 38);
 		panel_5.add(lblNewLabel_8);
 
 		cmbCourseGrade = new JComboBox();
-		cmbCourseGrade.setBounds(453, 39, 131, 35);
+		cmbCourseGrade.setBounds(426, 40, 169, 35);
 		cmbCourseGrade.addActionListener(new ActionListener() {
 
 			@Override
@@ -822,7 +876,7 @@ public class MainFrame extends JFrame {
 		panel_5.add(cmbCourseGrade);
 
 		cmbStudent = new JComboBox();
-		cmbStudent.setBounds(454, 101, 131, 35);
+		cmbStudent.setBounds(427, 102, 168, 35);
 		cmbStudent.addActionListener(new ActionListener() {
 
 			@Override
@@ -838,30 +892,34 @@ public class MainFrame extends JFrame {
 
 		JLabel lblNewLabel_5_1 = new JLabel("Điểm");
 		lblNewLabel_5_1.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblNewLabel_5_1.setBounds(294, 154, 110, 38);
+		lblNewLabel_5_1.setBounds(267, 155, 110, 38);
 		panel_5.add(lblNewLabel_5_1);
 
 		txtGrade = new JTextField();
-		txtGrade.setBounds(453, 155, 131, 35);
+		txtGrade.setBounds(426, 156, 169, 35);
 		panel_5.add(txtGrade);
 		txtGrade.setColumns(10);
 
 		btnAddStudentGrade = new JButton("Thêm");
+		btnAddStudentGrade.setIcon(new ImageIcon("img\\Add.png"));
 		btnAddStudentGrade.setFont(new Font("SansSerif", Font.BOLD, 15));
 		btnAddStudentGrade.setBounds(86, 217, 117, 42);
 		panel_5.add(btnAddStudentGrade);
 
 		btnEditStudentGrade = new JButton("Sửa");
+		btnEditStudentGrade.setIcon(new ImageIcon("img\\Edit.png"));
 		btnEditStudentGrade.setFont(new Font("SansSerif", Font.BOLD, 15));
 		btnEditStudentGrade.setBounds(273, 217, 117, 42);
 		panel_5.add(btnEditStudentGrade);
 
 		btnDeleteStudentGrade = new JButton("Xoá");
+		btnDeleteStudentGrade.setIcon(new ImageIcon("img\\Delete.png"));
 		btnDeleteStudentGrade.setFont(new Font("SansSerif", Font.BOLD, 15));
 		btnDeleteStudentGrade.setBounds(478, 217, 117, 42);
 		panel_5.add(btnDeleteStudentGrade);
 
 		btnReloadStudentGrade = new JButton("Tải Lại");
+		btnReloadStudentGrade.setIcon(new ImageIcon("img\\update.png"));
 		btnReloadStudentGrade.setFont(new Font("SansSerif", Font.BOLD, 15));
 		btnReloadStudentGrade.setBounds(680, 217, 117, 42);
 		panel_5.add(btnReloadStudentGrade);
@@ -887,7 +945,7 @@ public class MainFrame extends JFrame {
 
 	}
 
-	private void addEvent() {
+	public void addEvent() {
 
 		btnStudent.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -1620,8 +1678,10 @@ public class MainFrame extends JFrame {
 	public static ArrayList<DTO.Course> coursesList;
 	public static ArrayList<DTO.Course> coursesOnsiteList;
 	public static ArrayList<DTO.Course> coursesOnLineList;
-	private JTable tblCourseOnline;
-	private JTextField txtdateCourse;
+	public JTable tblCourseOnline;
+	public JTextField txtdateCourse;
+	private JPanel panel_8;
+	private JPanel panel_9;
 
 	public void LoadListInstructor() {
 		courseInstructorList = null;
@@ -1807,7 +1867,7 @@ public class MainFrame extends JFrame {
 		}
 	}
 
-	private void initData() {
+	public void initData() {
 		LoadListLecture();
 		LoadListStudents();
 		LoadListDepartments();

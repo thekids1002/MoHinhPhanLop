@@ -49,6 +49,60 @@ public class StudentDAL {
 		return null;
 	}
 
+	public ArrayList<Person> searchByID(int ID) {
+		try {
+			Connection conn = DBConnect.getConnection();
+			Statement stmt = conn.createStatement();
+			ArrayList<Person> listStudents = new ArrayList<>();
+			String query = "SELECT * FROM person WHERE HireDate IS NULL AND PersonID =?";
+			PreparedStatement pstm = conn.prepareStatement(query);
+			pstm.setInt(1, ID);
+			ResultSet rs = pstm.executeQuery();
+			if (rs != null) {
+				while (rs.next()) {
+					int id = rs.getInt("PersonID");
+					String lastName = rs.getString("Lastname");
+					String Firstname = rs.getString("Firstname");
+					Date HireDate = rs.getDate("HireDate");
+					Date EnrollmentDate = rs.getDate("EnrollmentDate");
+					Person person = new Person(id, lastName, Firstname, HireDate, EnrollmentDate);
+					listStudents.add(person);
+				}
+			}
+			conn.close();
+			return listStudents;
+		} catch (Exception e) {
+		}
+		return null;
+	}
+
+	public ArrayList<Person> searchByName(String name) {
+		try {
+			Connection conn = DBConnect.getConnection();
+			Statement stmt = conn.createStatement();
+			ArrayList<Person> listStudents = new ArrayList<>();
+			String query = "SELECT * FROM person WHERE HireDate IS NULL AND Firstname like ?";
+			PreparedStatement pstm = conn.prepareStatement(query);
+			pstm.setString(1, "%" + name + "%");
+			ResultSet rs = pstm.executeQuery();
+			if (rs != null) {
+				while (rs.next()) {
+					int id = rs.getInt("PersonID");
+					String lastName = rs.getString("Lastname");
+					String Firstname = rs.getString("Firstname");
+					Date HireDate = rs.getDate("HireDate");
+					Date EnrollmentDate = rs.getDate("EnrollmentDate");
+					Person person = new Person(id, lastName, Firstname, HireDate, EnrollmentDate);
+					listStudents.add(person);
+				}
+			}
+			conn.close();
+			return listStudents;
+		} catch (Exception e) {
+		}
+		return null;
+	}
+
 	public boolean addStudent(Person s) {
 		try {
 			String sql = "INSERT INTO `person`( `Lastname`, `Firstname`, `HireDate`, `EnrollmentDate`) VALUES (?,?,?,?)";
@@ -56,7 +110,7 @@ public class StudentDAL {
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setString(1, s.getLastname());
 			pstm.setString(2, s.getFirstname());
-		//	pstm.setDate(3, new java.sql.Date(s.getHireDate().getTime()));
+			// pstm.setDate(3, new java.sql.Date(s.getHireDate().getTime()));
 			pstm.setDate(3, null);
 			pstm.setDate(4, new java.sql.Date(s.getEnrollmentDate().getTime()));
 			int i = pstm.executeUpdate();
@@ -75,7 +129,7 @@ public class StudentDAL {
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setString(1, s.getLastname());
 			pstm.setString(2, s.getFirstname());
-		//	pstm.setDate(3, new java.sql.Date(s.getHireDate().getTime()));
+			// pstm.setDate(3, new java.sql.Date(s.getHireDate().getTime()));
 			pstm.setDate(3, null);
 			pstm.setDate(4, new java.sql.Date(s.getEnrollmentDate().getTime()));
 			pstm.setInt(5, s.getID());
@@ -107,8 +161,8 @@ public class StudentDAL {
 		Person person1 = new Person(33, "Voxasdasdasda", "Hoang", new Date(System.currentTimeMillis()),
 				new Date(System.currentTimeMillis()));
 		StudentDAL student = new StudentDAL();
-		student.deleteStudent(35);
-		ArrayList<Person> arrayList = student.readStudents();
+
+		ArrayList<Person> arrayList = student.searchByName("yan");
 		for (Person person : arrayList) {
 			System.out.println(person.toString());
 		}

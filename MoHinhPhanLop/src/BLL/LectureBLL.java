@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 import DAL.LectureDAL;
+import DAL.StudentDAL;
 import DTO.Person;
 
 public class LectureBLL {
@@ -19,6 +20,14 @@ public class LectureBLL {
 
 	public ArrayList<Person> readLectures() {
 		return LectureDAL.gI().readLecture();
+	}
+
+	public ArrayList<Person> searchByID(int ID) {
+		return LectureDAL.gI().searchByID(ID);
+	}
+
+	public ArrayList<Person> searchByName(String name) {
+		return LectureDAL.gI().searchByName(name);
 	}
 
 	public boolean editLecture(Person person) {
