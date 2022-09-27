@@ -159,7 +159,7 @@ public class MainFrame extends JFrame {
 					try {
 						for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager
 								.getInstalledLookAndFeels()) {
-							if ("Nimbus".equals(info.getName())) {
+							if ("Windows".equals(info.getName())) {
 								javax.swing.UIManager.setLookAndFeel(info.getClassName());
 								break;
 							}
@@ -175,6 +175,8 @@ public class MainFrame extends JFrame {
 					}
 					MainFrame frame = new MainFrame();
 					frame.setVisible(true);
+					frame.setLocationRelativeTo(null);
+					frame.setTitle("Phần mềm quản lý khoá học");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -203,7 +205,8 @@ public class MainFrame extends JFrame {
 
 	public void addControl() {
 		panel = new JPanel();
-		panel.setBackground(SystemColor.scrollbar);
+		//panel.setBackground(SystemColor.scrollbar);
+		panel.setBackground(new Color(219,218,213,255));
 		panel.setBounds(0, 0, 291, 683);
 		contentPane.add(panel);
 		panel.setLayout(null);
@@ -298,25 +301,25 @@ public class MainFrame extends JFrame {
 		btnAddStudent = new JButton("Thêm");
 		btnAddStudent.setIcon(new ImageIcon("img\\Add.png"));
 		btnAddStudent.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnAddStudent.setBounds(88, 267, 111, 38);
+		btnAddStudent.setBounds(88, 267, 121, 38);
 		StudentCard.add(btnAddStudent);
 
 		btnEditStudent = new JButton("Sửa");
 		btnEditStudent.setIcon(new ImageIcon("img\\Edit.png"));
 		btnEditStudent.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnEditStudent.setBounds(249, 267, 111, 38);
+		btnEditStudent.setBounds(249, 267, 121, 38);
 		StudentCard.add(btnEditStudent);
 
 		btnDeleteStudent = new JButton("Xoá");
 		btnDeleteStudent.setIcon(new ImageIcon("img\\Delete.png"));
 		btnDeleteStudent.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnDeleteStudent.setBounds(414, 267, 111, 38);
+		btnDeleteStudent.setBounds(414, 267, 121, 38);
 		StudentCard.add(btnDeleteStudent);
 
 		btnReloadStudents = new JButton("Tải Lại");
 		btnReloadStudents.setIcon(new ImageIcon("img\\update.png"));
 		btnReloadStudents.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnReloadStudents.setBounds(587, 267, 111, 38);
+		btnReloadStudents.setBounds(587, 267, 121, 38);
 		StudentCard.add(btnReloadStudents);
 
 		btnSreachStudent = new JButton("Tìm Kiếm");
@@ -330,7 +333,7 @@ public class MainFrame extends JFrame {
 			}
 		});
 		btnSreachStudent.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnSreachStudent.setBounds(745, 267, 111, 38);
+		btnSreachStudent.setBounds(745, 267, 121, 38);
 		StudentCard.add(btnSreachStudent);
 		
 		panel_8 = new JPanel();
@@ -393,26 +396,26 @@ public class MainFrame extends JFrame {
 		btnLectureAdd.setIcon(new ImageIcon("img\\Add.png"));
 
 		btnLectureAdd.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnLectureAdd.setBounds(94, 268, 111, 38);
+		btnLectureAdd.setBounds(94, 268, 121, 38);
 		LectureCard.add(btnLectureAdd);
 
 		btnLectureEdit = new JButton("Sửa");
 		btnLectureEdit.setIcon(new ImageIcon("img\\Edit.png"));
 		btnLectureEdit.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnLectureEdit.setBounds(258, 268, 111, 38);
+		btnLectureEdit.setBounds(258, 268, 121, 38);
 		LectureCard.add(btnLectureEdit);
 
 		btnLectureDelete = new JButton("Xoá");
 		btnLectureDelete.setIcon(new ImageIcon("img\\Delete.png"));
 
 		btnLectureDelete.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnLectureDelete.setBounds(421, 268, 111, 38);
+		btnLectureDelete.setBounds(421, 268, 121, 38);
 		LectureCard.add(btnLectureDelete);
 		btnLectureReload = new JButton("Tải Lại");
 		btnLectureReload.setIcon(new ImageIcon("img\\update.png"));
 
 		btnLectureReload.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnLectureReload.setBounds(590, 268, 111, 38);
+		btnLectureReload.setBounds(590, 268, 121, 38);
 		LectureCard.add(btnLectureReload);
 
 		btnLectureSreach = new JButton("Tìm Kiếm");
@@ -423,7 +426,7 @@ public class MainFrame extends JFrame {
 			}
 		});
 		btnLectureSreach.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnLectureSreach.setBounds(752, 268, 111, 38);
+		btnLectureSreach.setBounds(752, 268, 121, 38);
 		LectureCard.add(btnLectureSreach);
 		
 		panel_9 = new JPanel();
@@ -540,7 +543,7 @@ public class MainFrame extends JFrame {
 			}
 		});
 		btnAddCourse.setFont(new Font("SansSerif", Font.BOLD, 15));
-		btnAddCourse.setBounds(86, 217, 117, 42);
+		btnAddCourse.setBounds(40, 217, 117, 42);
 		panel_1.add(btnAddCourse);
 
 		btnEditCourse = new JButton("Sửa");
@@ -618,13 +621,13 @@ public class MainFrame extends JFrame {
 			}
 		});
 		btnEditCourse.setFont(new Font("SansSerif", Font.BOLD, 15));
-		btnEditCourse.setBounds(273, 217, 117, 42);
+		btnEditCourse.setBounds(206, 217, 117, 42);
 		panel_1.add(btnEditCourse);
 
 		btnDeleteCourse = new JButton("Xoá");
 		btnDeleteCourse.setIcon(new ImageIcon("img\\Delete.png"));
 		btnDeleteCourse.setFont(new Font("SansSerif", Font.BOLD, 15));
-		btnDeleteCourse.setBounds(478, 217, 117, 42);
+		btnDeleteCourse.setBounds(371, 217, 117, 42);
 		btnDeleteCourse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int i = tblCourseOnline.getSelectedRow();
@@ -675,7 +678,7 @@ public class MainFrame extends JFrame {
 			}
 		});
 		btnReloadCourse.setFont(new Font("SansSerif", Font.BOLD, 15));
-		btnReloadCourse.setBounds(680, 217, 117, 42);
+		btnReloadCourse.setBounds(536, 217, 117, 42);
 		panel_1.add(btnReloadCourse);
 
 		txtLocation = new JTextField();
@@ -687,6 +690,12 @@ public class MainFrame extends JFrame {
 		txtdateCourse.setColumns(10);
 		txtdateCourse.setBounds(600, 83, 249, 36);
 		panel_1.add(txtdateCourse);
+		
+		JButton btnSearchStudentsGrade_1 = new JButton("Tìm");
+		btnSearchStudentsGrade_1.setIcon(new ImageIcon("img\\Search.png"));
+		btnSearchStudentsGrade_1.setBounds(697, 217, 117, 42);
+		panel_1.add(btnSearchStudentsGrade_1);
+		btnSearchStudentsGrade_1.setFont(new Font("SansSerif", Font.BOLD, 15));
 
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(new TitledBorder(null, "Kho\u00E1 H\u1ECDc Onsite", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -792,26 +801,32 @@ public class MainFrame extends JFrame {
 		btnAddCourseInstructor = new JButton("Thêm");
 		btnAddCourseInstructor.setIcon(new ImageIcon("img\\Add.png"));
 		btnAddCourseInstructor.setFont(new Font("SansSerif", Font.BOLD, 15));
-		btnAddCourseInstructor.setBounds(86, 217, 117, 42);
+		btnAddCourseInstructor.setBounds(47, 217, 117, 42);
 		panel_3.add(btnAddCourseInstructor);
 
 		btnEditCourseInstructor = new JButton("Sửa");
 		btnEditCourseInstructor.setIcon(new ImageIcon("img\\Edit.png"));
 		btnEditCourseInstructor.setFont(new Font("SansSerif", Font.BOLD, 15));
-		btnEditCourseInstructor.setBounds(273, 217, 117, 42);
+		btnEditCourseInstructor.setBounds(215, 217, 117, 42);
 		panel_3.add(btnEditCourseInstructor);
 
 		btnDeleteCourseInstructor = new JButton("Xoá");
 		btnDeleteCourseInstructor.setIcon(new ImageIcon("img\\Delete.png"));
 		btnDeleteCourseInstructor.setFont(new Font("SansSerif", Font.BOLD, 15));
-		btnDeleteCourseInstructor.setBounds(478, 217, 117, 42);
+		btnDeleteCourseInstructor.setBounds(380, 217, 117, 42);
 		panel_3.add(btnDeleteCourseInstructor);
 
 		btnReloadCourseInstructor = new JButton("Tải Lại");
 		btnReloadCourseInstructor.setIcon(new ImageIcon("img\\update.png"));
 		btnReloadCourseInstructor.setFont(new Font("SansSerif", Font.BOLD, 15));
-		btnReloadCourseInstructor.setBounds(680, 217, 117, 42);
+		btnReloadCourseInstructor.setBounds(544, 217, 117, 42);
 		panel_3.add(btnReloadCourseInstructor);
+		
+		JButton btnSearchCourseIntructor = new JButton("Tìm");
+		btnSearchCourseIntructor.setIcon(new ImageIcon("img\\Search.png"));
+		btnSearchCourseIntructor.setFont(new Font("SansSerif", Font.BOLD, 15));
+		btnSearchCourseIntructor.setBounds(704, 217, 117, 42);
+		panel_3.add(btnSearchCourseIntructor);
 
 		JPanel panel_4 = new JPanel();
 		panel_4.setBorder(new TitledBorder(null, "Qu\u1EA3n L\u00FD Ph\u00E2n C\u00F4ng", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -820,7 +835,7 @@ public class MainFrame extends JFrame {
 		CourseIntructorCard.add(panel_4);
 
 		JScrollPane scrollPane_3_1 = new JScrollPane();
-		scrollPane_3_1.setBounds(10, 22, 908, 295);
+		scrollPane_3_1.setBounds(10, 22, 900, 295);
 		panel_4.add(scrollPane_3_1);
 
 		dtmCourseInstructor = new DefaultTableModel();
@@ -903,34 +918,41 @@ public class MainFrame extends JFrame {
 		btnAddStudentGrade = new JButton("Thêm");
 		btnAddStudentGrade.setIcon(new ImageIcon("img\\Add.png"));
 		btnAddStudentGrade.setFont(new Font("SansSerif", Font.BOLD, 15));
-		btnAddStudentGrade.setBounds(86, 217, 117, 42);
+		btnAddStudentGrade.setBounds(43, 218, 117, 42);
 		panel_5.add(btnAddStudentGrade);
 
 		btnEditStudentGrade = new JButton("Sửa");
 		btnEditStudentGrade.setIcon(new ImageIcon("img\\Edit.png"));
 		btnEditStudentGrade.setFont(new Font("SansSerif", Font.BOLD, 15));
-		btnEditStudentGrade.setBounds(273, 217, 117, 42);
+		btnEditStudentGrade.setBounds(206, 218, 117, 42);
 		panel_5.add(btnEditStudentGrade);
 
 		btnDeleteStudentGrade = new JButton("Xoá");
 		btnDeleteStudentGrade.setIcon(new ImageIcon("img\\Delete.png"));
 		btnDeleteStudentGrade.setFont(new Font("SansSerif", Font.BOLD, 15));
-		btnDeleteStudentGrade.setBounds(478, 217, 117, 42);
+		btnDeleteStudentGrade.setBounds(372, 218, 117, 42);
 		panel_5.add(btnDeleteStudentGrade);
 
 		btnReloadStudentGrade = new JButton("Tải Lại");
 		btnReloadStudentGrade.setIcon(new ImageIcon("img\\update.png"));
 		btnReloadStudentGrade.setFont(new Font("SansSerif", Font.BOLD, 15));
-		btnReloadStudentGrade.setBounds(680, 217, 117, 42);
+		btnReloadStudentGrade.setBounds(538, 218, 117, 42);
 		panel_5.add(btnReloadStudentGrade);
+		
+		JButton btnSearchStudentsGrade = new JButton("Tìm");
+		btnSearchStudentsGrade.setIcon(new ImageIcon("img\\Search.png"));
+		btnSearchStudentsGrade.setFont(new Font("SansSerif", Font.BOLD, 15));
+		btnSearchStudentsGrade.setBounds(704, 218, 117, 42);
+		panel_5.add(btnSearchStudentsGrade);
 
 		panel_6 = new JPanel();
+		panel_6.setBorder(new TitledBorder(null, "Qu\u1EA3n L\u00FD \u0110i\u1EC3m", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel_6.setBounds(25, 356, 920, 357);
 		GradeCard.add(panel_6);
 		panel_6.setLayout(null);
 
 		JScrollPane scrollPane_4 = new JScrollPane();
-		scrollPane_4.setLocation(5, 5);
+		scrollPane_4.setLocation(10, 21);
 		scrollPane_4.setSize(900, 285);
 		panel_6.add(scrollPane_4);
 
