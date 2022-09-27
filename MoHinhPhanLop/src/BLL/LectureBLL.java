@@ -29,6 +29,10 @@ public class LectureBLL {
 	public ArrayList<Person> searchByName(String name) {
 		return LectureDAL.gI().searchByName(name);
 	}
+	
+	public ArrayList<Person> loadLecturesByPage(int page){
+		return LectureDAL.gI().loadStudentsByPage(page);
+	}
 
 	public boolean editLecture(Person person) {
 		if (person.getFirstname().isEmpty() || person.getLastname().isBlank()) {

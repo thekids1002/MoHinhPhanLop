@@ -79,7 +79,7 @@ public class dlgSearchStudent extends JDialog {
 		cbxFindByDay = new JCheckBox("Tìm theo ngày đăng kí");
 		cbxFindByDay.setFont(new Font("Tahoma", Font.BOLD, 15));
 		cbxFindByDay.setBounds(353, 159, 205, 21);
-		//contentPane.add(cbxFindByDay);
+		// contentPane.add(cbxFindByDay);
 
 		btnSearchLecture = new JButton("Tìm");
 		btnSearchLecture.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -120,6 +120,7 @@ public class dlgSearchStudent extends JDialog {
 			System.out.println(listStudents);
 			if (listStudents != null) {
 				MainFrame.dtmStudent.setRowCount(0);
+				repaintPage();
 				for (Person person : listStudents) {
 					Vector<Object> vec = new Vector<Object>();
 					vec.add(person.getID());
@@ -135,8 +136,14 @@ public class dlgSearchStudent extends JDialog {
 		}
 	}
 
+	private void repaintPage() {
+		MainFrame.pnPageStudents.removeAll();
+		MainFrame.pnPageStudents.revalidate();
+		MainFrame.pnPageStudents.repaint();
+
+	}
+
 	protected void SearchByDay() {
-		
 
 	}
 

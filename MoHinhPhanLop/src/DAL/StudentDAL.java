@@ -6,8 +6,10 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import DTO.Person;
+import GUI.Contrains;
 
 public class StudentDAL {
 	public static StudentDAL gI;
@@ -22,6 +24,8 @@ public class StudentDAL {
 	public StudentDAL() {
 		super();
 	}
+	
+	
 
 	public ArrayList<Person> readStudents() {
 		try {
@@ -48,7 +52,23 @@ public class StudentDAL {
 		}
 		return null;
 	}
-
+	public ArrayList<Person> loadStudentsByPage(int page){
+		try {
+			int num_record = Contrains.pagesize;
+			ArrayList<Person> list = this.readStudents();
+			int size = list.size();
+			System.out.println(size);
+			int from, to;
+			from = ( page - 1)  * num_record;
+			to = page * num_record;
+			List a =  list.subList(from, Math.min(to,size));
+			return list = new ArrayList<Person>(a);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return null;
+	}
 	public ArrayList<Person> searchByID(int ID) {
 		try {
 			Connection conn = DBConnect.getConnection();
@@ -161,8 +181,8 @@ public class StudentDAL {
 		Person person1 = new Person(33, "Voxasdasdasda", "Hoang", new Date(System.currentTimeMillis()),
 				new Date(System.currentTimeMillis()));
 		StudentDAL student = new StudentDAL();
-
-		ArrayList<Person> arrayList = student.searchByName("yan");
+		//ArrayList<Person> list = student.readStudents();
+		ArrayList<Person> arrayList = student.loadStudentsByPage(3);
 		for (Person person : arrayList) {
 			System.out.println(person.toString());
 		}

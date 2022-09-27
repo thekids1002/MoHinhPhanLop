@@ -16,6 +16,14 @@ public class CourseBLL {
 		return new CourseDAL().readOnsiteCourse();
 	}
 
+	public static ArrayList<DTO.Course> readOnsiteCoursePage(int Page) {
+		return new CourseDAL().loadOnsiteCourses(Page);
+	}
+
+	public static ArrayList<DTO.Course> readOnlineCoursePage(int Page) {
+		return new CourseDAL().loadOnlineCourses(Page);
+	}
+
 	public static ArrayList<DTO.Course> readOnlineCourse() {
 		return new CourseDAL().readOnlineCourse();
 	}
@@ -43,6 +51,7 @@ public class CourseBLL {
 		}
 		return new CourseDAL().editCourse(course);
 	}
+
 	public boolean deleteCourse(int ID) {
 		return new CourseDAL().deleteCourse(ID);
 	}

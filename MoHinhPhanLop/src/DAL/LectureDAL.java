@@ -6,8 +6,10 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import DTO.Person;
+import GUI.Contrains;
 
 public class LectureDAL {
 	public static LectureDAL gI;
@@ -49,7 +51,23 @@ public class LectureDAL {
 		}
 		return null;
 	}
-
+	public ArrayList<Person> loadStudentsByPage(int page){
+		try {
+			int num_record = Contrains.pagesize;
+			ArrayList<Person> list = this.readLecture();
+			int size = list.size();
+			System.out.println(size);
+			int from, to;
+			from = ( page - 1)  * num_record;
+			to = page * num_record;
+			List a =  list.subList(from, Math.min(to,size));
+			return list = new ArrayList<Person>(a);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return null;
+	}
 	public ArrayList<Person> searchByName(String name) {
 		try {
 			Connection conn = DBConnect.getConnection();

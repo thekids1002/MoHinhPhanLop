@@ -21,6 +21,10 @@ public class StudentGradeBLL {
 	public static ArrayList<DTO.StudentGrade> readAllGrade() {
 		return new StudentGradeDAL().gI().readStudentGrades();
 	}
+	
+	public static ArrayList<DTO.StudentGrade> LoaddGradeByPage(int page) {
+		return new StudentGradeDAL().gI().loadGardeByPage(page);
+	}
 
 	public static boolean addGrade(StudentGrade grade) {
 		if (grade.getGrade() > 10 || grade.getGrade() < 0) {

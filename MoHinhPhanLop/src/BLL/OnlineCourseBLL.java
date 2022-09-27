@@ -9,7 +9,9 @@ public class OnlineCourseBLL {
 	public ArrayList<OnlineCourse> readAllCourseOnline() {
 		return new OnlineCourseDAL().readOnlineCourses();
 	}
-
+	public ArrayList<OnlineCourse> loadCourseByPage(int pgae) {
+		return new OnlineCourseDAL().loadOnlineCourseByPage(pgae);
+	}
 	public boolean addOnlineCourse(OnlineCourse course) {
 		if (course.getUrl().isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Không được để trống URL");
@@ -21,6 +23,8 @@ public class OnlineCourseBLL {
 		}
 		return new OnlineCourseDAL().addOnlineCourse(course);
 	}
+	
+	
 
 	public boolean editOnlineCourse(OnlineCourse course) {
 		if (course.getUrl().isEmpty()) {

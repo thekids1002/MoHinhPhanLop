@@ -11,6 +11,10 @@ public class OnsiteCourseBLL {
 	public ArrayList<OnsiteCourse> readAllOnsiteCourses() {
 		return new OnsiteCourseDAL().readOnsiteCourses();
 	}
+	
+	public ArrayList<OnsiteCourse> loadOnsiteCourses(int page) {
+		return new OnsiteCourseDAL().loadOnsiteCourses(page);
+	}
 
 	public boolean addOnSiteCourse(OnsiteCourse course) {
 		if (course.getDays().isEmpty() || course.getDays().isBlank()) {

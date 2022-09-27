@@ -120,12 +120,13 @@ public class dlgSearchLecture extends JDialog {
 			System.out.println(list);
 			if (list != null && list.size() > 0) {
 				MainFrame.dtmLecture.setRowCount(0);
+				repaintPage();
 				for (Person person : list) {
 					Vector<Object> vec = new Vector<Object>();
 					vec.add(person.getID());
 					vec.add(person.getFirstname());
 					vec.add(person.getLastname());
-					vec.add(person.getEnrollmentDate());
+					vec.add(person.getHireDate());
 					MainFrame.dtmLecture.addRow(vec);
 					this.setVisible(false);
 				}
@@ -133,6 +134,12 @@ public class dlgSearchLecture extends JDialog {
 		} else {
 			JOptionPane.showMessageDialog(null, "ID phải là số");
 		}
+	}
+
+	private void repaintPage() {
+		MainFrame.pnPageLecture.removeAll();
+		MainFrame.pnPageLecture.revalidate();
+		MainFrame.pnPageLecture.repaint();
 	}
 
 	protected void SearchByDay() {
@@ -146,12 +153,13 @@ public class dlgSearchLecture extends JDialog {
 			ArrayList<Person> list = new BLL.LectureBLL().searchByName(Name);
 			if (list != null && list.size() > 0) {
 				MainFrame.dtmLecture.setRowCount(0);
+				repaintPage();
 				for (Person person : list) {
 					Vector<Object> vec = new Vector<Object>();
 					vec.add(person.getID());
 					vec.add(person.getFirstname());
 					vec.add(person.getLastname());
-					vec.add(person.getEnrollmentDate());
+					vec.add(person.getHireDate());
 					MainFrame.dtmLecture.addRow(vec);
 					this.setVisible(false);
 				}

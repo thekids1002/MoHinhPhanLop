@@ -22,6 +22,9 @@ public class StudentBLL {
 		return StudentDAL.gI().readStudents();
 	}
 
+	public ArrayList<Person> loadStudentsByPage(int page){
+		return StudentDAL.gI().loadStudentsByPage(page);
+	}
 	public ArrayList<Person> searchByID(int ID) {
 		return StudentDAL.gI().searchByID(ID);
 	}

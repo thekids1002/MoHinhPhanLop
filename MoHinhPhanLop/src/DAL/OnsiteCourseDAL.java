@@ -7,9 +7,12 @@ import java.sql.Time;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import DTO.OnsiteCourse;
+import DTO.Person;
 import DTO.StudentGrade;
+import GUI.Contrains;
 
 public class OnsiteCourseDAL {
 
@@ -17,6 +20,24 @@ public class OnsiteCourseDAL {
 		super();
 	}
 	
+	
+	public ArrayList<OnsiteCourse> loadOnsiteCourses(int page){
+		try {
+			int num_record = Contrains.pagesize;
+			ArrayList<OnsiteCourse> list = this.readOnsiteCourses();
+			int size = list.size();
+			System.out.println(size);
+			int from, to;
+			from = ( page - 1)  * num_record;
+			to = page * num_record;
+			List a =  list.subList(from, Math.min(to,size));
+			return list = new ArrayList<OnsiteCourse>(a);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return null;
+	}
 	public ArrayList<OnsiteCourse> readOnsiteCourses() {
 		try {
 			Connection conn = DBConnect.getConnection();

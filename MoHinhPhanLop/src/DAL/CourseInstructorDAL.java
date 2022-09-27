@@ -6,8 +6,11 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import DTO.CourseInstructor;
+import DTO.Person;
+import GUI.Contrains;
 
 public class CourseInstructorDAL {
 	
@@ -34,6 +37,24 @@ public class CourseInstructorDAL {
 			conn.close();
 			return listCourseinStructors;
 		} catch (Exception e) {
+		}
+		return null;
+	}
+	
+	public ArrayList<CourseInstructor> loadCourseInstructorByPage(int page){
+		try {
+			int num_record = Contrains.pagesize;
+			ArrayList<CourseInstructor> list = this.readCourseInstructors();
+			int size = list.size();
+			System.out.println(size);
+			int from, to;
+			from = ( page - 1)  * num_record;
+			to = page * num_record;
+			List a =  list.subList(from, Math.min(to,size));
+			return list = new ArrayList<CourseInstructor>(a);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
 		}
 		return null;
 	}

@@ -23,7 +23,9 @@ public class CourseInstructorBLL {
 	public static ArrayList<DTO.CourseInstructor> readAllCourseInstructor() {
 		return new CourseInstructorDAL().readCourseInstructors();
 	}
-	
+	public static ArrayList<DTO.CourseInstructor> loadCourseInstructorByPage(int page) {
+		return new CourseInstructorDAL().loadCourseInstructorByPage(page);
+	}
 	public static boolean addCourseInstructor(CourseInstructor instructor) {
 		if (instructor.getCourseID() < 0) {
 			JOptionPane.showMessageDialog(null, "Mã khóa học không được để trống ");

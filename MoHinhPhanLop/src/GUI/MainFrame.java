@@ -10,6 +10,7 @@ import javax.swing.text.html.parser.DTD;
 import javax.swing.JSplitPane;
 import javax.swing.JButton;
 import java.awt.FlowLayout;
+import java.awt.Button;
 import java.awt.CardLayout;
 import javax.swing.BoxLayout;
 import java.awt.GridLayout;
@@ -56,13 +57,15 @@ import javax.swing.UIManager;
 import javax.swing.ImageIcon;
 
 public class MainFrame extends JFrame {
-	public  static MainFrame gI = null;
-	public  static MainFrame gI() {
-		if(gI == null) {
+	public static MainFrame gI = null;
+
+	public static MainFrame gI() {
+		if (gI == null) {
 			gI = new MainFrame();
 		}
 		return gI;
 	}
+
 	public JPanel contentPane;
 	CardLayout cardLayout;
 	public JPanel CourseCard;
@@ -146,6 +149,8 @@ public class MainFrame extends JFrame {
 	protected Course coursegradeSelectedinTable;
 	protected Person studentGradeSelected;
 	protected Course courseGradeSelected;
+	public static JPanel pnPageStudents;
+	public static JPanel pnPageLecture;
 	public static DefaultTableModel dtmcourseOnline;
 	public static DefaultTableModel dtmcourseSite;
 
@@ -205,8 +210,8 @@ public class MainFrame extends JFrame {
 
 	public void addControl() {
 		panel = new JPanel();
-		//panel.setBackground(SystemColor.scrollbar);
-		panel.setBackground(new Color(219,218,213,255));
+		// panel.setBackground(SystemColor.scrollbar);
+		panel.setBackground(new Color(219, 218, 213, 255));
 		panel.setBounds(0, 0, 291, 683);
 		contentPane.add(panel);
 		panel.setLayout(null);
@@ -286,7 +291,7 @@ public class MainFrame extends JFrame {
 		StudentCard.add(txtStudentLastName);
 
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(88, 345, 769, 305);
+		scrollPane_1.setBounds(88, 345, 769, 269);
 		StudentCard.add(scrollPane_1);
 
 		dtmStudent = new DefaultTableModel();
@@ -327,7 +332,7 @@ public class MainFrame extends JFrame {
 		btnSreachStudent.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dlgSearchStudent frame = new dlgSearchStudent();
-				
+
 				frame.setLocationRelativeTo(null);
 				frame.setVisible(true);
 			}
@@ -335,12 +340,16 @@ public class MainFrame extends JFrame {
 		btnSreachStudent.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnSreachStudent.setBounds(745, 267, 121, 38);
 		StudentCard.add(btnSreachStudent);
-		
+
 		panel_8 = new JPanel();
 		panel_8.setBackground(UIManager.getColor("Button.highlight"));
 		panel_8.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, Color.RED));
 		panel_8.setBounds(48, 49, 860, 286);
 		StudentCard.add(panel_8);
+
+		pnPageStudents = new JPanel();
+		pnPageStudents.setBounds(87, 624, 770, 29);
+		StudentCard.add(pnPageStudents);
 
 		LectureCard = new JPanel();
 		pnCards.add(LectureCard, "LectureCard");
@@ -382,7 +391,7 @@ public class MainFrame extends JFrame {
 		LectureCard.add(dateLectures);
 
 		JScrollPane scrollPane_2 = new JScrollPane();
-		scrollPane_2.setBounds(94, 348, 769, 305);
+		scrollPane_2.setBounds(94, 348, 769, 271);
 		LectureCard.add(scrollPane_2);
 		dtmLecture = new DefaultTableModel();
 		dtmLecture.addColumn("Mã Giáo Viên");
@@ -428,12 +437,16 @@ public class MainFrame extends JFrame {
 		btnLectureSreach.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnLectureSreach.setBounds(752, 268, 121, 38);
 		LectureCard.add(btnLectureSreach);
-		
+
 		panel_9 = new JPanel();
 		panel_9.setBackground(UIManager.getColor("Button.highlight"));
 		panel_9.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, Color.RED));
 		panel_9.setBounds(48, 49, 860, 286);
 		LectureCard.add(panel_9);
+
+		pnPageLecture = new JPanel();
+		pnPageLecture.setBounds(94, 621, 769, 32);
+		LectureCard.add(pnPageLecture);
 
 		/* END LECTURE CARD */
 
@@ -449,9 +462,9 @@ public class MainFrame extends JFrame {
 		lblCourseCard.setFont(new Font("Tahoma", Font.BOLD, 20));
 		lblCourseCard.setBounds(377, 0, 326, 36);
 		CourseCard.add(lblCourseCard);
-		
+
 		panel_1 = new JPanel();
-		
+
 		panel_1.setBackground(UIManager.getColor("Button.highlight"));
 		panel_1.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, Color.RED));
 		panel_1.setBounds(48, 49, 860, 286);
@@ -530,12 +543,14 @@ public class MainFrame extends JFrame {
 						if (new BLL.OnsiteCourseBLL().addOnSiteCourse(onsiteCourse)) {
 							JOptionPane.showMessageDialog(null, "Đã thêm thành công khoá học Onsite");
 							LoadListOnsiteCourse();
+							addPageOnsite();
 						}
 					} else {
 						OnlineCourse onlineCourse = new OnlineCourse(id, url);
 						if (new BLL.OnlineCourseBLL().addOnlineCourse(onlineCourse)) {
 							JOptionPane.showMessageDialog(null, "Đã thêm thành công khoá học Online");
 							LoadListOnlineCourse();
+							addPageOnline();
 						}
 					}
 				}
@@ -633,34 +648,32 @@ public class MainFrame extends JFrame {
 				int i = tblCourseOnline.getSelectedRow();
 				int j = tblCourseOnsite.getSelectedRow();
 				int ID;
-				if(i >= 0) {
+				if (i >= 0) {
 					ID = Integer.parseInt(dtmcourseOnline.getValueAt(i, 1).toString());
 					if (new BLL.OnlineCourseBLL().deleteOnlineCourse(ID)) {
-						if(new BLL.CourseBLL().deleteCourse(ID)) {
+						if (new BLL.CourseBLL().deleteCourse(ID)) {
 							JOptionPane.showMessageDialog(null, "Đã xoá khoá học online thành công");
 							LoadListOnlineCourse();
-						}
-						else {
+							addPageOnline();
+						} else {
 							JOptionPane.showMessageDialog(null, "Đã xoá khoá học online thất bại");
 						}
-					}
-					else {
+					} else {
 						JOptionPane.showMessageDialog(null, "Đã xoá khoá học thất bại");
 					}
 				}
-				if(j >= 0) {
+				if (j >= 0) {
 					ID = Integer.parseInt(dtmcourseSite.getValueAt(j, 1).toString());
 					if (new BLL.OnsiteCourseBLL().deleteSiteCourse(ID)) {
-						if(new BLL.CourseBLL().deleteCourse(ID)) {
+						if (new BLL.CourseBLL().deleteCourse(ID)) {
 							JOptionPane.showMessageDialog(null, "Đã xoá khoá học onsite thành công");
 							LoadListOnsiteCourse();
-						}
-						else {
+							addPageOnsite();
+						} else {
 							JOptionPane.showMessageDialog(null, "Đã xoá khoá học onsite thất bại");
-							
+
 						}
-					}
-					else {
+					} else {
 						JOptionPane.showMessageDialog(null, "Đã xoá khoá học thất bại");
 					}
 				}
@@ -672,7 +685,7 @@ public class MainFrame extends JFrame {
 		btnReloadCourse.setIcon(new ImageIcon("img\\update.png"));
 		btnReloadCourse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null,"Đã tải lại danh sách khoá học thành công");
+				JOptionPane.showMessageDialog(null, "Đã tải lại danh sách khoá học thành công");
 				LoadListOnlineCourse();
 				LoadListOnsiteCourse();
 			}
@@ -690,7 +703,7 @@ public class MainFrame extends JFrame {
 		txtdateCourse.setColumns(10);
 		txtdateCourse.setBounds(600, 83, 249, 36);
 		panel_1.add(txtdateCourse);
-		
+
 		JButton btnSearchStudentsGrade_1 = new JButton("Tìm");
 		btnSearchStudentsGrade_1.setIcon(new ImageIcon("img\\Search.png"));
 		btnSearchStudentsGrade_1.setBounds(697, 217, 117, 42);
@@ -698,13 +711,14 @@ public class MainFrame extends JFrame {
 		btnSearchStudentsGrade_1.setFont(new Font("SansSerif", Font.BOLD, 15));
 
 		JPanel panel_2 = new JPanel();
-		panel_2.setBorder(new TitledBorder(null, "Kho\u00E1 H\u1ECDc Onsite", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_2.setBorder(new TitledBorder(null, "Kho\u00E1 H\u1ECDc Onsite", TitledBorder.LEADING, TitledBorder.TOP,
+				null, null));
 		panel_2.setBounds(25, 341, 525, 322);
 		CourseCard.add(panel_2);
 		panel_2.setLayout(null);
 
 		JScrollPane scrollPane_3 = new JScrollPane();
-		scrollPane_3.setBounds(10, 27, 501, 285);
+		scrollPane_3.setBounds(10, 27, 501, 264);
 		panel_2.add(scrollPane_3);
 
 		dtmcourseSite = new DefaultTableModel();
@@ -720,14 +734,19 @@ public class MainFrame extends JFrame {
 
 		scrollPane_3.setViewportView(tblCourseOnsite);
 
+		pnPageOnsite = new JPanel();
+		pnPageOnsite.setBounds(10, 293, 505, 29);
+		panel_2.add(pnPageOnsite);
+
 		JPanel panel_7 = new JPanel();
-		panel_7.setBorder(new TitledBorder(null, "Kho\u00E1 H\u1ECDc Online", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_7.setBorder(new TitledBorder(null, "Kho\u00E1 H\u1ECDc Online", TitledBorder.LEADING, TitledBorder.TOP,
+				null, null));
 		panel_7.setBounds(550, 345, 395, 318);
 		CourseCard.add(panel_7);
 		panel_7.setLayout(null);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 25, 375, 283);
+		scrollPane.setBounds(10, 25, 375, 258);
 		panel_7.add(scrollPane);
 
 		dtmcourseOnline = new DefaultTableModel();
@@ -738,6 +757,10 @@ public class MainFrame extends JFrame {
 		dtmcourseOnline.addColumn("Url");
 		tblCourseOnline = new MyTable(dtmcourseOnline);
 		scrollPane.setViewportView(tblCourseOnline);
+
+		pnPageOnline = new JPanel();
+		pnPageOnline.setBounds(20, 289, 365, 29);
+		panel_7.add(pnPageOnline);
 
 		// Course Instructor Card start
 		CourseIntructorCard = new JPanel();
@@ -754,7 +777,7 @@ public class MainFrame extends JFrame {
 		panel_3.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, Color.RED));
 		panel_3.setBackground(UIManager.getColor("Button.highlight"));
 		panel_3.setBounds(48, 49, 860, 286);
-		
+
 		CourseIntructorCard.add(panel_3);
 		panel_3.setLayout(null);
 
@@ -821,7 +844,7 @@ public class MainFrame extends JFrame {
 		btnReloadCourseInstructor.setFont(new Font("SansSerif", Font.BOLD, 15));
 		btnReloadCourseInstructor.setBounds(544, 217, 117, 42);
 		panel_3.add(btnReloadCourseInstructor);
-		
+
 		JButton btnSearchCourseIntructor = new JButton("Tìm");
 		btnSearchCourseIntructor.setIcon(new ImageIcon("img\\Search.png"));
 		btnSearchCourseIntructor.setFont(new Font("SansSerif", Font.BOLD, 15));
@@ -829,13 +852,14 @@ public class MainFrame extends JFrame {
 		panel_3.add(btnSearchCourseIntructor);
 
 		JPanel panel_4 = new JPanel();
-		panel_4.setBorder(new TitledBorder(null, "Qu\u1EA3n L\u00FD Ph\u00E2n C\u00F4ng", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_4.setBorder(new TitledBorder(null, "Qu\u1EA3n L\u00FD Ph\u00E2n C\u00F4ng", TitledBorder.LEADING,
+				TitledBorder.TOP, null, null));
 		panel_4.setLayout(null);
 		panel_4.setBounds(25, 336, 920, 327);
 		CourseIntructorCard.add(panel_4);
 
 		JScrollPane scrollPane_3_1 = new JScrollPane();
-		scrollPane_3_1.setBounds(10, 22, 900, 295);
+		scrollPane_3_1.setBounds(10, 22, 900, 255);
 		panel_4.add(scrollPane_3_1);
 
 		dtmCourseInstructor = new DefaultTableModel();
@@ -845,6 +869,10 @@ public class MainFrame extends JFrame {
 
 		tblCourseInstructor = new MyTable(dtmCourseInstructor);
 		scrollPane_3_1.setViewportView(tblCourseInstructor);
+
+		pnPageCourseIntructor = new JPanel();
+		pnPageCourseIntructor.setBounds(69, 285, 769, 32);
+		panel_4.add(pnPageCourseIntructor);
 
 		// Sudent Grade Card
 		GradeCard = new JPanel();
@@ -860,7 +888,7 @@ public class MainFrame extends JFrame {
 		panel_5 = new JPanel();
 		panel_5.setBackground(UIManager.getColor("Button.highlight"));
 		panel_5.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, Color.RED));
-		
+
 		panel_5.setBounds(48, 49, 860, 286);
 		GradeCard.add(panel_5);
 		panel_5.setLayout(null);
@@ -938,7 +966,7 @@ public class MainFrame extends JFrame {
 		btnReloadStudentGrade.setFont(new Font("SansSerif", Font.BOLD, 15));
 		btnReloadStudentGrade.setBounds(538, 218, 117, 42);
 		panel_5.add(btnReloadStudentGrade);
-		
+
 		JButton btnSearchStudentsGrade = new JButton("Tìm");
 		btnSearchStudentsGrade.setIcon(new ImageIcon("img\\Search.png"));
 		btnSearchStudentsGrade.setFont(new Font("SansSerif", Font.BOLD, 15));
@@ -946,14 +974,15 @@ public class MainFrame extends JFrame {
 		panel_5.add(btnSearchStudentsGrade);
 
 		panel_6 = new JPanel();
-		panel_6.setBorder(new TitledBorder(null, "Qu\u1EA3n L\u00FD \u0110i\u1EC3m", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_6.setBounds(25, 356, 920, 357);
+		panel_6.setBorder(new TitledBorder(null, "Qu\u1EA3n L\u00FD \u0110i\u1EC3m", TitledBorder.LEADING,
+				TitledBorder.TOP, null, null));
+		panel_6.setBounds(25, 356, 920, 307);
 		GradeCard.add(panel_6);
 		panel_6.setLayout(null);
 
 		JScrollPane scrollPane_4 = new JScrollPane();
 		scrollPane_4.setLocation(10, 21);
-		scrollPane_4.setSize(900, 285);
+		scrollPane_4.setSize(900, 244);
 		panel_6.add(scrollPane_4);
 
 		dtmStudentGrade = new DefaultTableModel();
@@ -964,6 +993,10 @@ public class MainFrame extends JFrame {
 
 		tblStudentGrade = new MyTable(dtmStudentGrade);
 		scrollPane_4.setViewportView(tblStudentGrade);
+
+		pnGradeCard = new JPanel();
+		pnGradeCard.setBounds(79, 271, 769, 32);
+		panel_6.add(pnGradeCard);
 
 	}
 
@@ -1054,6 +1087,7 @@ public class MainFrame extends JFrame {
 				Person person = new Person(0, lastName, firstName, dateLecture, null);
 				if (LectureBLL.gI().addLecture(person)) {
 					LoadListLecture();
+					addPageLecture();
 					JOptionPane.showMessageDialog(null, "Đã thêm thành công");
 				} else {
 					JOptionPane.showMessageDialog(null, "Đã có lỗi xảy ra khi thêm giáo viên");
@@ -1074,6 +1108,7 @@ public class MainFrame extends JFrame {
 						Person person = new Person(ID, lastName, firstName, dateLecture, null);
 						if (LectureBLL.gI().editLecture(person)) {
 							LoadListLecture();
+							addPageLecture();
 							JOptionPane.showMessageDialog(null, "Đã sửa thành công");
 						} else {
 							JOptionPane.showMessageDialog(null, "Đã có lỗi xảy ra");
@@ -1100,6 +1135,7 @@ public class MainFrame extends JFrame {
 						if (dialogResult == JOptionPane.YES_OPTION) {
 							if (LectureBLL.gI().deleteLecture(ID)) {
 								LoadListLecture();
+								addPageLecture();
 								JOptionPane.showMessageDialog(null, "Đã xoá thành công");
 							} else {
 								JOptionPane.showMessageDialog(null, "Đã có lỗi xảy ra");
@@ -1120,6 +1156,7 @@ public class MainFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					LoadListLecture();
+					addPageLecture();
 					JOptionPane.showMessageDialog(null, "Đã tải lại danh sách thành công");
 				} catch (Exception e2) {
 					e2.printStackTrace();
@@ -1185,6 +1222,7 @@ public class MainFrame extends JFrame {
 				Person person = new Person(0, lastName, firstName, null, dateenrollment);
 				if (StudentBLL.gI().addStudents(person)) {
 					LoadListStudents();
+					AddPageStudent();
 					JOptionPane.showMessageDialog(null, "Đã thêm thành công");
 				} else {
 					JOptionPane.showMessageDialog(null, "Đã có lỗi xảy ra khi thêm giáo viên");
@@ -1206,6 +1244,7 @@ public class MainFrame extends JFrame {
 						Person person = new Person(ID, lastName, firstName, null, dateenrollment);
 						if (StudentBLL.gI().editStudents(person)) {
 							LoadListStudents();
+							AddPageStudent();
 							JOptionPane.showMessageDialog(null, "Đã sửa thành công");
 						} else {
 							JOptionPane.showMessageDialog(null, "Đã có lỗi xảy ra");
@@ -1233,6 +1272,7 @@ public class MainFrame extends JFrame {
 						if (dialogResult == JOptionPane.YES_OPTION) {
 							if (StudentBLL.gI().deleteLecture(ID)) {
 								LoadListStudents();
+								AddPageStudent();
 								JOptionPane.showMessageDialog(null, "Đã xoá thành công");
 							} else {
 								JOptionPane.showMessageDialog(null, "Đã có lỗi xảy ra khi xoá sinh viên");
@@ -1253,6 +1293,7 @@ public class MainFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					LoadListStudents();
+					AddPageStudent();
 					JOptionPane.showMessageDialog(null, "Đã tải lại danh sách thành công");
 				} catch (Exception e2) {
 					e2.printStackTrace();
@@ -1330,6 +1371,7 @@ public class MainFrame extends JFrame {
 		// add Student Grade
 		btnAddStudentGrade.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+
 				if (courseGradeSelected != null && studentGradeSelected != null) {
 					Person student = studentGradeSelected;
 					Course course = courseGradeSelected;
@@ -1343,6 +1385,7 @@ public class MainFrame extends JFrame {
 					}
 					StudentGrade studentGrade = new StudentGrade(0, course.getCourseID(), student.getID(), grade);
 					if (StudentGradeBLL.gI().addGrade(studentGrade)) {
+						addPageCourseGrade();
 						LoadListGrade();
 						LoadListStudents();
 						JOptionPane.showMessageDialog(null, "Đã thêm thành công");
@@ -1420,6 +1463,7 @@ public class MainFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					LoadListGrade();
+					addPageCourseGrade();
 					JOptionPane.showMessageDialog(null, "Đã tải lại danh sách thành công");
 				} catch (Exception e2) {
 					e2.printStackTrace();
@@ -1498,7 +1542,7 @@ public class MainFrame extends JFrame {
 					CourseInstructor courseInstructor = new CourseInstructor(courseSelected.getCourseID(),
 							lectureSelected.getID());
 					if (CourseInstructorBLL.gI().addCourseInstructor(courseInstructor)) {
-						LoadListInstructor();
+						addPageCourseInstructor();
 						JOptionPane.showMessageDialog(null, "Đã thêm thành công");
 					} else {
 						JOptionPane.showMessageDialog(null, "Đã có lỗi xảy ra khi thêm phân công");
@@ -1522,6 +1566,7 @@ public class MainFrame extends JFrame {
 									courseSelectedinTable.getCourseID(), lectureSelectedinTalbe.getID());
 							if (BLL.CourseInstructorBLL.editCourseInstructor(courseInstructor1, courseInstructor2)) {
 								LoadListInstructor();
+								addPageCourseInstructor();
 								JOptionPane.showMessageDialog(null, "Đã chỉnh sửa phân công thành công");
 							} else {
 								JOptionPane.showMessageDialog(null, "Đã chỉnh sửa phân công thất bại");
@@ -1550,6 +1595,7 @@ public class MainFrame extends JFrame {
 								if (new BLL.CourseInstructorBLL().deleteCourseInstructor(
 										courseSelectedinTable.getCourseID(), lectureSelectedinTalbe.getID())) {
 									LoadListInstructor();
+									addPageCourseInstructor();
 									JOptionPane.showMessageDialog(null, "Đã chỉnh sửa phân công thành công");
 								} else {
 									JOptionPane.showMessageDialog(null, "Đã chỉnh sửa phân công thất bại");
@@ -1572,6 +1618,7 @@ public class MainFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					LoadListInstructor();
+					addPageCourseInstructor();
 					JOptionPane.showMessageDialog(null, "Đã tải lại danh sách thành công");
 				} catch (Exception e2) {
 					e2.printStackTrace();
@@ -1704,13 +1751,18 @@ public class MainFrame extends JFrame {
 	public JTextField txtdateCourse;
 	private JPanel panel_8;
 	private JPanel panel_9;
+	private JPanel pnPageCourseIntructor;
+	private JPanel pnGradeCard;
+	private JPanel pnPageOnsite;
+	private JPanel pnPageOnline;
 
 	public void LoadListInstructor() {
 		courseInstructorList = null;
 		courseInstructorList = BLL.CourseInstructorBLL.gI().readAllCourseInstructor();
+		ArrayList<DTO.CourseInstructor> arrayList = BLL.CourseInstructorBLL.loadCourseInstructorByPage(1);
 		dtmCourseInstructor.setRowCount(0);
 		int i = 0;
-		for (CourseInstructor courseInstructor : courseInstructorList) {
+		for (CourseInstructor courseInstructor : arrayList) {
 			i++;
 			Vector<Object> vec = new Vector<Object>();
 			vec.add(String.valueOf(i));
@@ -1734,10 +1786,11 @@ public class MainFrame extends JFrame {
 	public void LoadListGrade() {
 		studentGradeList = null;
 		studentGradeList = BLL.StudentGradeBLL.gI().readAllGrade();
+		ArrayList<DTO.StudentGrade> arrayList = BLL.StudentGradeBLL.gI().LoaddGradeByPage(1);
 		dtmStudentGrade.setRowCount(0);
 		LoadListStudents();
 		LoadListCoursetoComboBox();
-		for (StudentGrade studentGrade : studentGradeList) {
+		for (StudentGrade studentGrade : arrayList) {
 			Vector<Object> vec = new Vector<Object>();
 			vec.add(studentGrade.getEnrollmentID());
 			for (DTO.Course course : coursesList) {
@@ -1760,8 +1813,9 @@ public class MainFrame extends JFrame {
 	public void LoadListLecture() {
 		lecturesList = null;
 		lecturesList = BLL.LectureBLL.gI().readLectures();
+		ArrayList<Person> arrayList = LectureBLL.gI().loadLecturesByPage(1);
 		dtmLecture.setRowCount(0);
-		for (Person person : lecturesList) {
+		for (Person person : arrayList) {
 			Vector<Object> vec = new Vector<Object>();
 			vec.add(person.getID());
 			vec.add(person.getFirstname());
@@ -1770,19 +1824,28 @@ public class MainFrame extends JFrame {
 			dtmLecture.addRow(vec);
 			cmbLectureIntructor.addItem(person);
 		}
+		for (Person person : lecturesList) {
+			cmbLectureIntructor.addItem(person);
+		}
 	}
 
 	public void LoadListStudents() {
 		studentsList = null;
 		studentsList = BLL.StudentBLL.gI().readStudens();
+		ArrayList<Person> arrayList = BLL.StudentBLL.gI().loadStudentsByPage(1);
 		dtmStudent.setRowCount(0);
-		for (Person person : studentsList) {
+		cmbStudent.removeAllItems();
+		for (Person person : arrayList) {
 			Vector<Object> vec = new Vector<Object>();
 			vec.add(person.getID());
 			vec.add(person.getFirstname());
 			vec.add(person.getLastname());
 			vec.add(person.getEnrollmentDate());
 			dtmStudent.addRow(vec);
+
+		}
+		// add combobox students
+		for (Person person : studentsList) {
 			cmbStudent.addItem(person);
 		}
 	}
@@ -1791,8 +1854,9 @@ public class MainFrame extends JFrame {
 		coursesOnLineList = null;
 		coursesOnLineList = BLL.CourseBLL.readOnlineCourse();
 		dtmcourseOnline.setRowCount(0);
+		ArrayList<Course> arrayList = BLL.CourseBLL.readOnlineCoursePage(1);
 		int i = 0;
-		for (Course course : coursesOnLineList) {
+		for (Course course : arrayList) {
 			i++;
 			Vector<Object> vec = new Vector<Object>();
 			vec.add(String.valueOf(i));
@@ -1812,9 +1876,10 @@ public class MainFrame extends JFrame {
 	public void LoadListOnsiteCourse() {
 		coursesOnsiteList = null;
 		coursesOnsiteList = BLL.CourseBLL.readOnsiteCourse();
+		ArrayList<Course> arrayList = new BLL.CourseBLL().readOnsiteCoursePage(1);
 		dtmcourseSite.setRowCount(0);
 		int i = 0;
-		for (Course course : coursesOnsiteList) {
+		for (Course course : arrayList) {
 			i++;
 			Vector<Object> vec = new Vector<Object>();
 			vec.add(String.valueOf(i));
@@ -1899,5 +1964,234 @@ public class MainFrame extends JFrame {
 		LoadComboTime();
 		LoadListOnsiteCourse();
 		LoadListOnlineCourse();
+		AddPageStudent();
+		addPageLecture();
+		addPageCourseInstructor();
+		addPageCourseGrade();
+		addPageOnsite();
+		addPageOnline();
+	}
+
+	private void addPageOnline() {
+		pnPageOnline.removeAll();
+		pnPageOnline.revalidate();
+		pnPageOnline.repaint();
+		LoadListOnlineCourse();
+//		coursesOnLineList = null;
+//		coursesOnLineList = BLL.CourseBLL.readOnlineCourse();
+		for (int i = 1; i <= (coursesOnLineList.size() / Contrains.pagesize) + 1; i++) {
+			JButton button = new JButton("" + i);
+			final int page = i;
+			button.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					dtmcourseOnline.setRowCount(0);
+					int j = 1;
+					ArrayList<Course> arrayList = new BLL.CourseBLL().readOnlineCoursePage(page);
+					for (Course course : arrayList) {
+						
+						Vector<Object> vec = new Vector<Object>();
+						vec.add(String.valueOf(j));
+						vec.add(course.getCourseID());
+						vec.add(course.getTitle());
+						for (Department department : departmentsList) {
+							if (department.getDepartmentID() == course.getDepartmentID()) {
+								vec.add(department.getName());
+								break;
+							}
+						}
+						vec.add(course.getOnlineCourse().getUrl());
+						dtmcourseOnline.addRow(vec);
+						j++;
+					}
+				}
+			});
+			pnPageOnline.add(button);
+
+		}
+
+	}
+
+	private void addPageOnsite() {
+		pnPageOnsite.removeAll();
+		pnPageOnsite.revalidate();
+		pnPageOnsite.repaint();
+		LoadListOnsiteCourse();
+		for (int i = 1; i <= (coursesOnsiteList.size() / Contrains.pagesize) + 1; i++) {
+			JButton button = new JButton("" + i);
+			final int page = i;
+			button.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					ArrayList<Course> arrayList = new BLL.CourseBLL().readOnsiteCoursePage(page);
+					dtmcourseSite.setRowCount(0);
+					int i = 0;
+					for (Course course : arrayList) {
+						i++;
+						Vector<Object> vec = new Vector<Object>();
+						vec.add(String.valueOf(i));
+						vec.add(course.getCourseID());
+						vec.add(course.getTitle());
+						for (Department department : departmentsList) {
+							if (department.getDepartmentID() == course.getDepartmentID()) {
+								vec.add(department.getName());
+								break;
+							}
+						}
+						vec.add(course.getOnsiteCourse().getLocation());
+						vec.add(course.getOnsiteCourse().getDays());
+						vec.add(course.getOnsiteCourse().getTime());
+						dtmcourseSite.addRow(vec);
+					}
+				}
+			});
+			pnPageOnsite.add(button);
+
+		}
+
+	}
+
+	private void addPageCourseGrade() {
+		pnGradeCard.removeAll();
+		pnGradeCard.revalidate();
+		pnGradeCard.repaint();
+		LoadListGrade();
+		for (int i = 1; i <= (studentGradeList.size() / Contrains.pagesize) + 1; i++) {
+			JButton button = new JButton("" + i);
+			final int page = i;
+			button.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					ArrayList<StudentGrade> arrayList = new BLL.StudentGradeBLL().LoaddGradeByPage(page);
+					dtmStudentGrade.setRowCount(0);
+					LoadListStudents();
+					LoadListCoursetoComboBox();
+					for (StudentGrade studentGrade : arrayList) {
+						Vector<Object> vec = new Vector<Object>();
+						vec.add(studentGrade.getEnrollmentID());
+						for (DTO.Course course : coursesList) {
+							if (course.getCourseID() == studentGrade.getCourseID()) {
+								vec.add(course.getTitle());
+								break;
+							}
+						}
+						for (DTO.Person per : studentsList) {
+							if (per.getID() == studentGrade.getStudentID()) {
+								vec.add(per.getFirstname() + " " + per.getLastname());
+								break;
+							}
+						}
+						vec.add(studentGrade.getGrade());
+						dtmStudentGrade.addRow(vec);
+					}
+
+				}
+			});
+			pnGradeCard.add(button);
+
+		}
+
+	}
+
+	private void addPageLecture() {
+		pnPageLecture.removeAll();
+		pnPageLecture.revalidate();
+		pnPageLecture.repaint();
+		LoadListLecture();
+		for (int i = 1; i <= (lecturesList.size() / Contrains.pagesize) + 1; i++) {
+			JButton button = new JButton("" + i);
+			final int page = i;
+			button.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					ArrayList<Person> arrayList = BLL.LectureBLL.gI().loadLecturesByPage(page);
+					dtmLecture.setRowCount(0);
+					for (Person person : arrayList) {
+						Vector<Object> vec = new Vector<Object>();
+						vec.add(person.getID());
+						vec.add(person.getFirstname());
+						vec.add(person.getLastname());
+						vec.add(person.getHireDate());
+						dtmLecture.addRow(vec);
+					}
+				}
+			});
+			pnPageLecture.add(button);
+
+		}
+
+	}
+
+	private void addPageCourseInstructor() {
+		pnPageCourseIntructor.removeAll();
+		pnPageCourseIntructor.revalidate();
+		pnPageCourseIntructor.repaint();
+		LoadListInstructor();
+		for (int i = 1; i <= (courseInstructorList.size() / Contrains.pagesize) + 1; i++) {
+			JButton button = new JButton("" + i);
+			final int page = i;
+			button.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					courseInstructorList = null;
+					courseInstructorList = BLL.CourseInstructorBLL.gI().loadCourseInstructorByPage(page);
+					dtmCourseInstructor.setRowCount(0);
+					int i = 0;
+					for (CourseInstructor courseInstructor : courseInstructorList) {
+						i++;
+						Vector<Object> vec = new Vector<Object>();
+						vec.add(String.valueOf(i));
+						for (DTO.Course course : coursesList) {
+							if (course.getCourseID() == courseInstructor.getCourseID()) {
+								vec.add(course.getTitle());
+								break;
+							}
+						}
+						for (DTO.Person per : lecturesList) {
+							if (per.getID() == courseInstructor.getPersonID()) {
+								vec.add(per.getFirstname() + " " + per.getLastname());
+								break;
+							}
+						}
+
+						dtmCourseInstructor.addRow(vec);
+					}
+				}
+			});
+			pnPageCourseIntructor.add(button);
+
+		}
+
+	}
+
+	private void AddPageStudent() {
+		pnPageStudents.removeAll();
+		pnPageStudents.revalidate();
+		pnPageStudents.repaint();
+		LoadListStudents();
+		for (int i = 1; i <= (studentsList.size() / Contrains.pagesize) + 1; i++) {
+			JButton button = new JButton("" + i);
+			final int page = i;
+			button.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					studentsList = null;
+					studentsList = BLL.StudentBLL.gI().loadStudentsByPage(page);
+					dtmStudent.setRowCount(0);
+					for (Person person : studentsList) {
+						Vector<Object> vec = new Vector<Object>();
+						vec.add(person.getID());
+						vec.add(person.getFirstname());
+						vec.add(person.getLastname());
+						vec.add(person.getEnrollmentDate());
+						dtmStudent.addRow(vec);
+					}
+				}
+			});
+			pnPageStudents.add(button);
+
+		}
+
 	}
 }
