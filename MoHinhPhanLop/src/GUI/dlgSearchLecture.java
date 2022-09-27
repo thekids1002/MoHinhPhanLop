@@ -46,8 +46,9 @@ public class dlgSearchLecture extends JDialog {
 	public dlgSearchLecture() {
 
 		CheckboxGroup cbg = new CheckboxGroup();
-		setTitle("Tìm Kiếm Sinh Viên");
+		setTitle("Tìm Kiếm Giáo Viên");
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		setLocationRelativeTo(null);
 		setBounds(100, 100, 583, 334);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

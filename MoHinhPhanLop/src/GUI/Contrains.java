@@ -3,7 +3,7 @@ package GUI;
 import java.util.ArrayList;
 
 public class Contrains {
-	public static int pagesize = 8;
+	public static int pagesize = 10;
 	public static ArrayList<String> vec;
 	public Contrains() {
 		vec = new ArrayList<String>();

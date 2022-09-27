@@ -73,7 +73,7 @@ public class LectureDAL {
 			Connection conn = DBConnect.getConnection();
 			Statement stmt = conn.createStatement();
 			ArrayList<Person> listStudents = new ArrayList<>();
-			String query = "SELECT * FROM person WHERE HireDate IS NOT NULL AND Firstname like ?";
+			String query = "SELECT * FROM person WHERE HireDate IS NOT NULL AND concat(FirstName,' ',LastName) like ?";
 			PreparedStatement pstm = conn.prepareStatement(query);
 			pstm.setString(1, "%" + name + "%");
 			ResultSet rs = pstm.executeQuery();

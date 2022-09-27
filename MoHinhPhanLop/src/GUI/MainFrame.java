@@ -538,13 +538,20 @@ public class MainFrame extends JFrame {
 						String location = txtLocation.getText();
 						String days = txtdateCourse.getText();
 						String timestr = cmbTimeCourse.getSelectedItem().toString();
-						Time time = java.sql.Time.valueOf(timestr);
-						OnsiteCourse onsiteCourse = new OnsiteCourse(id, location, days, time);
-						if (new BLL.OnsiteCourseBLL().addOnSiteCourse(onsiteCourse)) {
-							JOptionPane.showMessageDialog(null, "Đã thêm thành công khoá học Onsite");
-							LoadListOnsiteCourse();
-							addPageOnsite();
+						Time time = null;
+						try {
+							 time = java.sql.Time.valueOf(timestr);
+							 OnsiteCourse onsiteCourse = new OnsiteCourse(id, location, days, time);
+								if (new BLL.OnsiteCourseBLL().addOnSiteCourse(onsiteCourse)) {
+									JOptionPane.showMessageDialog(null, "Đã thêm thành công khoá học Onsite");
+									LoadListOnsiteCourse();
+									addPageOnsite();
+								}
+						} catch (IllegalArgumentException e2) {
+							e2.printStackTrace();
+							
 						}
+						
 					} else {
 						OnlineCourse onlineCourse = new OnlineCourse(id, url);
 						if (new BLL.OnlineCourseBLL().addOnlineCourse(onlineCourse)) {
@@ -1948,7 +1955,7 @@ public class MainFrame extends JFrame {
 //	}
 	public void LoadComboTime() {
 		cmbTimeCourse.removeAllItems();
-		cmbTimeCourse.addItem("Chọn giờ");
+		
 		for (String s : new Contrains().vec) {
 			cmbTimeCourse.addItem(s);
 		}
