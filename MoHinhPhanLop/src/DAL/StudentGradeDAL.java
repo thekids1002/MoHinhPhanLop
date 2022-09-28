@@ -68,6 +68,34 @@ public class StudentGradeDAL {
 		}
 		return null;
 	}
+	
+	
+	public ArrayList<StudentGrade> searchGradeByStudentID( int studentID) {
+		try {
+			Connection conn = DBConnect.getConnection();
+			Statement stmt = conn.createStatement();
+			ArrayList<StudentGrade> listStudentGrades = new ArrayList<>();
+			String query = "SELECT * FROM `studentgrade` where StudentID = ? ";
+			PreparedStatement pstm = conn.prepareStatement(query);
+			pstm.setInt(1, studentID);
+			ResultSet rs = pstm.executeQuery();
+			if (rs != null) {
+				int i = 1;
+				while (rs.next()) {
+					int idEn = rs.getInt("EnrollmentID");
+					int idCo = rs.getInt("CourseID");
+					int idSt = rs.getInt("StudentID");
+					float Grade = rs.getFloat("Grade");
+					StudentGrade stugrade = new StudentGrade(idEn, idCo, idSt, Grade);
+					listStudentGrades.add(stugrade);
+				}
+			}
+			conn.close();
+			return listStudentGrades;
+		} catch (Exception e) {
+		}
+		return null;
+	}
 
 	public boolean addStudentGrade(StudentGrade s) {
 		try {

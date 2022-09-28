@@ -1,0 +1,183 @@
+
+package GUI;
+
+import java.awt.BorderLayout;
+import java.awt.CheckboxGroup;
+import java.awt.EventQueue;
+
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+
+import DTO.CourseInstructor;
+import DTO.Person;
+import DTO.StudentGrade;
+
+import javax.swing.JTextField;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Vector;
+
+import javax.swing.JCheckBox;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+
+public class dlgSearchGrade extends JDialog {
+
+	private JPanel contentPane;
+	private JTextField txtKeyWord;
+	private JCheckBox cbxFindByLectureID;
+	private JCheckBox cbxFindByDay;
+	private JButton btnSearch;
+	private ButtonGroup buttonGroup;
+
+	/**
+	 * Launch the application.
+	 */
+
+	/**
+	 * Create the frame.
+	 */
+	public dlgSearchGrade() {
+
+		CheckboxGroup cbg = new CheckboxGroup();
+		setTitle("Tìm Kiếm Phân Công");
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		setBounds(100, 100, 583, 334);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+
+		txtKeyWord = new JTextField();
+		txtKeyWord.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		txtKeyWord.setBounds(194, 51, 348, 54);
+		contentPane.add(txtKeyWord);
+		txtKeyWord.setColumns(10);
+
+		JLabel lblNewLabel = new JLabel("Nhập Từ Khoá Cần Tìm");
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblNewLabel.setBounds(20, 50, 175, 54);
+		contentPane.add(lblNewLabel);
+		buttonGroup = new ButtonGroup();
+
+		cbxFindByLectureID = new JCheckBox("Tìm Theo Mã Học Viên");
+		cbxFindByLectureID.setSelected(true);
+		cbxFindByLectureID.setFont(new Font("Tahoma", Font.BOLD, 15));
+		cbxFindByLectureID.setBounds(194, 159, 215, 21);
+		contentPane.add(cbxFindByLectureID);
+
+		cbxFindByDay = new JCheckBox("Tìm theo ngày đăng kí");
+		cbxFindByDay.setFont(new Font("Tahoma", Font.BOLD, 15));
+		cbxFindByDay.setBounds(353, 159, 205, 21);
+		// contentPane.add(cbxFindByDay);
+
+		btnSearch = new JButton("Tìm");
+		btnSearch.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnSearch.setBounds(205, 230, 157, 44);
+		contentPane.add(btnSearch);
+		buttonGroup.add(cbxFindByDay);
+		buttonGroup.add(cbxFindByLectureID);
+		addEvent();
+	}
+
+	private void addEvent() {
+		btnSearch.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String id = txtKeyWord.getText();
+				if (!isNumber(id)) {
+					JOptionPane.showMessageDialog(null, "ID phải là số");
+					return;
+				}
+				if (cbxFindByLectureID.isSelected()) {
+					int ID = Integer.parseInt(id);
+					SearchByStudentID(ID);
+				} else {
+					JOptionPane.showMessageDialog(null, "Chưa chọn cách tìm kiếm");
+				}
+
+			}
+
+		});
+
+	}
+
+	protected void SearchByStudentID(int ID) {
+		
+		ArrayList<StudentGrade> arrayList = BLL.StudentGradeBLL.searchByStudentID(ID);
+		MainFrame.dtmCourseInstructor.setRowCount(0);
+		int i = 0;
+		if (arrayList != null && arrayList.size() > 0) {
+			MainFrame.pnGradeCard.removeAll();
+			MainFrame.pnGradeCard.revalidate();
+			MainFrame.pnGradeCard.repaint();
+			MainFrame.dtmStudentGrade.setRowCount(0);
+			for (StudentGrade studentGrade : arrayList) {
+				Vector<Object> vec = new Vector<Object>();
+				vec.add(studentGrade.getEnrollmentID());
+				for (DTO.Course course : MainFrame.coursesList) {
+					if (course.getCourseID() == studentGrade.getCourseID()) {
+						vec.add(course.getTitle());
+						break;
+					}
+				}
+				for (DTO.Person per : MainFrame.studentsList) {
+					if (per.getID() == studentGrade.getStudentID()) {
+						vec.add(per.getFirstname() + " " + per.getLastname());
+						break;
+					}
+				}
+				vec.add(studentGrade.getGrade());
+				MainFrame.dtmStudentGrade.addRow(vec);
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "Không tìm thấy sinh viên / Mã sinh viên không tồn tại");
+		}
+
+	}
+
+	protected void SearchByCourseID(int ID) {
+
+		ArrayList<DTO.CourseInstructor> arrayList = BLL.CourseInstructorBLL.searchByCourseID(ID);
+		MainFrame.dtmCourseInstructor.setRowCount(0);
+		int i = 0;
+		for (CourseInstructor courseInstructor : arrayList) {
+			i++;
+			Vector<Object> vec = new Vector<Object>();
+			vec.add(String.valueOf(i));
+			for (DTO.Course course : MainFrame.coursesList) {
+				if (course.getCourseID() == courseInstructor.getCourseID()) {
+					vec.add(course.getTitle());
+					break;
+				}
+			}
+			for (DTO.Person per : MainFrame.lecturesList) {
+				if (per.getID() == courseInstructor.getPersonID()) {
+					vec.add(per.getFirstname() + " " + per.getLastname());
+					break;
+				}
+			}
+
+			MainFrame.dtmCourseInstructor.addRow(vec);
+		}
+
+	}
+
+	public boolean isNumber(String s) {
+		try {
+			int a = Integer.parseInt(s);
+			return true;
+		} catch (Exception e) {
+
+			return false;
+		}
+	}
+}

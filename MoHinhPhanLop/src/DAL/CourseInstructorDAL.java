@@ -13,11 +13,11 @@ import DTO.Person;
 import GUI.Contrains;
 
 public class CourseInstructorDAL {
-	
+
 	public CourseInstructorDAL() {
 		super();
 	}
-	
+
 	public ArrayList<CourseInstructor> readCourseInstructors() {
 		try {
 			Connection conn = DBConnect.getConnection();
@@ -40,17 +40,92 @@ public class CourseInstructorDAL {
 		}
 		return null;
 	}
-	
-	public ArrayList<CourseInstructor> loadCourseInstructorByPage(int page){
+
+	public ArrayList<CourseInstructor> searchByCourseID(int ID) {
+		try {
+			Connection conn = DBConnect.getConnection();
+			ArrayList<CourseInstructor> listCourseinStructors = new ArrayList<CourseInstructor>();
+			String query = "SELECT * FROM `courseinstructor` where CourseID = ?";
+			PreparedStatement pstm = conn.prepareStatement(query);
+			pstm.setInt(1, ID);
+			ResultSet rs = pstm.executeQuery();
+			if (rs != null) {
+				int i = 1;
+				while (rs.next()) {
+					int idCourse = rs.getInt("CourseID");
+					int idPerson = rs.getInt("PersonId");
+					CourseInstructor course = new CourseInstructor(idCourse, idPerson);
+					listCourseinStructors.add(course);
+				}
+			}
+			conn.close();
+			return listCourseinStructors;
+		} catch (Exception e) {
+			e.printStackTrace();
+			;
+		}
+		return null;
+	}
+
+	public ArrayList<CourseInstructor> searchByLectureID(int ID) {
+		try {
+			Connection conn = DBConnect.getConnection();
+			ArrayList<CourseInstructor> listCourseinStructors = new ArrayList<CourseInstructor>();
+			String query = "SELECT * FROM `courseinstructor` where PersonID = ?";
+			PreparedStatement pstm = conn.prepareStatement(query);
+			pstm.setInt(1, ID);
+			ResultSet rs = pstm.executeQuery();
+			if (rs != null) {
+				int i = 1;
+				while (rs.next()) {
+					int idCourse = rs.getInt("CourseID");
+					int idPerson = rs.getInt("PersonId");
+					CourseInstructor course = new CourseInstructor(idCourse, idPerson);
+					listCourseinStructors.add(course);
+				}
+			}
+			conn.close();
+			return listCourseinStructors;
+		} catch (Exception e) {
+			e.printStackTrace();
+			;
+		}
+		return null;
+	}
+
+//	public ArrayList<String> searchByID(String name) {
+//		try {
+//			Connection conn = DBConnect.getConnection();
+//			Statement stmt = conn.createStatement();
+//			ArrayList<String> listCourseinStructors = new ArrayList<>();
+//			String query = "SELECT course.Title, concat(FirstName,' ',LastName) AS FullName FROM course, person where concat(FirstName,' ',LastName) like %?% AND person.PersonID IN (SELECT courseinstructor.PersonID FROM courseinstructor );";
+//			ResultSet rs = stmt.executeQuery(query);
+//			if (rs != null) {
+//				int i = 1;
+//				while (rs.next()) {
+//					int idCourse = rs.getInt("CourseID");
+//					int idPerson = rs.getInt("PersonId");
+//					CourseInstructor course = new CourseInstructor(idCourse, idPerson);
+//					listCourseinStructors.add(course);
+//				}
+//			}
+//			conn.close();
+//			return listCourseinStructors;
+//		} catch (Exception e) {
+//		}
+//		return null;
+//	}
+
+	public ArrayList<CourseInstructor> loadCourseInstructorByPage(int page) {
 		try {
 			int num_record = Contrains.pagesize;
 			ArrayList<CourseInstructor> list = this.readCourseInstructors();
 			int size = list.size();
 			System.out.println(size);
 			int from, to;
-			from = ( page - 1)  * num_record;
+			from = (page - 1) * num_record;
 			to = page * num_record;
-			List a =  list.subList(from, Math.min(to,size));
+			List a = list.subList(from, Math.min(to, size));
 			return list = new ArrayList<CourseInstructor>(a);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -58,7 +133,7 @@ public class CourseInstructorDAL {
 		}
 		return null;
 	}
-	
+
 	public boolean addCourseInstructor(CourseInstructor course) {
 		try {
 			String sql = "INSERT INTO `courseinstructor`( `CourseID`, `PersonID`) VALUES (?,?)";
@@ -68,14 +143,14 @@ public class CourseInstructorDAL {
 			pstm.setInt(2, course.getPersonID());
 			int i = pstm.executeUpdate();
 			conn.close();
-			return i > 0 ;
+			return i > 0;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return false;
 	}
-	
-	//Hai thằng đều là khóa chính thì hơi khó sửa
+
+	// Hai thằng đều là khóa chính thì hơi khó sửa
 	public boolean editCourseInstructor(CourseInstructor c, CourseInstructor c2) {
 		try {
 			String sql = "UPDATE `courseinstructor` SET `CourseID`= ? ,`PersonID`= ? WHERE CourseID = ? AND PersonID = ?";
@@ -87,13 +162,13 @@ public class CourseInstructorDAL {
 			pstm.setInt(4, c2.getPersonID());
 			int i = pstm.executeUpdate();
 			conn.close();
-			return i > 0 ;
+			return i > 0;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return false;
 	}
-	
+
 	public boolean deleteCourseInstructor(int idCourse, int idPerson) {
 		try {
 			String sql = "DELETE FROM `courseinstructor` WHERE CourseID = ? AND PersonID = ? ";
@@ -103,12 +178,15 @@ public class CourseInstructorDAL {
 			pstm.setInt(2, idPerson);
 			int i = pstm.executeUpdate();
 			conn.close();
-			return i > 0 ;
+			return i > 0;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return false;
 	}
-	
-	
+
+	public static void main(String[] args) {
+		System.out.println(new CourseInstructorDAL().searchByCourseID(2021));
+	}
+
 }

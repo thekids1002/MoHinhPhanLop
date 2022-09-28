@@ -19,13 +19,23 @@ public class CourseInstructorBLL {
 		}
 		return gI;
 	}
+
+	public static ArrayList<DTO.CourseInstructor> searchByCourseID(int ID) {
+		return new CourseInstructorDAL().searchByCourseID(ID);
+	}
 	
+	public static ArrayList<DTO.CourseInstructor> searchByLectureID(int ID) {
+		return new CourseInstructorDAL().searchByLectureID(ID);
+	}
+
 	public static ArrayList<DTO.CourseInstructor> readAllCourseInstructor() {
 		return new CourseInstructorDAL().readCourseInstructors();
 	}
+
 	public static ArrayList<DTO.CourseInstructor> loadCourseInstructorByPage(int page) {
 		return new CourseInstructorDAL().loadCourseInstructorByPage(page);
 	}
+
 	public static boolean addCourseInstructor(CourseInstructor instructor) {
 		if (instructor.getCourseID() < 0) {
 			JOptionPane.showMessageDialog(null, "Mã khóa học không được để trống ");
@@ -47,9 +57,9 @@ public class CourseInstructorBLL {
 			JOptionPane.showMessageDialog(null, "Mã giảng viên không được để trống");
 			return false;
 		}
-		return new CourseInstructorDAL().editCourseInstructor(instructor,instructor2);
+		return new CourseInstructorDAL().editCourseInstructor(instructor, instructor2);
 	}
-	
+
 	public boolean deleteCourseInstructor(int idCourse, int idPerson) {
 		if (idCourse < 0 || idPerson < 0) {
 			return false;

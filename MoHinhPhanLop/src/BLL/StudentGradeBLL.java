@@ -21,6 +21,9 @@ public class StudentGradeBLL {
 	public static ArrayList<DTO.StudentGrade> readAllGrade() {
 		return new StudentGradeDAL().gI().readStudentGrades();
 	}
+	public static ArrayList<DTO.StudentGrade> searchByStudentID(int ID) {
+		return new StudentGradeDAL().gI().searchGradeByStudentID(ID);
+	}
 	
 	public static ArrayList<DTO.StudentGrade> LoaddGradeByPage(int page) {
 		return new StudentGradeDAL().gI().loadGardeByPage(page);

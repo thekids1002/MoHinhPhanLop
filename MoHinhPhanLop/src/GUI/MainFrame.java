@@ -853,6 +853,13 @@ public class MainFrame extends JFrame {
 		panel_3.add(btnReloadCourseInstructor);
 
 		JButton btnSearchCourseIntructor = new JButton("Tìm");
+		btnSearchCourseIntructor.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dlgSearchCourseInstructor courseInstructor = new dlgSearchCourseInstructor();
+				courseInstructor.setVisible(true);
+				courseInstructor.setLocationRelativeTo(null);
+			}
+		});
 		btnSearchCourseIntructor.setIcon(new ImageIcon("img\\Search.png"));
 		btnSearchCourseIntructor.setFont(new Font("SansSerif", Font.BOLD, 15));
 		btnSearchCourseIntructor.setBounds(704, 217, 117, 42);
@@ -975,6 +982,11 @@ public class MainFrame extends JFrame {
 		panel_5.add(btnReloadStudentGrade);
 
 		JButton btnSearchStudentsGrade = new JButton("Tìm");
+		btnSearchStudentsGrade.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			new dlgSearchGrade().setVisible(true);
+			}
+		});
 		btnSearchStudentsGrade.setIcon(new ImageIcon("img\\Search.png"));
 		btnSearchStudentsGrade.setFont(new Font("SansSerif", Font.BOLD, 15));
 		btnSearchStudentsGrade.setBounds(704, 218, 117, 42);
@@ -1759,7 +1771,7 @@ public class MainFrame extends JFrame {
 	private JPanel panel_8;
 	private JPanel panel_9;
 	private JPanel pnPageCourseIntructor;
-	private JPanel pnGradeCard;
+	public static JPanel pnGradeCard;
 	private JPanel pnPageOnsite;
 	private JPanel pnPageOnline;
 
