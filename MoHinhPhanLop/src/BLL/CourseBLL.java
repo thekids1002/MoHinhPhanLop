@@ -23,6 +23,13 @@ public class CourseBLL {
 	public static ArrayList<DTO.Course> readOnlineCoursePage(int Page) {
 		return new CourseDAL().loadOnlineCourses(Page);
 	}
+	
+	public static ArrayList<DTO.Course> searchOnline(int ID) {
+		return new CourseDAL().searchOnlineByID(ID);
+	}
+	public static ArrayList<DTO.Course> searchOnsite(int ID) {
+		return new CourseDAL().searchOnsiteByID(ID);
+	}
 
 	public static ArrayList<DTO.Course> readOnlineCourse() {
 		return new CourseDAL().readOnlineCourse();

@@ -712,6 +712,11 @@ public class MainFrame extends JFrame {
 		panel_1.add(txtdateCourse);
 
 		JButton btnSearchStudentsGrade_1 = new JButton("Tìm");
+		btnSearchStudentsGrade_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new dlgSearchCourse().setVisible(true);
+			}
+		});
 		btnSearchStudentsGrade_1.setIcon(new ImageIcon("img\\Search.png"));
 		btnSearchStudentsGrade_1.setBounds(697, 217, 117, 42);
 		panel_1.add(btnSearchStudentsGrade_1);
