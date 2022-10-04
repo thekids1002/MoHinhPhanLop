@@ -15,14 +15,17 @@ import DTO.OnsiteCourse;
 import GUI.Contrains;
 
 public class CourseDAL {
+	Connection conn;
 
 	public CourseDAL() {
 		super();
+
+		conn = DBConnect.getConnection();
 	}
 
 	public ArrayList<Course> readCourses() {
 		try {
-			Connection conn = DBConnect.getConnection();
+
 			Statement stmt = conn.createStatement();
 			ArrayList<Course> listCourses = new ArrayList<>();
 			String query = "SELECT * FROM `course`";
@@ -47,7 +50,7 @@ public class CourseDAL {
 
 	public ArrayList<Course> readOnsiteCourse() {
 		try {
-			Connection conn = DBConnect.getConnection();
+
 			Statement stmt = conn.createStatement();
 			ArrayList<Course> listCourses = new ArrayList<>();
 			String query = "SELECT course.CourseID, course.Title, course.Credits, course.DepartmentID, onsitecourse.Location, onsitecourse.Days, onsitecourse.Time FROM `course` , onsitecourse WHERE course.CourseID = onsitecourse.CourseID";
@@ -112,7 +115,7 @@ public class CourseDAL {
 
 	public ArrayList<Course> readOnlineCourse() {
 		try {
-			Connection conn = DBConnect.getConnection();
+
 			Statement stmt = conn.createStatement();
 			ArrayList<Course> listCourses = new ArrayList<>();
 			String query = "SELECT course.CourseID, course.Title, course.Credits, course.DepartmentID, onlinecourse.url FROM `course` , onlinecourse WHERE course.CourseID = onlinecourse.CourseID;";
@@ -140,7 +143,7 @@ public class CourseDAL {
 	public int addCourse(Course course) {
 		try {
 			String sql = "INSERT INTO `course`( `Title`, `Credits`, `DepartmentID`) VALUES (?,?,?)";
-			Connection conn = DBConnect.getConnection();
+
 			PreparedStatement pstm = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			pstm.setString(1, course.getTitle());
 			pstm.setInt(2, course.getCredits());
@@ -162,7 +165,7 @@ public class CourseDAL {
 	public boolean editCourse(Course c) {
 		try {
 			String sql = "UPDATE `course` SET `Title`= ? ,`Credits`= ? ,`DepartmentID`= ? WHERE CourseID = ? ";
-			Connection conn = DBConnect.getConnection();
+
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setString(1, c.getTitle());
 			pstm.setInt(2, c.getCredits());
@@ -180,7 +183,7 @@ public class CourseDAL {
 	public boolean deleteCourse(int idCourse) {
 		try {
 			String sql = "DELETE FROM `course` WHERE CourseID = ? ";
-			Connection conn = DBConnect.getConnection();
+
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setInt(1, idCourse);
 			int i = pstm.executeUpdate();
@@ -194,7 +197,7 @@ public class CourseDAL {
 
 	public ArrayList<Course> searchOnsiteByID(int ID) {
 		try {
-			Connection conn = DBConnect.getConnection();
+
 			Statement stmt = conn.createStatement();
 			ArrayList<Course> listCourses = new ArrayList<>();
 			String query = "SELECT course.CourseID, course.Title, course.Credits, course.DepartmentID, onsitecourse.Location, onsitecourse.Days, onsitecourse.Time FROM `course` , onsitecourse WHERE course.CourseID = ?";
@@ -222,10 +225,10 @@ public class CourseDAL {
 		}
 		return null;
 	}
-	
+
 	public ArrayList<Course> searchOnlineByID(int ID) {
 		try {
-			Connection conn = DBConnect.getConnection();
+
 			ArrayList<Course> listCourses = new ArrayList<>();
 			String query = "SELECT course.CourseID, course.Title, course.Credits, course.DepartmentID, onlinecourse.url FROM `course` , onlinecourse WHERE course.CourseID = ?";
 			PreparedStatement preparedStatement = conn.prepareStatement(query);
@@ -251,11 +254,10 @@ public class CourseDAL {
 		return null;
 	}
 
-
 	public static void main(String[] args) {
 		CourseDAL c1 = new CourseDAL();
-		//c1.addCourse(course);
-		//c1.deleteCourse(1111);
+		// c1.addCourse(course);
+		// c1.deleteCourse(1111);
 		System.out.println(c1.searchOnlineByID(1045));
 	}
 

@@ -93,29 +93,6 @@ public class CourseInstructorDAL {
 		return null;
 	}
 
-//	public ArrayList<String> searchByID(String name) {
-//		try {
-//			Connection conn = DBConnect.getConnection();
-//			Statement stmt = conn.createStatement();
-//			ArrayList<String> listCourseinStructors = new ArrayList<>();
-//			String query = "SELECT course.Title, concat(FirstName,' ',LastName) AS FullName FROM course, person where concat(FirstName,' ',LastName) like %?% AND person.PersonID IN (SELECT courseinstructor.PersonID FROM courseinstructor );";
-//			ResultSet rs = stmt.executeQuery(query);
-//			if (rs != null) {
-//				int i = 1;
-//				while (rs.next()) {
-//					int idCourse = rs.getInt("CourseID");
-//					int idPerson = rs.getInt("PersonId");
-//					CourseInstructor course = new CourseInstructor(idCourse, idPerson);
-//					listCourseinStructors.add(course);
-//				}
-//			}
-//			conn.close();
-//			return listCourseinStructors;
-//		} catch (Exception e) {
-//		}
-//		return null;
-//	}
-
 	public ArrayList<CourseInstructor> loadCourseInstructorByPage(int page) {
 		try {
 			int num_record = Contrains.pagesize;

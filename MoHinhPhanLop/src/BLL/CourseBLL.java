@@ -8,16 +8,16 @@ import DAL.CourseDAL;
 import DTO.Course;
 
 public class CourseBLL {
-	public static ArrayList<DTO.Course> readAllCourse() {
+	public  ArrayList<DTO.Course> readAllCourse() {
 		return new CourseDAL().readCourses();
 	}
 
-	public static ArrayList<DTO.Course> readOnsiteCourse() {
+	public  ArrayList<DTO.Course> readOnsiteCourse() {
 		return new CourseDAL().readOnsiteCourse();
 	}
 
 	public static ArrayList<DTO.Course> readOnsiteCoursePage(int Page) {
-		return new CourseDAL().loadOnsiteCourses(Page);
+		return new  CourseDAL().loadOnsiteCourses(Page);
 	}
 
 	public static ArrayList<DTO.Course> readOnlineCoursePage(int Page) {
@@ -37,12 +37,11 @@ public class CourseBLL {
 
 	public static int addCourse(Course course) {
 		if (course.getTitle().isEmpty()) {
-			JOptionPane.showMessageDialog(null, "Tên khoá học không được để trống");
 			return -1;
 		}
 		if (course.getDepartmentID() < 0) {
-			JOptionPane.showMessageDialog(null, "Tên khoa không được để trống");
-			return -1;
+			
+			return -2;
 		}
 		return new CourseDAL().addCourse(course);
 	}

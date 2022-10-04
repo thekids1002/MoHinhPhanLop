@@ -14,6 +14,7 @@ import GUI.Contrains;
 
 public class StudentGradeDAL {
 	public static StudentGradeDAL gI;
+	Connection conn;
 
 	public static StudentGradeDAL gI() {
 		if (gI == null) {
@@ -24,6 +25,7 @@ public class StudentGradeDAL {
 
 	public StudentGradeDAL() {
 		super();
+		conn = DBConnect.getConnection();
 	}
 
 	public ArrayList<StudentGrade> loadGardeByPage(int page) {
@@ -46,7 +48,7 @@ public class StudentGradeDAL {
 
 	public ArrayList<StudentGrade> readStudentGrades() {
 		try {
-			Connection conn = DBConnect.getConnection();
+
 			Statement stmt = conn.createStatement();
 			ArrayList<StudentGrade> listStudentGrades = new ArrayList<>();
 			String query = "SELECT * FROM `studentgrade` ";
@@ -62,17 +64,16 @@ public class StudentGradeDAL {
 					listStudentGrades.add(stugrade);
 				}
 			}
-			conn.close();
+
 			return listStudentGrades;
 		} catch (Exception e) {
 		}
 		return null;
 	}
-	
-	
-	public ArrayList<StudentGrade> searchGradeByStudentID( int studentID) {
+
+	public ArrayList<StudentGrade> searchGradeByStudentID(int studentID) {
 		try {
-			Connection conn = DBConnect.getConnection();
+
 			Statement stmt = conn.createStatement();
 			ArrayList<StudentGrade> listStudentGrades = new ArrayList<>();
 			String query = "SELECT * FROM `studentgrade` where StudentID = ? ";
@@ -90,7 +91,7 @@ public class StudentGradeDAL {
 					listStudentGrades.add(stugrade);
 				}
 			}
-			conn.close();
+
 			return listStudentGrades;
 		} catch (Exception e) {
 		}
@@ -100,13 +101,13 @@ public class StudentGradeDAL {
 	public boolean addStudentGrade(StudentGrade s) {
 		try {
 			String sql = "INSERT INTO `studentgrade`( `CourseID`, `StudentID`, `Grade`) VALUES (?,?,?)";
-			Connection conn = DBConnect.getConnection();
+
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setInt(1, s.getCourseID());
 			pstm.setInt(2, s.getStudentID());
 			pstm.setFloat(3, s.getGrade());
 			int i = pstm.executeUpdate();
-			conn.close();
+
 			return i > 0;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -117,14 +118,14 @@ public class StudentGradeDAL {
 	public boolean editStudentGrade(StudentGrade s) {
 		try {
 			String sql = "UPDATE `studentgrade` SET `CourseID`= ? ,`StudentID`= ? ,`Grade`= ? WHERE EnrollmentID = ?";
-			Connection conn = DBConnect.getConnection();
+
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setInt(1, s.getCourseID());
 			pstm.setInt(2, s.getStudentID());
 			pstm.setFloat(3, s.getGrade());
 			pstm.setInt(4, s.getEnrollmentID());
 			int i = pstm.executeUpdate();
-			conn.close();
+
 			return i > 0;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -135,11 +136,11 @@ public class StudentGradeDAL {
 	public boolean deleteStudentGrade(int id) {
 		try {
 			String sql = "DELETE FROM `studentgrade` WHERE EnrollmentID = ? ";
-			Connection conn = DBConnect.getConnection();
+
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setInt(1, id);
 			int i = pstm.executeUpdate();
-			conn.close();
+
 			return i > 0;
 		} catch (Exception e) {
 			e.printStackTrace();

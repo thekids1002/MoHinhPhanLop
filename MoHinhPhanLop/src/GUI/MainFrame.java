@@ -540,26 +540,49 @@ public class MainFrame extends JFrame {
 						String timestr = cmbTimeCourse.getSelectedItem().toString();
 						Time time = null;
 						try {
-							 time = java.sql.Time.valueOf(timestr);
-							 OnsiteCourse onsiteCourse = new OnsiteCourse(id, location, days, time);
-								if (new BLL.OnsiteCourseBLL().addOnSiteCourse(onsiteCourse)) {
-									JOptionPane.showMessageDialog(null, "Đã thêm thành công khoá học Onsite");
-									LoadListOnsiteCourse();
-									addPageOnsite();
-								}
+							time = java.sql.Time.valueOf(timestr);
+							OnsiteCourse onsiteCourse = new OnsiteCourse(id, location, days, time);
+							if (onsiteCourse.getDays().isEmpty() || onsiteCourse.getDays().isBlank()) {
+								JOptionPane.showMessageDialog(null, "Không được để trống ngày");
+								return;
+							}
+							if (onsiteCourse.getLocation().isEmpty()) {
+								JOptionPane.showMessageDialog(null, "Không được để trống phòng học");
+								return;
+							}
+							if (onsiteCourse.getTime() == null) {
+								JOptionPane.showMessageDialog(null, "Thời gian sai");
+								return;
+							}
+							if (new BLL.OnsiteCourseBLL().addOnSiteCourse(onsiteCourse)) {
+								JOptionPane.showMessageDialog(null, "Đã thêm thành công khoá học Onsite");
+								LoadListOnsiteCourse();
+								addPageOnsite();
+							}
 						} catch (IllegalArgumentException e2) {
 							e2.printStackTrace();
-							
 						}
-						
+
 					} else {
 						OnlineCourse onlineCourse = new OnlineCourse(id, url);
+						if (onlineCourse.getUrl().isEmpty()) {
+							JOptionPane.showMessageDialog(null, "Không được để trống URL");
+							return;
+						}
+						if (onlineCourse.getCourseID() < 0) {
+							JOptionPane.showMessageDialog(null, "Lỗi không có ID");
+							return;
+						}
 						if (new BLL.OnlineCourseBLL().addOnlineCourse(onlineCourse)) {
 							JOptionPane.showMessageDialog(null, "Đã thêm thành công khoá học Online");
 							LoadListOnlineCourse();
 							addPageOnline();
 						}
 					}
+				} else if (id == -1) {
+					JOptionPane.showMessageDialog(null, "Tên khoá học không được để trống");
+				} else if (id == -2) {
+					JOptionPane.showMessageDialog(null, "Tên khoa không được để trống");
 				}
 
 			}
@@ -585,22 +608,28 @@ public class MainFrame extends JFrame {
 					int id = Integer.parseInt(dtmcourseSite.getValueAt(i, 1).toString());
 					Course course = new Course(id, TenKH, 1, Khoa);
 					if (BLL.CourseBLL.editCourse(course)) {
-						JOptionPane.showMessageDialog(null, "Đã sửa thành công");
+						// JOptionPane.showMessageDialog(null, "Đã sửa thành công");
 						if (url.isBlank() || url.isEmpty()) {
 							String location = txtLocation.getText();
 							String days = txtdateCourse.getText();
 							String timestr = cmbTimeCourse.getSelectedItem().toString();
 							Time time = java.sql.Time.valueOf(timestr);
 							OnsiteCourse onsiteCourse = new OnsiteCourse(id, location, days, time);
+							if (onsiteCourse.getDays().isEmpty() || onsiteCourse.getDays().isBlank()) {
+								JOptionPane.showMessageDialog(null, "Không được để trống ngày");
+								return;
+							}
+							if (onsiteCourse.getLocation().isEmpty()) {
+								JOptionPane.showMessageDialog(null, "Không được để trống phòng học");
+								return;
+							}
+							if (onsiteCourse.getTime() == null) {
+								JOptionPane.showMessageDialog(null, "Thời gian sai");
+								return;
+							}
 							if (new BLL.OnsiteCourseBLL().editOnSiteCourse(onsiteCourse)) {
 								JOptionPane.showMessageDialog(null, "Đã sửa thành công khoá học Onsite");
 								LoadListOnsiteCourse();
-							}
-						} else {
-							OnlineCourse onlineCourse = new OnlineCourse(id, url);
-							if (new BLL.OnlineCourseBLL().editOnlineCourse(onlineCourse)) {
-								JOptionPane.showMessageDialog(null, "Đã thêm thành công khoá học Online");
-								LoadListOnlineCourse();
 							}
 						}
 					} else {
@@ -618,24 +647,22 @@ public class MainFrame extends JFrame {
 					int id = Integer.parseInt(dtmcourseOnline.getValueAt(j, 1).toString());
 					Course course = new Course(id, TenKH, 1, Khoa);
 					if (BLL.CourseBLL.editCourse(course)) {
-						JOptionPane.showMessageDialog(null, "Đã sửa thành công");
-						if (url.isBlank() || url.isEmpty()) {
-							String location = txtLocation.getText();
-							String days = txtdateCourse.getText();
-							String timestr = cmbTimeCourse.getSelectedItem().toString();
-							Time time = java.sql.Time.valueOf(timestr);
-							OnsiteCourse onsiteCourse = new OnsiteCourse(id, location, days, time);
-							if (new BLL.OnsiteCourseBLL().editOnSiteCourse(onsiteCourse)) {
-								JOptionPane.showMessageDialog(null, "Đã sửa thành công khoá học Onsite");
-								LoadListOnsiteCourse();
-							}
-						} else {
-							OnlineCourse onlineCourse = new OnlineCourse(id, url);
-							if (new BLL.OnlineCourseBLL().editOnlineCourse(onlineCourse)) {
-								JOptionPane.showMessageDialog(null, "Đã thêm thành công khoá học Online");
-								LoadListOnlineCourse();
-							}
+						OnlineCourse onlineCourse = new OnlineCourse(id, url);
+						if (onlineCourse.getUrl().isEmpty()) {
+							JOptionPane.showMessageDialog(null, "Không được để trống URL");
+							return;
 						}
+						if (onlineCourse.getCourseID() < 0) {
+							JOptionPane.showMessageDialog(null, "Lỗi không có ID");
+							return;
+						}
+						if (new BLL.OnlineCourseBLL().editOnlineCourse(onlineCourse)) {
+							JOptionPane.showMessageDialog(null, "Đã sửa thành công khoá học Online");
+							LoadListOnlineCourse();
+						} else {
+							JOptionPane.showMessageDialog(null, "Đã có lỗi xảy ra");
+						}
+						// }
 					} else {
 						JOptionPane.showMessageDialog(null, "Có lỗi xảy ra");
 					}
@@ -989,7 +1016,7 @@ public class MainFrame extends JFrame {
 		JButton btnSearchStudentsGrade = new JButton("Tìm");
 		btnSearchStudentsGrade.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			new dlgSearchGrade().setVisible(true);
+				new dlgSearchGrade().setVisible(true);
 			}
 		});
 		btnSearchStudentsGrade.setIcon(new ImageIcon("img\\Search.png"));
@@ -1109,6 +1136,18 @@ public class MainFrame extends JFrame {
 				String firstName = txtLectureFirstName.getText();
 				Date dateLecture = dateLectures.getDate();
 				Person person = new Person(0, lastName, firstName, dateLecture, null);
+				if (person.getFirstname().isEmpty() || person.getLastname().isBlank()) {
+					JOptionPane.showMessageDialog(null, "Bạn không được để trống tên");
+					return;
+				}
+				if (person.getLastname().isEmpty() || person.getLastname().isBlank()) {
+					JOptionPane.showMessageDialog(null, "Bạn không được để trống họ");
+					return;
+				}
+				if (person.getHireDate() == null) {
+					JOptionPane.showMessageDialog(null, "Bạn không được để trống ngày thuê");
+					return;
+				}
 				if (LectureBLL.gI().addLecture(person)) {
 					LoadListLecture();
 					addPageLecture();
@@ -1130,6 +1169,18 @@ public class MainFrame extends JFrame {
 					if (i >= 0) {
 						int ID = Integer.parseInt(dtmLecture.getValueAt(i, 0).toString());
 						Person person = new Person(ID, lastName, firstName, dateLecture, null);
+						if (person.getFirstname().isEmpty() || person.getLastname().isBlank()) {
+							JOptionPane.showMessageDialog(null, "Bạn không được để trống tên");
+							return;
+						}
+						if (person.getLastname().isEmpty() || person.getLastname().isBlank()) {
+							JOptionPane.showMessageDialog(null, "Bạn không được để trống họ");
+							return;
+						}
+						if (person.getHireDate() == null) {
+							JOptionPane.showMessageDialog(null, "Bạn không được để trống ngày thuê");
+							return;
+						}
 						if (LectureBLL.gI().editLecture(person)) {
 							LoadListLecture();
 							addPageLecture();
@@ -1244,6 +1295,18 @@ public class MainFrame extends JFrame {
 				String firstName = txtStudentsFirstName.getText();
 				Date dateenrollment = dateEnrollment.getDate();
 				Person person = new Person(0, lastName, firstName, null, dateenrollment);
+				if (person.getFirstname().isEmpty() || person.getLastname().isBlank()) {
+					JOptionPane.showMessageDialog(null, "Bạn không được để trống tên");
+					return;
+				}
+				if (person.getLastname().isEmpty() || person.getLastname().isBlank()) {
+					JOptionPane.showMessageDialog(null, "Bạn không được để trống họ");
+					return;
+				}
+				if (person.getEnrollmentDate() == null) {
+					JOptionPane.showMessageDialog(null, "Bạn không được để trống ngày đăng kí");
+					return;
+				}
 				if (StudentBLL.gI().addStudents(person)) {
 					LoadListStudents();
 					AddPageStudent();
@@ -1266,6 +1329,18 @@ public class MainFrame extends JFrame {
 					if (i >= 0) {
 						int ID = Integer.parseInt(dtmStudent.getValueAt(i, 0).toString());
 						Person person = new Person(ID, lastName, firstName, null, dateenrollment);
+						if (person.getFirstname().isEmpty() || person.getLastname().isBlank()) {
+							JOptionPane.showMessageDialog(null, "Bạn không được để trống tên");
+							return;
+						}
+						if (person.getLastname().isEmpty() || person.getLastname().isBlank()) {
+							JOptionPane.showMessageDialog(null, "Bạn không được để trống họ");
+							return;
+						}
+						if (person.getEnrollmentDate() == null) {
+							JOptionPane.showMessageDialog(null, "Bạn không được để trống ngày đăng kí");
+							return;
+						}
 						if (StudentBLL.gI().editStudents(person)) {
 							LoadListStudents();
 							AddPageStudent();
@@ -1408,6 +1483,18 @@ public class MainFrame extends JFrame {
 						return;
 					}
 					StudentGrade studentGrade = new StudentGrade(0, course.getCourseID(), student.getID(), grade);
+					if (studentGrade.getGrade() > 10 || studentGrade.getGrade() < 0) {
+						JOptionPane.showMessageDialog(null, "Điểm không hợp lệ");
+						return;
+					}
+					if (studentGrade.getCourseID() < 0) {
+						JOptionPane.showMessageDialog(null, "Tên khóa học không được để trống");
+						return;
+					}
+					if (studentGrade.getStudentID() < 0) {
+						JOptionPane.showMessageDialog(null, "Tên học viên không được để trống");
+						return;
+					}
 					if (StudentGradeBLL.gI().addGrade(studentGrade)) {
 						addPageCourseGrade();
 						LoadListGrade();
@@ -1437,6 +1524,18 @@ public class MainFrame extends JFrame {
 							int ID = Integer.parseInt(IDstr);
 							StudentGrade studentGrade = new StudentGrade(ID, course.getCourseID(), student.getID(),
 									grade1);
+							if (studentGrade.getGrade() > 10 || studentGrade.getGrade() < 0) {
+								JOptionPane.showMessageDialog(null, "Điểm không hợp lệ");
+								return;
+							}
+							if (studentGrade.getCourseID() < 0) {
+								JOptionPane.showMessageDialog(null, "Tên khóa học không được để trống");
+								return;
+							}
+							if (studentGrade.getStudentID() < 0) {
+								JOptionPane.showMessageDialog(null, "Tên học viên không được để trống");
+								return;
+							}
 							if (StudentGradeBLL.gI().editGrade(studentGrade)) {
 								LoadListGrade();
 								LoadListStudents();
@@ -1565,6 +1664,14 @@ public class MainFrame extends JFrame {
 				if (courseSelected != null && lectureSelected != null) {
 					CourseInstructor courseInstructor = new CourseInstructor(courseSelected.getCourseID(),
 							lectureSelected.getID());
+					if (courseInstructor.getCourseID() < 0) {
+						JOptionPane.showMessageDialog(null, "Mã khóa học không được để trống ");
+						return;
+					}
+					if (courseInstructor.getPersonID() < 0) {
+						JOptionPane.showMessageDialog(null, "Mã giảng viên không được để trống");
+						return;
+					}
 					if (CourseInstructorBLL.gI().addCourseInstructor(courseInstructor)) {
 						addPageCourseInstructor();
 						JOptionPane.showMessageDialog(null, "Đã thêm thành công");
@@ -1588,6 +1695,14 @@ public class MainFrame extends JFrame {
 									lectureSelected.getID());
 							CourseInstructor courseInstructor2 = new CourseInstructor(
 									courseSelectedinTable.getCourseID(), lectureSelectedinTalbe.getID());
+							if (courseInstructor2.getCourseID() < 0) {
+								JOptionPane.showMessageDialog(null, "Mã khóa học không được để trống ");
+								return;
+							}
+							if (courseInstructor2.getPersonID() < 0) {
+								JOptionPane.showMessageDialog(null, "Mã giảng viên không được để trống");
+								return;
+							}
 							if (BLL.CourseInstructorBLL.editCourseInstructor(courseInstructor1, courseInstructor2)) {
 								LoadListInstructor();
 								addPageCourseInstructor();
@@ -1899,7 +2014,7 @@ public class MainFrame extends JFrame {
 
 	public void LoadListOnsiteCourse() {
 		coursesOnsiteList = null;
-		coursesOnsiteList = BLL.CourseBLL.readOnsiteCourse();
+		coursesOnsiteList = new BLL.CourseBLL().readOnsiteCourse();
 		ArrayList<Course> arrayList = new BLL.CourseBLL().readOnsiteCoursePage(1);
 		dtmcourseSite.setRowCount(0);
 		int i = 0;
@@ -1933,7 +2048,7 @@ public class MainFrame extends JFrame {
 
 	public void LoadListCoursetoComboBox() {
 		coursesList = null;
-		coursesList = BLL.CourseBLL.readAllCourse();
+		coursesList = new BLL.CourseBLL().readAllCourse();
 		cmbCourseIntructor.removeAllItems();
 		for (Course course : coursesList) {
 			cmbCourseIntructor.addItem(course);
@@ -1972,7 +2087,7 @@ public class MainFrame extends JFrame {
 //	}
 	public void LoadComboTime() {
 		cmbTimeCourse.removeAllItems();
-		
+
 		for (String s : new Contrains().vec) {
 			cmbTimeCourse.addItem(s);
 		}
@@ -2013,7 +2128,7 @@ public class MainFrame extends JFrame {
 					int j = 1;
 					ArrayList<Course> arrayList = new BLL.CourseBLL().readOnlineCoursePage(page);
 					for (Course course : arrayList) {
-						
+
 						Vector<Object> vec = new Vector<Object>();
 						vec.add(String.valueOf(j));
 						vec.add(course.getCourseID());

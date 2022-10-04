@@ -15,11 +15,11 @@ import DTO.StudentGrade;
 import GUI.Contrains;
 
 public class OnsiteCourseDAL {
-
+	Connection conn;
 	public OnsiteCourseDAL() {
 		super();
+		conn = DBConnect.getConnection();
 	}
-	
 	
 	public ArrayList<OnsiteCourse> loadOnsiteCourses(int page){
 		try {
@@ -40,7 +40,7 @@ public class OnsiteCourseDAL {
 	}
 	public ArrayList<OnsiteCourse> readOnsiteCourses() {
 		try {
-			Connection conn = DBConnect.getConnection();
+			
 			Statement stmt = conn.createStatement();
 			ArrayList<OnsiteCourse> listOnsiteCourses = new ArrayList<>();
 			String query = "SELECT * FROM `onsitecourse` ";
@@ -56,7 +56,7 @@ public class OnsiteCourseDAL {
 					listOnsiteCourses.add(onsitecourse);
 				}
 			}
-			conn.close();
+			
 			return listOnsiteCourses;
 		} catch (Exception e) {
 		}
@@ -66,14 +66,14 @@ public class OnsiteCourseDAL {
 	public boolean addOnsiteCourse(OnsiteCourse o) {
 		try {
 			String sql = "INSERT INTO `onsitecourse`( `CourseID`, `Location`, `Days`, `Time`) VALUES (?,?,?,?)";
-			Connection conn = DBConnect.getConnection();
+			
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setInt(1, o.getCourseID());
 			pstm.setString(2, o.getLocation());
 			pstm.setString(3, o.getDays());
 			pstm.setTime(4, o.getTime());
 			int i = pstm.executeUpdate();
-			conn.close();
+			
 			return i > 0 ;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -84,14 +84,14 @@ public class OnsiteCourseDAL {
 	public boolean editOnsiteCourse(OnsiteCourse o) {
 		try {
 			String sql = "UPDATE `onsitecourse` SET `Location`= ? ,`Days`= ? ,`Time`= ? WHERE CourseID = ?";
-			Connection conn = DBConnect.getConnection();
+			
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setString(1, o.getLocation());
 			pstm.setString(2, o.getDays());
 			pstm.setTime(3, o.getTime());
 			pstm.setInt(4, o.getCourseID());
 			int i = pstm.executeUpdate();
-			conn.close();
+			
 			return i > 0 ;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -101,11 +101,10 @@ public class OnsiteCourseDAL {
 	public boolean deleteOnsiteCourse(int id) {
 		try {
 			String sql = "DELETE FROM `onsitecourse` WHERE CourseID = ? ";
-			Connection conn = DBConnect.getConnection();
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setInt(1, id);
 			int i = pstm.executeUpdate();
-			conn.close();
+			
 			return i > 0 ;
 		} catch (Exception e) {
 			e.printStackTrace();

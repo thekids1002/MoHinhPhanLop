@@ -29,48 +29,26 @@ public class LectureBLL {
 	public ArrayList<Person> searchByName(String name) {
 		return LectureDAL.gI().searchByName(name);
 	}
-	
-	public ArrayList<Person> loadLecturesByPage(int page){
-		return LectureDAL.gI().loadStudentsByPage(page);
+
+	public ArrayList<Person> loadLecturesByPage(int page) {
+		return LectureDAL.gI().loadLecturesByPage(page);
 	}
 
 	public boolean editLecture(Person person) {
-		if (person.getFirstname().isEmpty() || person.getLastname().isBlank()) {
-			JOptionPane.showMessageDialog(null, "Bạn không được để trống tên");
-			return false;
-		}
-		if (person.getLastname().isEmpty() || person.getLastname().isBlank()) {
-			JOptionPane.showMessageDialog(null, "Bạn không được để trống họ");
-			return false;
-		}
-		if (person.getHireDate() == null) {
-			JOptionPane.showMessageDialog(null, "Bạn không được để trống ngày thuê");
-			return false;
-		}
+
 		return LectureDAL.gI().editLecture(person);
 	}
 
 	public boolean addLecture(Person person) {
-		if (person.getFirstname().isEmpty() || person.getLastname().isBlank()) {
-			JOptionPane.showMessageDialog(null, "Bạn không được để trống tên");
-			return false;
-		}
-		if (person.getLastname().isEmpty() || person.getLastname().isBlank()) {
-			JOptionPane.showMessageDialog(null, "Bạn không được để trống họ");
-			return false;
-		}
-		if (person.getHireDate() == null) {
-			JOptionPane.showMessageDialog(null, "Bạn không được để trống ngày thuê");
-			return false;
-		}
+
 		return LectureDAL.gI().addLecture(person);
 	}
 
 	public boolean deleteLecture(int id) {
-		if (id < 0) {
-			return false;
-		}
+		
 		return LectureDAL.gI().deleteLecture(id);
 	}
-
+	public static void main(String[] args) {
+		System.out.println(new LectureBLL().loadLecturesByPage(1));
+	}
 }

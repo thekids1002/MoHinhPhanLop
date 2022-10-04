@@ -13,28 +13,14 @@ public class OnlineCourseBLL {
 		return new OnlineCourseDAL().loadOnlineCourseByPage(pgae);
 	}
 	public boolean addOnlineCourse(OnlineCourse course) {
-		if (course.getUrl().isEmpty()) {
-			JOptionPane.showMessageDialog(null, "Không được để trống URL");
-			return false;
-		}
-		if (course.getCourseID() < 0) {
-			JOptionPane.showMessageDialog(null, "Lỗi không có ID");
-			return false;
-		}
+		
 		return new OnlineCourseDAL().addOnlineCourse(course);
 	}
 	
 	
 
 	public boolean editOnlineCourse(OnlineCourse course) {
-		if (course.getUrl().isEmpty()) {
-			JOptionPane.showMessageDialog(null, "Không được để trống URL");
-			return false;
-		}
-		if (course.getCourseID() < 0) {
-			JOptionPane.showMessageDialog(null, "Lỗi không có ID");
-			return false;
-		}
+		
 		return new OnlineCourseDAL().editOnlineCourse(course);
 	}
 	

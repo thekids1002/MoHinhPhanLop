@@ -34,37 +34,13 @@ public class StudentBLL {
 	}
 
 	public boolean editStudents(Person person) {
-		if (person.getFirstname().isEmpty() || person.getLastname().isBlank()) {
-			JOptionPane.showMessageDialog(null, "Bạn không được để trống tên");
-			return false;
-		}
-		if (person.getLastname().isEmpty() || person.getLastname().isBlank()) {
-			JOptionPane.showMessageDialog(null, "Bạn không được để trống họ");
-			return false;
-		}
-		if (person.getEnrollmentDate() == null) {
-			JOptionPane.showMessageDialog(null, "Bạn không được để trống ngày đăng kí");
-			return false;
-		}
+		
 		return StudentDAL.gI().editStudent(person);
 	}
 
 	public boolean addStudents(Person person) {
-		if (person.getFirstname().isEmpty() || person.getLastname().isBlank()) {
-			JOptionPane.showMessageDialog(null, "Bạn không được để trống tên");
-			return false;
-		}
-		if (person.getLastname().isEmpty() || person.getLastname().isBlank()) {
-			JOptionPane.showMessageDialog(null, "Bạn không được để trống họ");
-			return false;
-		}
-		if (person.getEnrollmentDate() == null) {
-			JOptionPane.showMessageDialog(null, "Bạn không được để trống ngày đăng kí");
-			return false;
-		}
 		return StudentDAL.gI().addStudent(person);
 	}
-
 	public boolean deleteLecture(int id) {
 		if (id < 0) {
 			return false;

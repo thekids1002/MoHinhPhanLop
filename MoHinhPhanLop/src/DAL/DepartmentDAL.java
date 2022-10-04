@@ -12,6 +12,7 @@ import DTO.Department;
 
 public class DepartmentDAL {
 	public static DepartmentDAL gI;
+	Connection conn;
 
 	public static DepartmentDAL gI() {
 		if (gI == null) {
@@ -22,11 +23,12 @@ public class DepartmentDAL {
 
 	public DepartmentDAL() {
 		super();
+		conn = DBConnect.getConnection();
 	}
 
 	public ArrayList<Department> readDepartments() {
 		try {
-			Connection conn = DBConnect.getConnection();
+
 			Statement stmt = conn.createStatement();
 			ArrayList<Department> listDepartments = new ArrayList<>();
 			String query = "SELECT * FROM `department`";
@@ -43,7 +45,7 @@ public class DepartmentDAL {
 					listDepartments.add(depart);
 				}
 			}
-			conn.close();
+			
 			return listDepartments;
 		} catch (Exception e) {
 		}
@@ -53,7 +55,7 @@ public class DepartmentDAL {
 	public boolean addDepartment(Department depart) {
 		try {
 			String sql = "INSERT INTO `department`( `DepartmentID`, `Name`, `Budget`, `StartDate`, `Administrator`) VALUES (?,?,?,?,?)";
-			Connection conn = DBConnect.getConnection();
+
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setInt(1, depart.getDepartmentID());
 			pstm.setString(2, depart.getName());
@@ -61,7 +63,7 @@ public class DepartmentDAL {
 			pstm.setDate(4, new java.sql.Date(depart.getStartDate().getTime()));
 			pstm.setInt(5, depart.getAdministrator());
 			int i = pstm.executeUpdate();
-			conn.close();
+			
 			return i > 0;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -72,7 +74,7 @@ public class DepartmentDAL {
 	public boolean editDepartment(Department depart) {
 		try {
 			String sql = "UPDATE `department` SET `Name`= ? ,`Budget`= ? ,`StartDate`= ? ,`Adinistrator`= ? WHERE DepartmentID = ? ";
-			Connection conn = DBConnect.getConnection();
+
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setString(1, depart.getName());
 			pstm.setDouble(2, depart.getBudget());
@@ -80,7 +82,7 @@ public class DepartmentDAL {
 			pstm.setInt(4, depart.getAdministrator());
 			pstm.setInt(5, depart.getDepartmentID());
 			int i = pstm.executeUpdate();
-			conn.close();
+			
 			return i > 0;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -91,11 +93,11 @@ public class DepartmentDAL {
 	public boolean deleteDepartment(int idDepartment) {
 		try {
 			String sql = "DELETE FROM `department` WHERE DepartmentID = ? ";
-			Connection conn = DBConnect.getConnection();
+
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setInt(1, idDepartment);
 			int i = pstm.executeUpdate();
-			conn.close();
+			
 			return i > 0;
 		} catch (Exception e) {
 			e.printStackTrace();

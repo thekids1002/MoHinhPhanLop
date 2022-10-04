@@ -11,14 +11,16 @@ import DTO.OfficeAssignment;
 import DTO.Person;
 
 public class OfficeAssignmentDAL {
+	Connection conn;
 
 	public OfficeAssignmentDAL() {
 		super();
+		conn = DBConnect.getConnection();
 	}
-	
+
 	public ArrayList<OfficeAssignment> readOfficeAssignments() {
 		try {
-			Connection conn = DBConnect.getConnection();
+
 			Statement stmt = conn.createStatement();
 			ArrayList<OfficeAssignment> listOfficeAssignments = new ArrayList<>();
 			String query = "SELECT * FROM `officeassignment` ";
@@ -33,55 +35,56 @@ public class OfficeAssignmentDAL {
 					listOfficeAssignments.add(officeassignment);
 				}
 			}
-			conn.close();
+			
 			return listOfficeAssignments;
 		} catch (Exception e) {
 		}
 		return null;
 	}
-	
+
 	public boolean addOfficeAssignment(OfficeAssignment o) {
 		try {
 			String sql = "INSERT INTO `officeassignment`( `InstructorID`, `Location`, `Timestamp` ) VALUES (?,?,?)";
-			Connection conn = DBConnect.getConnection();
+
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setInt(1, o.getInstructorID());
 			pstm.setString(2, o.getLocation());
 			pstm.setDate(3, new java.sql.Date(o.getTimestamp().getTime()));
 			int i = pstm.executeUpdate();
-			conn.close();
-			return i > 0 ;
+			
+			return i > 0;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return false;
 	}
-	
+
 	public boolean editOfficeAssignment(OfficeAssignment s) {
 		try {
 			String sql = "UPDATE `officeassignment` SET `Location`= ? ,`Timestamp`= ? WHERE InstructorID = ?";
-			Connection conn = DBConnect.getConnection();
+
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setString(1, s.getLocation());
 			pstm.setDate(2, new java.sql.Date(s.getTimestamp().getTime()));
 			pstm.setInt(3, s.getInstructorID());
 			int i = pstm.executeUpdate();
-			conn.close();
-			return i > 0 ;
+			
+			return i > 0;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return false;
 	}
+
 	public boolean deleteOfficeAssignment(int id) {
 		try {
 			String sql = "DELETE FROM `officeassignment` WHERE InstructorID = ? ";
-			Connection conn = DBConnect.getConnection();
+
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setInt(1, id);
 			int i = pstm.executeUpdate();
-			conn.close();
-			return i > 0 ;
+			
+			return i > 0;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

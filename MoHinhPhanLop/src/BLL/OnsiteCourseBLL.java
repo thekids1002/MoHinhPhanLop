@@ -17,18 +17,7 @@ public class OnsiteCourseBLL {
 	}
 
 	public boolean addOnSiteCourse(OnsiteCourse course) {
-		if (course.getDays().isEmpty() || course.getDays().isBlank()) {
-			JOptionPane.showMessageDialog(null, "Không được để trống ngày");
-			return false;
-		}
-		if (course.getLocation().isEmpty()) {
-			JOptionPane.showMessageDialog(null, "Không được để trống phòng học");
-			return false;
-		}
-		if (course.getTime() == null) {
-			JOptionPane.showMessageDialog(null, "Thời gian sai");
-			return false;
-		}
+		
 		return new OnsiteCourseDAL().addOnsiteCourse(course);
 
 	}

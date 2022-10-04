@@ -21,13 +21,16 @@ public class LectureDAL {
 		return gI;
 	}
 
+	Connection conn;
+
 	public LectureDAL() {
 		super();
+		conn = DBConnect.getConnection();
 	}
 
 	public ArrayList<Person> searchByID(int ID) {
 		try {
-			Connection conn = DBConnect.getConnection();
+
 			Statement stmt = conn.createStatement();
 			ArrayList<Person> listStudents = new ArrayList<>();
 			String query = "SELECT * FROM person WHERE HireDate IS NOT NULL AND PersonID =?";
@@ -45,22 +48,22 @@ public class LectureDAL {
 					listStudents.add(person);
 				}
 			}
-			conn.close();
+			
 			return listStudents;
 		} catch (Exception e) {
 		}
 		return null;
 	}
-	public ArrayList<Person> loadStudentsByPage(int page){
+
+	public ArrayList<Person> loadLecturesByPage(int page) {
 		try {
 			int num_record = Contrains.pagesize;
 			ArrayList<Person> list = this.readLecture();
 			int size = list.size();
-			System.out.println(size);
 			int from, to;
-			from = ( page - 1)  * num_record;
+			from = (page - 1) * num_record;
 			to = page * num_record;
-			List a =  list.subList(from, Math.min(to,size));
+			List a = list.subList(from, Math.min(to, size));
 			return list = new ArrayList<Person>(a);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -68,9 +71,10 @@ public class LectureDAL {
 		}
 		return null;
 	}
+
 	public ArrayList<Person> searchByName(String name) {
 		try {
-			Connection conn = DBConnect.getConnection();
+
 			Statement stmt = conn.createStatement();
 			ArrayList<Person> listStudents = new ArrayList<>();
 			String query = "SELECT * FROM person WHERE HireDate IS NOT NULL AND concat(FirstName,' ',LastName) like ?";
@@ -88,7 +92,7 @@ public class LectureDAL {
 					listStudents.add(person);
 				}
 			}
-			conn.close();
+			
 			return listStudents;
 		} catch (Exception e) {
 		}
@@ -97,7 +101,7 @@ public class LectureDAL {
 
 	public ArrayList<Person> readLecture() {
 		try {
-			Connection conn = DBConnect.getConnection();
+
 			Statement stmt = conn.createStatement();
 			ArrayList<Person> listStudents = new ArrayList<>();
 			String query = "SELECT * FROM person WHERE HireDate IS NOT NULL  ;";
@@ -114,7 +118,7 @@ public class LectureDAL {
 					listStudents.add(person);
 				}
 			}
-			conn.close();
+			
 			return listStudents;
 		} catch (Exception e) {
 		}
@@ -124,7 +128,7 @@ public class LectureDAL {
 	public boolean addLecture(Person s) {
 		try {
 			String sql = "INSERT INTO `person`( `Lastname`, `Firstname`, `HireDate`, `EnrollmentDate`) VALUES (?,?,?,?)";
-			Connection conn = DBConnect.getConnection();
+
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setString(1, s.getLastname());
 			pstm.setString(2, s.getFirstname());
@@ -132,7 +136,7 @@ public class LectureDAL {
 			// pstm.setDate(4, new java.sql.Date(s.getEnrollmentDate().getTime()));
 			pstm.setDate(4, null);
 			int i = pstm.executeUpdate();
-			conn.close();
+			
 			return i > 0;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -143,7 +147,7 @@ public class LectureDAL {
 	public boolean editLecture(Person s) {
 		try {
 			String sql = "UPDATE `person` SET `Lastname`= ? ,`Firstname`= ? ,`HireDate`= ?,`EnrollmentDate`= ? WHERE PersonID = ?";
-			Connection conn = DBConnect.getConnection();
+
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setString(1, s.getLastname());
 			pstm.setString(2, s.getFirstname());
@@ -152,7 +156,7 @@ public class LectureDAL {
 			pstm.setDate(4, null);
 			pstm.setInt(5, s.getID());
 			int i = pstm.executeUpdate();
-			conn.close();
+			
 			return i > 0;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -163,11 +167,11 @@ public class LectureDAL {
 	public boolean deleteLecture(int id) {
 		try {
 			String sql = "DELETE FROM `person` WHERE PersonID = ? ";
-			Connection conn = DBConnect.getConnection();
+
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setInt(1, id);
 			int i = pstm.executeUpdate();
-			conn.close();
+			
 			return i > 0;
 		} catch (Exception e) {
 			e.printStackTrace();

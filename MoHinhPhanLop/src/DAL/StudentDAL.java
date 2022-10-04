@@ -13,6 +13,7 @@ import GUI.Contrains;
 
 public class StudentDAL {
 	public static StudentDAL gI;
+	Connection conn;
 
 	public static StudentDAL gI() {
 		if (gI == null) {
@@ -23,13 +24,12 @@ public class StudentDAL {
 
 	public StudentDAL() {
 		super();
+		conn = DBConnect.getConnection();
 	}
-	
-	
 
 	public ArrayList<Person> readStudents() {
 		try {
-			Connection conn = DBConnect.getConnection();
+
 			Statement stmt = conn.createStatement();
 			ArrayList<Person> listStudents = new ArrayList<>();
 			String query = "SELECT * FROM person WHERE HireDate IS NULL  ;";
@@ -46,22 +46,23 @@ public class StudentDAL {
 					listStudents.add(person);
 				}
 			}
-			conn.close();
+
 			return listStudents;
 		} catch (Exception e) {
 		}
 		return null;
 	}
-	public ArrayList<Person> loadStudentsByPage(int page){
+
+	public ArrayList<Person> loadStudentsByPage(int page) {
 		try {
 			int num_record = Contrains.pagesize;
 			ArrayList<Person> list = this.readStudents();
 			int size = list.size();
 			System.out.println(size);
 			int from, to;
-			from = ( page - 1)  * num_record;
+			from = (page - 1) * num_record;
 			to = page * num_record;
-			List a =  list.subList(from, Math.min(to,size));
+			List a = list.subList(from, Math.min(to, size));
 			return list = new ArrayList<Person>(a);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -69,9 +70,10 @@ public class StudentDAL {
 		}
 		return null;
 	}
+
 	public ArrayList<Person> searchByID(int ID) {
 		try {
-			Connection conn = DBConnect.getConnection();
+
 			Statement stmt = conn.createStatement();
 			ArrayList<Person> listStudents = new ArrayList<>();
 			String query = "SELECT * FROM person WHERE HireDate IS NULL AND PersonID =?";
@@ -89,7 +91,7 @@ public class StudentDAL {
 					listStudents.add(person);
 				}
 			}
-			conn.close();
+
 			return listStudents;
 		} catch (Exception e) {
 		}
@@ -98,7 +100,7 @@ public class StudentDAL {
 
 	public ArrayList<Person> searchByName(String name) {
 		try {
-			Connection conn = DBConnect.getConnection();
+
 			Statement stmt = conn.createStatement();
 			ArrayList<Person> listStudents = new ArrayList<>();
 			String query = "SELECT * FROM person WHERE HireDate IS NULL AND concat(FirstName,' ',LastName) like ?";
@@ -116,7 +118,7 @@ public class StudentDAL {
 					listStudents.add(person);
 				}
 			}
-			conn.close();
+
 			return listStudents;
 		} catch (Exception e) {
 		}
@@ -126,7 +128,7 @@ public class StudentDAL {
 	public boolean addStudent(Person s) {
 		try {
 			String sql = "INSERT INTO `person`( `Lastname`, `Firstname`, `HireDate`, `EnrollmentDate`) VALUES (?,?,?,?)";
-			Connection conn = DBConnect.getConnection();
+
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setString(1, s.getLastname());
 			pstm.setString(2, s.getFirstname());
@@ -134,7 +136,7 @@ public class StudentDAL {
 			pstm.setDate(3, null);
 			pstm.setDate(4, new java.sql.Date(s.getEnrollmentDate().getTime()));
 			int i = pstm.executeUpdate();
-			conn.close();
+
 			return i > 0;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -145,7 +147,7 @@ public class StudentDAL {
 	public boolean editStudent(Person s) {
 		try {
 			String sql = "UPDATE `person` SET `Lastname`= ? ,`Firstname`= ? ,`HireDate`= ?,`EnrollmentDate`= ? WHERE PersonID = ?";
-			Connection conn = DBConnect.getConnection();
+
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setString(1, s.getLastname());
 			pstm.setString(2, s.getFirstname());
@@ -154,7 +156,7 @@ public class StudentDAL {
 			pstm.setDate(4, new java.sql.Date(s.getEnrollmentDate().getTime()));
 			pstm.setInt(5, s.getID());
 			int i = pstm.executeUpdate();
-			conn.close();
+
 			return i > 0;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -165,11 +167,11 @@ public class StudentDAL {
 	public boolean deleteStudent(int id) {
 		try {
 			String sql = "DELETE FROM `person` WHERE PersonID = ? ";
-			Connection conn = DBConnect.getConnection();
+
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setInt(1, id);
 			int i = pstm.executeUpdate();
-			conn.close();
+
 			return i > 0;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -181,7 +183,7 @@ public class StudentDAL {
 		Person person1 = new Person(33, "Voxasdasdasda", "Hoang", new Date(System.currentTimeMillis()),
 				new Date(System.currentTimeMillis()));
 		StudentDAL student = new StudentDAL();
-		//ArrayList<Person> list = student.readStudents();
+		// ArrayList<Person> list = student.readStudents();
 		ArrayList<Person> arrayList = student.loadStudentsByPage(3);
 		for (Person person : arrayList) {
 			System.out.println(person.toString());
