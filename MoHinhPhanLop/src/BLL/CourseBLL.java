@@ -27,6 +27,7 @@ public class CourseBLL {
 	public static ArrayList<DTO.Course> searchOnline(int ID) {
 		return new CourseDAL().searchOnlineByID(ID);
 	}
+	
 	public static ArrayList<DTO.Course> searchOnsite(int ID) {
 		return new CourseDAL().searchOnsiteByID(ID);
 	}

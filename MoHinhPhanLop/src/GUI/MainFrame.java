@@ -562,7 +562,6 @@ public class MainFrame extends JFrame {
 						} catch (IllegalArgumentException e2) {
 							e2.printStackTrace();
 						}
-
 					} else {
 						OnlineCourse onlineCourse = new OnlineCourse(id, url);
 						if (onlineCourse.getUrl().isEmpty()) {
@@ -679,9 +678,9 @@ public class MainFrame extends JFrame {
 		btnDeleteCourse.setBounds(371, 217, 117, 42);
 		btnDeleteCourse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int i = tblCourseOnline.getSelectedRow();
-				int j = tblCourseOnsite.getSelectedRow();
 				int ID;
+				//.... xử lý xoá khoá học online ///
+				int i = tblCourseOnline.getSelectedRow();
 				if (i >= 0) {
 					ID = Integer.parseInt(dtmcourseOnline.getValueAt(i, 1).toString());
 					if (new BLL.OnlineCourseBLL().deleteOnlineCourse(ID)) {
@@ -696,6 +695,8 @@ public class MainFrame extends JFrame {
 						JOptionPane.showMessageDialog(null, "Đã xoá khoá học thất bại");
 					}
 				}
+				int j = tblCourseOnsite.getSelectedRow();
+				// xử lý xoá khoá học onsite
 				if (j >= 0) {
 					ID = Integer.parseInt(dtmcourseSite.getValueAt(j, 1).toString());
 					if (new BLL.OnsiteCourseBLL().deleteSiteCourse(ID)) {
@@ -717,6 +718,7 @@ public class MainFrame extends JFrame {
 
 		btnReloadCourse = new JButton("Tải Lại");
 		btnReloadCourse.setIcon(new ImageIcon("img\\update.png"));
+		
 		btnReloadCourse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JOptionPane.showMessageDialog(null, "Đã tải lại danh sách khoá học thành công");
@@ -1135,6 +1137,7 @@ public class MainFrame extends JFrame {
 				String lastName = txtLectureLastName.getText();
 				String firstName = txtLectureFirstName.getText();
 				Date dateLecture = dateLectures.getDate();
+				// ID tự động tăng nên chèn số 0 hoặc null vào đầu của Constructor
 				Person person = new Person(0, lastName, firstName, dateLecture, null);
 				if (person.getFirstname().isEmpty() || person.getLastname().isBlank()) {
 					JOptionPane.showMessageDialog(null, "Bạn không được để trống tên");
@@ -1358,7 +1361,6 @@ public class MainFrame extends JFrame {
 			}
 		});
 		// delete Students
-		// delete Lecture
 		btnDeleteStudent.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int i = tblStudents.getSelectedRow();
@@ -1387,12 +1389,12 @@ public class MainFrame extends JFrame {
 				}
 			}
 		});
-		// reload Lecture
+		// reload 
 		btnReloadStudents.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					LoadListStudents();
-					AddPageStudent();
+					AddPageStudent(); // xử lý phân trang
 					JOptionPane.showMessageDialog(null, "Đã tải lại danh sách thành công");
 				} catch (Exception e2) {
 					e2.printStackTrace();
@@ -1510,10 +1512,9 @@ public class MainFrame extends JFrame {
 		// edit Student Grade
 		btnEditStudentGrade.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				float grade = Float.parseFloat(txtGrade.getText());
 				int i = tblStudentGrade.getSelectedRow();
 				try {
+					float grade = Float.parseFloat(txtGrade.getText());
 					if (i >= 0) {
 						if (courseGradeSelected != null && studentGradeSelected != null) {
 							Person student = studentGradeSelected;
@@ -1547,8 +1548,8 @@ public class MainFrame extends JFrame {
 					} else {
 						JOptionPane.showMessageDialog(null, "Bạn chưa chọn điểm cần sửa");
 					}
-				} catch (Exception e2) {
-					// TODO: handle exception
+				} catch (NumberFormatException e2) {
+					JOptionPane.showMessageDialog(null, "Điểm không hợp lệ");
 					e2.printStackTrace();
 				}
 			}
@@ -1735,9 +1736,9 @@ public class MainFrame extends JFrame {
 										courseSelectedinTable.getCourseID(), lectureSelectedinTalbe.getID())) {
 									LoadListInstructor();
 									addPageCourseInstructor();
-									JOptionPane.showMessageDialog(null, "Đã chỉnh sửa phân công thành công");
+									JOptionPane.showMessageDialog(null, "Đã xoá phân công thành công");
 								} else {
-									JOptionPane.showMessageDialog(null, "Đã chỉnh sửa phân công thất bại");
+									JOptionPane.showMessageDialog(null, "Đã xoá phân công thất bại");
 								}
 							}
 

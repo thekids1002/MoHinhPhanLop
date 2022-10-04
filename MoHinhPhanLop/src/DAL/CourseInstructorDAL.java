@@ -34,7 +34,7 @@ public class CourseInstructorDAL {
 					listCourseinStructors.add(course);
 				}
 			}
-			conn.close();
+			
 			return listCourseinStructors;
 		} catch (Exception e) {
 		}
@@ -58,7 +58,7 @@ public class CourseInstructorDAL {
 					listCourseinStructors.add(course);
 				}
 			}
-			conn.close();
+			
 			return listCourseinStructors;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -84,7 +84,7 @@ public class CourseInstructorDAL {
 					listCourseinStructors.add(course);
 				}
 			}
-			conn.close();
+			
 			return listCourseinStructors;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -119,7 +119,7 @@ public class CourseInstructorDAL {
 			pstm.setInt(1, course.getCourseID());
 			pstm.setInt(2, course.getPersonID());
 			int i = pstm.executeUpdate();
-			conn.close();
+			
 			return i > 0;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -127,7 +127,7 @@ public class CourseInstructorDAL {
 		return false;
 	}
 
-	// Hai thằng đều là khóa chính thì hơi khó sửa
+	
 	public boolean editCourseInstructor(CourseInstructor c, CourseInstructor c2) {
 		try {
 			String sql = "UPDATE `courseinstructor` SET `CourseID`= ? ,`PersonID`= ? WHERE CourseID = ? AND PersonID = ?";
@@ -138,7 +138,7 @@ public class CourseInstructorDAL {
 			pstm.setInt(3, c2.getCourseID());
 			pstm.setInt(4, c2.getPersonID());
 			int i = pstm.executeUpdate();
-			conn.close();
+			
 			return i > 0;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -154,7 +154,6 @@ public class CourseInstructorDAL {
 			pstm.setInt(1, idCourse);
 			pstm.setInt(2, idPerson);
 			int i = pstm.executeUpdate();
-			conn.close();
 			return i > 0;
 		} catch (Exception e) {
 			e.printStackTrace();

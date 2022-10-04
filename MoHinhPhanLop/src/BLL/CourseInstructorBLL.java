@@ -47,9 +47,7 @@ public class CourseInstructorBLL {
 	}
 
 	public boolean deleteCourseInstructor(int idCourse, int idPerson) {
-		if (idCourse < 0 || idPerson < 0) {
-			return false;
-		}
+	
 		return new CourseInstructorDAL().deleteCourseInstructor(idCourse, idPerson);
 	}
 

@@ -42,9 +42,7 @@ public class StudentBLL {
 		return StudentDAL.gI().addStudent(person);
 	}
 	public boolean deleteLecture(int id) {
-		if (id < 0) {
-			return false;
-		}
+		
 		return StudentDAL.gI().deleteStudent(id);
 	}
 

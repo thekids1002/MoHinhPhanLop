@@ -41,7 +41,7 @@ public class CourseDAL {
 					listCourses.add(course);
 				}
 			}
-			conn.close();
+			
 			return listCourses;
 		} catch (Exception e) {
 		}
@@ -53,7 +53,10 @@ public class CourseDAL {
 
 			Statement stmt = conn.createStatement();
 			ArrayList<Course> listCourses = new ArrayList<>();
-			String query = "SELECT course.CourseID, course.Title, course.Credits, course.DepartmentID, onsitecourse.Location, onsitecourse.Days, onsitecourse.Time FROM `course` , onsitecourse WHERE course.CourseID = onsitecourse.CourseID";
+			String query = "SELECT course.CourseID, course.Title, course.Credits, course.DepartmentID,"
+					+ " onsitecourse.Location, onsitecourse.Days, onsitecourse.Time "
+					+ "FROM `course` , onsitecourse "
+					+ "WHERE course.CourseID = onsitecourse.CourseID";
 			ResultSet rs = stmt.executeQuery(query);
 			if (rs != null) {
 				int i = 1;
@@ -70,7 +73,7 @@ public class CourseDAL {
 					listCourses.add(course);
 				}
 			}
-			conn.close();
+			
 			return listCourses;
 		} catch (Exception e) {
 		}
@@ -118,7 +121,8 @@ public class CourseDAL {
 
 			Statement stmt = conn.createStatement();
 			ArrayList<Course> listCourses = new ArrayList<>();
-			String query = "SELECT course.CourseID, course.Title, course.Credits, course.DepartmentID, onlinecourse.url FROM `course` , onlinecourse WHERE course.CourseID = onlinecourse.CourseID;";
+			String query = "SELECT course.CourseID, course.Title, course.Credits, course.DepartmentID, onlinecourse.url FROM `course` , "
+					+ "onlinecourse WHERE course.CourseID = onlinecourse.CourseID;";
 			ResultSet rs = stmt.executeQuery(query);
 			if (rs != null) {
 				int i = 1;
@@ -133,7 +137,7 @@ public class CourseDAL {
 					listCourses.add(course);
 				}
 			}
-			conn.close();
+			
 			return listCourses;
 		} catch (Exception e) {
 		}
@@ -154,7 +158,7 @@ public class CourseDAL {
 			if (rs.next()) {
 				generatedKey = rs.getInt(1);
 			}
-			conn.close();
+			
 			return generatedKey;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -172,7 +176,7 @@ public class CourseDAL {
 			pstm.setInt(3, c.getDepartmentID());
 			pstm.setInt(4, c.getCourseID());
 			int i = pstm.executeUpdate();
-			conn.close();
+			
 			return i > 0;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -187,7 +191,7 @@ public class CourseDAL {
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setInt(1, idCourse);
 			int i = pstm.executeUpdate();
-			conn.close();
+			
 			return i > 0;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -200,7 +204,10 @@ public class CourseDAL {
 
 			Statement stmt = conn.createStatement();
 			ArrayList<Course> listCourses = new ArrayList<>();
-			String query = "SELECT course.CourseID, course.Title, course.Credits, course.DepartmentID, onsitecourse.Location, onsitecourse.Days, onsitecourse.Time FROM `course` , onsitecourse WHERE course.CourseID = ?";
+			String query = "SELECT course.CourseID, course.Title, course.Credits, course.DepartmentID, onsitecourse.Location,"
+					+ " onsitecourse.Days, onsitecourse.Time "
+					+ "FROM `course` , onsitecourse"
+					+ " WHERE course.CourseID = ?";
 			PreparedStatement preparedStatement = conn.prepareStatement(query);
 			preparedStatement.setInt(1, ID);
 			ResultSet rs = preparedStatement.executeQuery();
@@ -219,7 +226,7 @@ public class CourseDAL {
 					listCourses.add(course);
 				}
 			}
-			conn.close();
+			
 			return listCourses;
 		} catch (Exception e) {
 		}
@@ -230,7 +237,8 @@ public class CourseDAL {
 		try {
 
 			ArrayList<Course> listCourses = new ArrayList<>();
-			String query = "SELECT course.CourseID, course.Title, course.Credits, course.DepartmentID, onlinecourse.url FROM `course` , onlinecourse WHERE course.CourseID = ?";
+			String query = "SELECT course.CourseID, course.Title, course.Credits, course.DepartmentID,"
+					+ " onlinecourse.url FROM `course` , onlinecourse WHERE course.CourseID = ?";
 			PreparedStatement preparedStatement = conn.prepareStatement(query);
 			preparedStatement.setInt(1, ID);
 			ResultSet rs = preparedStatement.executeQuery();
@@ -247,7 +255,7 @@ public class CourseDAL {
 					listCourses.add(course);
 				}
 			}
-			conn.close();
+			
 			return listCourses;
 		} catch (Exception e) {
 		}

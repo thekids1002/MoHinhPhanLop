@@ -132,6 +132,9 @@ public class dlgSearchLecture extends JDialog {
 					this.setVisible(false);
 				}
 			}
+			else {
+				JOptionPane.showMessageDialog(null, "Không tìm thấy");
+			}
 		} else {
 			JOptionPane.showMessageDialog(null, "ID phải là số");
 		}

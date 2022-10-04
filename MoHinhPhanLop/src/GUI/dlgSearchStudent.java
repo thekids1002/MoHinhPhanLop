@@ -131,6 +131,9 @@ public class dlgSearchStudent extends JDialog {
 					this.setVisible(false);
 				}
 			}
+			else {
+				JOptionPane.showMessageDialog(null, "Không tìm thấy");
+			}
 		} else {
 			JOptionPane.showMessageDialog(null, "ID phải là số");
 		}
@@ -163,6 +166,9 @@ public class dlgSearchStudent extends JDialog {
 					MainFrame.dtmStudent.addRow(vec);
 					this.setVisible(false);
 				}
+			}
+			else {
+				JOptionPane.showMessageDialog(null, "Không tìm thấy");
 			}
 		}
 
