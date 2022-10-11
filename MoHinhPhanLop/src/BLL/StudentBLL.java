@@ -9,41 +9,44 @@ import DAL.StudentDAL;
 import DTO.Person;
 
 public class StudentBLL {
-	public static StudentBLL gI;
-
-	public static StudentBLL gI() {
-		if (gI == null) {
-			gI = new StudentBLL();
-		}
-		return gI;
+	
+	StudentDAL studentDAL;
+	
+	public StudentBLL() {
+		super();
+		studentDAL = new StudentDAL();
+		// TODO Auto-generated constructor stubS
 	}
 
 	public ArrayList<Person> readStudens() {
-		return StudentDAL.gI().readStudents();
+		return studentDAL.readStudents();
 	}
 
 	public ArrayList<Person> loadStudentsByPage(int page){
-		return StudentDAL.gI().loadStudentsByPage(page);
+		return studentDAL.loadStudentsByPage(page);
 	}
+	
+	// tìm kiếm theo mã
 	public ArrayList<Person> searchByID(int ID) {
-		return StudentDAL.gI().searchByID(ID);
+		return studentDAL.searchByID(ID);
 	}
-
+	// tìm kiếm theo tên
 	public ArrayList<Person> searchByName(String name) {
-		return StudentDAL.gI().searchByName(name);
+		return studentDAL.searchByName(name);
 	}
 
 	public boolean editStudents(Person person) {
 		
-		return StudentDAL.gI().editStudent(person);
+		return studentDAL.editStudent(person);
 	}
 
 	public boolean addStudents(Person person) {
-		return StudentDAL.gI().addStudent(person);
+		return studentDAL.addStudent(person);
 	}
+	
 	public boolean deleteLecture(int id) {
 		
-		return StudentDAL.gI().deleteStudent(id);
+		return studentDAL.deleteStudent(id);
 	}
 
 }

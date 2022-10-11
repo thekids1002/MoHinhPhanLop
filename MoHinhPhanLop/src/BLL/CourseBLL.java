@@ -6,37 +6,45 @@ import javax.swing.JOptionPane;
 
 import DAL.CourseDAL;
 import DTO.Course;
+import DTO.OnsiteCourse;
 
 public class CourseBLL {
+	
+	CourseDAL courseDAL;
+	
+	public CourseBLL() {
+		courseDAL = new CourseDAL();
+	}
+
 	public  ArrayList<DTO.Course> readAllCourse() {
-		return new CourseDAL().readCourses();
+		return courseDAL.readCourses();
 	}
 
-	public  ArrayList<DTO.Course> readOnsiteCourse() {
-		return new CourseDAL().readOnsiteCourse();
-	}
+//	public  ArrayList<DTO.Course> readOnsiteCourse() {
+//		return courseDAL.readOnsiteCourse();
+//	}
+//
+//	public  ArrayList<DTO.Course> readOnsiteCoursePage(int Page) {
+//		return new  CourseDAL().loadOnsiteCourses(Page);
+//	}
+//
+//	public  ArrayList<DTO.Course> readOnlineCoursePage(int Page) {
+//		return courseDAL.loadOnlineCourses(Page);
+//	}
+//	
+//	public  ArrayList<DTO.Course> searchOnline(int ID) {
+//		return courseDAL.searchOnlineByID(ID);
+//	}
+//	
+//	public  ArrayList<DTO.Course> searchOnsite(int ID) {
+//		return courseDAL.searchOnsiteByID(ID);
+//	}
+//
+//	public  ArrayList<DTO.Course> readOnlineCourse() {
+//		return courseDAL.readOnlineCourse();
+//	}
 
-	public static ArrayList<DTO.Course> readOnsiteCoursePage(int Page) {
-		return new  CourseDAL().loadOnsiteCourses(Page);
-	}
-
-	public static ArrayList<DTO.Course> readOnlineCoursePage(int Page) {
-		return new CourseDAL().loadOnlineCourses(Page);
-	}
-	
-	public static ArrayList<DTO.Course> searchOnline(int ID) {
-		return new CourseDAL().searchOnlineByID(ID);
-	}
-	
-	public static ArrayList<DTO.Course> searchOnsite(int ID) {
-		return new CourseDAL().searchOnsiteByID(ID);
-	}
-
-	public static ArrayList<DTO.Course> readOnlineCourse() {
-		return new CourseDAL().readOnlineCourse();
-	}
-
-	public static int addCourse(Course course) {
+	public  int addCourse(Course course) {
 		if (course.getTitle().isEmpty()) {
 			return -1;
 		}
@@ -44,10 +52,10 @@ public class CourseBLL {
 			
 			return -2;
 		}
-		return new CourseDAL().addCourse(course);
+		return courseDAL.addCourse(course);
 	}
 
-	public static boolean editCourse(Course course) {
+	public  boolean editCourse(Course course) {
 		if (course.getTitle().isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Tên khoá học không được để trống");
 			return false;
@@ -56,10 +64,12 @@ public class CourseBLL {
 			JOptionPane.showMessageDialog(null, "Tên khoa không được để trống");
 			return false;
 		}
-		return new CourseDAL().editCourse(course);
+		return courseDAL.editCourse(course);
 	}
 
 	public boolean deleteCourse(int ID) {
-		return new CourseDAL().deleteCourse(ID);
+		return courseDAL.deleteCourse(ID);
 	}
+
+
 }

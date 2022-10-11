@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import BLL.StudentBLL;
 import DTO.Person;
 
 import javax.swing.JTextField;
@@ -35,7 +36,7 @@ public class dlgSearchStudent extends JDialog {
 	private JButton btnSearchLecture;
 	private JCheckBox cbxFindByName;
 	private ButtonGroup buttonGroup;
-
+	private StudentBLL studentBLL;
 	/**
 	 * Launch the application.
 	 */
@@ -44,7 +45,7 @@ public class dlgSearchStudent extends JDialog {
 	 * Create the frame.
 	 */
 	public dlgSearchStudent() {
-
+		studentBLL = new StudentBLL();
 		CheckboxGroup cbg = new CheckboxGroup();
 		setTitle("Tìm Kiếm Sinh Viên");
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -116,7 +117,7 @@ public class dlgSearchStudent extends JDialog {
 		String ID = txtKeyWord.getText().trim();
 		if (isNumber(ID)) {
 			System.out.println("Ok");
-			ArrayList<Person> listStudents = new BLL.StudentBLL().searchByID(Integer.parseInt(ID));
+			ArrayList<Person> listStudents = studentBLL.searchByID(Integer.parseInt(ID));
 			System.out.println(listStudents);
 			if (listStudents != null) {
 				MainFrame.dtmStudent.setRowCount(0);
@@ -154,7 +155,7 @@ public class dlgSearchStudent extends JDialog {
 		String Name = txtKeyWord.getText().trim();
 		if (!isNumber(Name)) {
 
-			ArrayList<Person> listStudents = new BLL.StudentBLL().searchByName(Name);
+			ArrayList<Person> listStudents = studentBLL.searchByName(Name);
 			if (listStudents != null) {
 				MainFrame.dtmStudent.setRowCount(0);
 				for (Person person : listStudents) {

@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import BLL.CourseInstructorBLL;
 import DTO.CourseInstructor;
 import DTO.Person;
 
@@ -28,7 +29,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 
 public class dlgSearchCourseInstructor extends JDialog {
-
+	private CourseInstructorBLL courseInstructorBLL;
 	private JPanel contentPane;
 	private JTextField txtKeyWord;
 	private JCheckBox cbxFindByLectureID;
@@ -89,6 +90,7 @@ public class dlgSearchCourseInstructor extends JDialog {
 		buttonGroup.add(cbxFindByDay);
 		buttonGroup.add(cbxFindByLectureID);
 		buttonGroup.add(cbxFindByCourseID);
+		courseInstructorBLL = new CourseInstructorBLL();
 		addEvent();
 	}
 
@@ -98,7 +100,7 @@ public class dlgSearchCourseInstructor extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String id = txtKeyWord.getText();
-				if(!isNumber(id)) {
+				if (!isNumber(id)) {
 					JOptionPane.showMessageDialog(null, "ID phải là số");
 					return;
 				}
@@ -119,7 +121,7 @@ public class dlgSearchCourseInstructor extends JDialog {
 	}
 
 	protected void SearchByLectureID(int ID) {
-		ArrayList<DTO.CourseInstructor> arrayList = BLL.CourseInstructorBLL.searchByLectureID(ID);
+		ArrayList<DTO.CourseInstructor> arrayList = courseInstructorBLL.searchByLectureID(ID);
 		MainFrame.dtmCourseInstructor.setRowCount(0);
 		int i = 0;
 		for (CourseInstructor courseInstructor : arrayList) {
@@ -145,8 +147,8 @@ public class dlgSearchCourseInstructor extends JDialog {
 	}
 
 	protected void SearchByCourseID(int ID) {
-		
-		ArrayList<DTO.CourseInstructor> arrayList = BLL.CourseInstructorBLL.searchByCourseID(ID);
+
+		ArrayList<DTO.CourseInstructor> arrayList = courseInstructorBLL.searchByCourseID(ID);
 		MainFrame.dtmCourseInstructor.setRowCount(0);
 		int i = 0;
 		for (CourseInstructor courseInstructor : arrayList) {

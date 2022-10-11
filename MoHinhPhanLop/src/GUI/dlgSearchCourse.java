@@ -10,9 +10,14 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import BLL.CourseBLL;
+import BLL.OnlineCourseBLL;
+import BLL.OnsiteCourseBLL;
 import DTO.Course;
 import DTO.CourseInstructor;
 import DTO.Department;
+import DTO.OnlineCourse;
+import DTO.OnsiteCourse;
 import DTO.Person;
 
 import javax.swing.JTextField;
@@ -30,7 +35,8 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 
 public class dlgSearchCourse extends JDialog {
-
+	OnsiteCourseBLL onsiteCourseBLL;
+	OnlineCourseBLL onlineCourseBLL;
 	private JPanel contentPane;
 	private JTextField txtKeyWord;
 	private JCheckBox cbxFindOnline;
@@ -47,7 +53,8 @@ public class dlgSearchCourse extends JDialog {
 	 * Create the frame.
 	 */
 	public dlgSearchCourse() {
-
+		onsiteCourseBLL = new OnsiteCourseBLL();
+		onlineCourseBLL = new OnlineCourseBLL(); 
 		CheckboxGroup cbg = new CheckboxGroup();
 		setTitle("Tìm Kiếm Khoá Học");
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -121,11 +128,11 @@ public class dlgSearchCourse extends JDialog {
 	}
 
 	protected void SearchOnline(int iD) {
-		ArrayList<Course> arrayList = BLL.CourseBLL.searchOnline(iD);
+		ArrayList<OnlineCourse> arrayList = onlineCourseBLL.searchOnlineCourse(iD);
 		if(arrayList != null && arrayList.size() > 0) {
 			int i = 0;
 			MainFrame.dtmcourseOnline.setRowCount(0);
-			for (Course course : arrayList) {
+			for (OnlineCourse course : arrayList) {
 				i++;
 				Vector<Object> vec = new Vector<Object>();
 				vec.add(String.valueOf(i));
@@ -137,7 +144,7 @@ public class dlgSearchCourse extends JDialog {
 						break;
 					}
 				}
-				vec.add(course.getOnlineCourse().getUrl());
+				vec.add(course.getUrl());
 				MainFrame.dtmcourseOnline.addRow(vec);
 			}
 		}
@@ -147,11 +154,11 @@ public class dlgSearchCourse extends JDialog {
 	}
 
 	protected void SearchOnsite(int iD) {
-		ArrayList<Course> arrayList = new BLL.CourseBLL().searchOnsite(iD);
+		ArrayList<OnsiteCourse> arrayList = onsiteCourseBLL.searchOnline(iD);
 		if( arrayList != null && arrayList.size() > 0) {
 			MainFrame.dtmcourseSite.setRowCount(0);
 			int i = 0;
-			for (Course course : arrayList) {
+			for (OnsiteCourse course : arrayList) {
 				i++;
 				Vector<Object> vec = new Vector<Object>();
 				vec.add(String.valueOf(i));
@@ -163,9 +170,9 @@ public class dlgSearchCourse extends JDialog {
 						break;
 					}
 				}
-				vec.add(course.getOnsiteCourse().getLocation());
-				vec.add(course.getOnsiteCourse().getDays());
-				vec.add(course.getOnsiteCourse().getTime());
+				vec.add(course.getLocation());
+				vec.add(course.getDays());
+				vec.add(course.getTime());
 				MainFrame.dtmcourseSite.addRow(vec);
 			}
 		}

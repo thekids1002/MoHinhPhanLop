@@ -5,53 +5,9 @@ public class Course {
 	private String Title;
 	private int Credits;
 	private int DepartmentID;
-	private OnsiteCourse onsiteCourse;
-	private OnlineCourse onlineCourse;
+	
 
-	public Course(int courseID, String title, int credits, int departmentID, OnlineCourse onlineCourse) {
-		super();
-		CourseID = courseID;
-		Title = title;
-		Credits = credits;
-		DepartmentID = departmentID;
-		this.onlineCourse = onlineCourse;
-	}
-
-	public Course(int courseID, String title, int credits, int departmentID, OnsiteCourse onsiteCourse) {
-		super();
-		CourseID = courseID;
-		Title = title;
-		Credits = credits;
-		DepartmentID = departmentID;
-		this.onsiteCourse = onsiteCourse;
-	}
-
-	public Course(int courseID, String title, int credits, int departmentID, OnsiteCourse onsiteCourse,
-			OnlineCourse onlineCourse) {
-		super();
-		CourseID = courseID;
-		Title = title;
-		Credits = credits;
-		DepartmentID = departmentID;
-		this.onsiteCourse = onsiteCourse;
-		this.onlineCourse = onlineCourse;
-	}
-
-	public OnsiteCourse getOnsiteCourse() {
-		return onsiteCourse;
-	}
-
-	public void setOnsiteCourse(OnsiteCourse onsiteCourse) {
-		this.onsiteCourse = onsiteCourse;
-	}
-
-	public OnlineCourse getOnlineCourse() {
-		return onlineCourse;
-	}
-
-	public void setOnlineCourse(OnlineCourse onlineCourse) {
-		this.onlineCourse = onlineCourse;
-	}
+	
 
 	public int getCourseID() {
 		return CourseID;

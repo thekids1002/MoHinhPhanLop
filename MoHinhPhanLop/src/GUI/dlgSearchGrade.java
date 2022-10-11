@@ -10,6 +10,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import BLL.CourseInstructorBLL;
+import BLL.StudentGradeBLL;
 import DTO.CourseInstructor;
 import DTO.Person;
 import DTO.StudentGrade;
@@ -29,13 +31,14 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 
 public class dlgSearchGrade extends JDialog {
-
+	private CourseInstructorBLL courseInstructorBLL;
 	private JPanel contentPane;
 	private JTextField txtKeyWord;
 	private JCheckBox cbxFindByLectureID;
 	private JCheckBox cbxFindByDay;
 	private JButton btnSearch;
 	private ButtonGroup buttonGroup;
+	StudentGradeBLL studentGradeBLL;
 
 	/**
 	 * Launch the application.
@@ -45,7 +48,8 @@ public class dlgSearchGrade extends JDialog {
 	 * Create the frame.
 	 */
 	public dlgSearchGrade() {
-
+		studentGradeBLL = new StudentGradeBLL();
+		courseInstructorBLL = new CourseInstructorBLL();
 		CheckboxGroup cbg = new CheckboxGroup();
 		setTitle("Tìm Kiếm Phân Công");
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -112,7 +116,7 @@ public class dlgSearchGrade extends JDialog {
 
 	protected void SearchByStudentID(int ID) {
 		
-		ArrayList<StudentGrade> arrayList = BLL.StudentGradeBLL.searchByStudentID(ID);
+		ArrayList<StudentGrade> arrayList = studentGradeBLL.searchByStudentID(ID);
 		MainFrame.dtmCourseInstructor.setRowCount(0);
 		int i = 0;
 		if (arrayList != null && arrayList.size() > 0) {
@@ -146,7 +150,7 @@ public class dlgSearchGrade extends JDialog {
 
 	protected void SearchByCourseID(int ID) {
 
-		ArrayList<DTO.CourseInstructor> arrayList = BLL.CourseInstructorBLL.searchByCourseID(ID);
+		ArrayList<DTO.CourseInstructor> arrayList = courseInstructorBLL.searchByCourseID(ID);
 		MainFrame.dtmCourseInstructor.setRowCount(0);
 		int i = 0;
 		for (CourseInstructor courseInstructor : arrayList) {

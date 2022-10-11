@@ -9,36 +9,36 @@ import DTO.StudentGrade;
 
 public class StudentGradeBLL {
 
-	public static StudentGradeBLL gI;
+	StudentGradeDAL studentGradeDAL;
 
-	public static StudentGradeBLL gI() {
-		if (gI == null) {
-			gI = new StudentGradeBLL();
-		}
-		return gI;
-	}
-	
-	public static ArrayList<DTO.StudentGrade> readAllGrade() {
-		return new StudentGradeDAL().gI().readStudentGrades();
-	}
-	public static ArrayList<DTO.StudentGrade> searchByStudentID(int ID) {
-		return new StudentGradeDAL().gI().searchGradeByStudentID(ID);
-	}
-	
-	public static ArrayList<DTO.StudentGrade> LoaddGradeByPage(int page) {
-		return new StudentGradeDAL().gI().loadGardeByPage(page);
+	public StudentGradeBLL() {
+		super();
+		studentGradeDAL = new StudentGradeDAL();
+		// TODO Auto-generated constructor stub
 	}
 
-	public static boolean addGrade(StudentGrade grade) {
-		
-		return new StudentGradeDAL().gI().addStudentGrade(grade);
+	public ArrayList<DTO.StudentGrade> readAllGrade() {
+		return studentGradeDAL.readStudentGrades();
 	}
 
-	public static boolean editGrade(StudentGrade grade) {
-		return new StudentGradeDAL().gI().editStudentGrade(grade);
+	public ArrayList<DTO.StudentGrade> searchByStudentID(int ID) {
+		return studentGradeDAL.searchGradeByStudentID(ID);
 	}
-	
-	public static boolean deleteGrade (int id) {
-		return StudentGradeDAL.gI().deleteStudentGrade(id);
+
+	public ArrayList<DTO.StudentGrade> LoaddGradeByPage(int page) {
+		return studentGradeDAL.loadGardeByPage(page);
+	}
+
+	public boolean addGrade(StudentGrade grade) {
+
+		return studentGradeDAL.addStudentGrade(grade);
+	}
+
+	public boolean editGrade(StudentGrade grade) {
+		return studentGradeDAL.editStudentGrade(grade);
+	}
+
+	public boolean deleteGrade(int id) {
+		return studentGradeDAL.deleteStudentGrade(id);
 	}
 }

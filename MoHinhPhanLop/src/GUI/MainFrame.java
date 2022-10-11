@@ -36,6 +36,8 @@ import javax.swing.JTable;
 import com.toedter.calendar.JDateChooser;
 
 import BLL.LectureBLL;
+import BLL.OnlineCourseBLL;
+import BLL.OnsiteCourseBLL;
 import BLL.StudentBLL;
 import DTO.Course;
 import DTO.CourseInstructor;
@@ -45,6 +47,7 @@ import DTO.OnsiteCourse;
 import DTO.Person;
 import DTO.StudentGrade;
 import BLL.StudentGradeBLL;
+import BLL.CourseBLL;
 import BLL.CourseInstructorBLL;
 
 import java.awt.Font;
@@ -153,6 +156,13 @@ public class MainFrame extends JFrame {
 	public static JPanel pnPageLecture;
 	public static DefaultTableModel dtmcourseOnline;
 	public static DefaultTableModel dtmcourseSite;
+	CourseBLL courseBLL;
+	CourseInstructorBLL courseInstructorBLL;
+	LectureBLL lectureBLL;
+	OnlineCourseBLL onlineCourseBLL;
+	OnsiteCourseBLL onsiteCourseBLL;
+	StudentBLL studentBLL;
+	StudentGradeBLL studentGradeBLL;
 
 	/**
 	 * Launch the application.
@@ -193,6 +203,13 @@ public class MainFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public MainFrame() {
+		courseBLL = new CourseBLL();
+		courseInstructorBLL = new CourseInstructorBLL();
+		lectureBLL = new LectureBLL();
+		onlineCourseBLL = new OnlineCourseBLL();
+		onsiteCourseBLL = new OnsiteCourseBLL();
+		studentBLL = new StudentBLL();
+		studentGradeBLL = new StudentGradeBLL();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1280, 720);
 		contentPane = new JPanel();
@@ -526,12 +543,11 @@ public class MainFrame extends JFrame {
 				String url = txtUrl.getText();
 				String TenKH;
 				int Khoa;
-
 				TenKH = txtCourseName.getText();
 				String department = cmbDepartment.getSelectedItem().toString();
 				Khoa = Integer.parseInt(department.substring(0, department.indexOf("-")).trim());
 				Course course = new Course(0, TenKH, 1, Khoa);
-				int id = BLL.CourseBLL.addCourse(course);
+				int id = courseBLL.addCourse(course);
 				if (id != -1) {
 					JOptionPane.showMessageDialog(null, "Đã thêm thành công");
 					if (url.isBlank() || url.isEmpty()) {
@@ -541,7 +557,7 @@ public class MainFrame extends JFrame {
 						Time time = null;
 						try {
 							time = java.sql.Time.valueOf(timestr);
-							OnsiteCourse onsiteCourse = new OnsiteCourse(id, location, days, time);
+							OnsiteCourse onsiteCourse = new OnsiteCourse(id, TenKH, 0, Khoa, location, days, time);
 							if (onsiteCourse.getDays().isEmpty() || onsiteCourse.getDays().isBlank()) {
 								JOptionPane.showMessageDialog(null, "Không được để trống ngày");
 								return;
@@ -554,7 +570,7 @@ public class MainFrame extends JFrame {
 								JOptionPane.showMessageDialog(null, "Thời gian sai");
 								return;
 							}
-							if (new BLL.OnsiteCourseBLL().addOnSiteCourse(onsiteCourse)) {
+							if (onsiteCourseBLL.addOnSiteCourse(onsiteCourse)) {
 								JOptionPane.showMessageDialog(null, "Đã thêm thành công khoá học Onsite");
 								LoadListOnsiteCourse();
 								addPageOnsite();
@@ -563,7 +579,7 @@ public class MainFrame extends JFrame {
 							e2.printStackTrace();
 						}
 					} else {
-						OnlineCourse onlineCourse = new OnlineCourse(id, url);
+						OnlineCourse onlineCourse = new OnlineCourse(id, TenKH, 0, Khoa, url);
 						if (onlineCourse.getUrl().isEmpty()) {
 							JOptionPane.showMessageDialog(null, "Không được để trống URL");
 							return;
@@ -572,7 +588,7 @@ public class MainFrame extends JFrame {
 							JOptionPane.showMessageDialog(null, "Lỗi không có ID");
 							return;
 						}
-						if (new BLL.OnlineCourseBLL().addOnlineCourse(onlineCourse)) {
+						if (onlineCourseBLL.addOnlineCourse(onlineCourse)) {
 							JOptionPane.showMessageDialog(null, "Đã thêm thành công khoá học Online");
 							LoadListOnlineCourse();
 							addPageOnline();
@@ -606,14 +622,14 @@ public class MainFrame extends JFrame {
 					Khoa = Integer.parseInt(department.substring(0, department.indexOf("-")).trim());
 					int id = Integer.parseInt(dtmcourseSite.getValueAt(i, 1).toString());
 					Course course = new Course(id, TenKH, 1, Khoa);
-					if (BLL.CourseBLL.editCourse(course)) {
+					if (courseBLL.editCourse(course)) {
 						// JOptionPane.showMessageDialog(null, "Đã sửa thành công");
 						if (url.isBlank() || url.isEmpty()) {
 							String location = txtLocation.getText();
 							String days = txtdateCourse.getText();
 							String timestr = cmbTimeCourse.getSelectedItem().toString();
 							Time time = java.sql.Time.valueOf(timestr);
-							OnsiteCourse onsiteCourse = new OnsiteCourse(id, location, days, time);
+							OnsiteCourse onsiteCourse = new OnsiteCourse(id, TenKH, 0, 0, location, days, time);
 							if (onsiteCourse.getDays().isEmpty() || onsiteCourse.getDays().isBlank()) {
 								JOptionPane.showMessageDialog(null, "Không được để trống ngày");
 								return;
@@ -626,7 +642,7 @@ public class MainFrame extends JFrame {
 								JOptionPane.showMessageDialog(null, "Thời gian sai");
 								return;
 							}
-							if (new BLL.OnsiteCourseBLL().editOnSiteCourse(onsiteCourse)) {
+							if (onsiteCourseBLL.editOnSiteCourse(onsiteCourse)) {
 								JOptionPane.showMessageDialog(null, "Đã sửa thành công khoá học Onsite");
 								LoadListOnsiteCourse();
 							}
@@ -645,8 +661,8 @@ public class MainFrame extends JFrame {
 					Khoa = Integer.parseInt(department.substring(0, department.indexOf("-")).trim());
 					int id = Integer.parseInt(dtmcourseOnline.getValueAt(j, 1).toString());
 					Course course = new Course(id, TenKH, 1, Khoa);
-					if (BLL.CourseBLL.editCourse(course)) {
-						OnlineCourse onlineCourse = new OnlineCourse(id, url);
+					if (courseBLL.editCourse(course)) {
+						OnlineCourse onlineCourse = new OnlineCourse(id, TenKH, 0, 0, url);
 						if (onlineCourse.getUrl().isEmpty()) {
 							JOptionPane.showMessageDialog(null, "Không được để trống URL");
 							return;
@@ -655,7 +671,7 @@ public class MainFrame extends JFrame {
 							JOptionPane.showMessageDialog(null, "Lỗi không có ID");
 							return;
 						}
-						if (new BLL.OnlineCourseBLL().editOnlineCourse(onlineCourse)) {
+						if (onlineCourseBLL.editOnlineCourse(onlineCourse)) {
 							JOptionPane.showMessageDialog(null, "Đã sửa thành công khoá học Online");
 							LoadListOnlineCourse();
 						} else {
@@ -679,17 +695,18 @@ public class MainFrame extends JFrame {
 		btnDeleteCourse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int ID;
-				//.... xử lý xoá khoá học online ///
+				// .... xử lý xoá khoá học online ///
 				int i = tblCourseOnline.getSelectedRow();
 				if (i >= 0) {
 					ID = Integer.parseInt(dtmcourseOnline.getValueAt(i, 1).toString());
-					if (new BLL.OnlineCourseBLL().deleteOnlineCourse(ID)) {
+					if (onlineCourseBLL.deleteOnlineCourse(ID)) {
 						if (new BLL.CourseBLL().deleteCourse(ID)) {
 							JOptionPane.showMessageDialog(null, "Đã xoá khoá học online thành công");
 							LoadListOnlineCourse();
 							addPageOnline();
 						} else {
-							JOptionPane.showMessageDialog(null, "Đã xoá khoá học online thất bại");
+							JOptionPane.showMessageDialog(null, "Đã xoá khoá học online thất bại\n" +
+									"Cần xoá các phân công của khoá học trước");
 						}
 					} else {
 						JOptionPane.showMessageDialog(null, "Đã xoá khoá học thất bại");
@@ -699,13 +716,13 @@ public class MainFrame extends JFrame {
 				// xử lý xoá khoá học onsite
 				if (j >= 0) {
 					ID = Integer.parseInt(dtmcourseSite.getValueAt(j, 1).toString());
-					if (new BLL.OnsiteCourseBLL().deleteSiteCourse(ID)) {
+					if (onsiteCourseBLL.deleteSiteCourse(ID)) {
 						if (new BLL.CourseBLL().deleteCourse(ID)) {
 							JOptionPane.showMessageDialog(null, "Đã xoá khoá học onsite thành công");
 							LoadListOnsiteCourse();
 							addPageOnsite();
 						} else {
-							JOptionPane.showMessageDialog(null, "Đã xoá khoá học onsite thất bại");
+							JOptionPane.showMessageDialog(null, "Bạn cần xoá khoá phân công trước");
 
 						}
 					} else {
@@ -718,7 +735,7 @@ public class MainFrame extends JFrame {
 
 		btnReloadCourse = new JButton("Tải Lại");
 		btnReloadCourse.setIcon(new ImageIcon("img\\update.png"));
-		
+
 		btnReloadCourse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JOptionPane.showMessageDialog(null, "Đã tải lại danh sách khoá học thành công");
@@ -1151,7 +1168,7 @@ public class MainFrame extends JFrame {
 					JOptionPane.showMessageDialog(null, "Bạn không được để trống ngày thuê");
 					return;
 				}
-				if (LectureBLL.gI().addLecture(person)) {
+				if (lectureBLL.addLecture(person)) {
 					LoadListLecture();
 					addPageLecture();
 					JOptionPane.showMessageDialog(null, "Đã thêm thành công");
@@ -1184,7 +1201,7 @@ public class MainFrame extends JFrame {
 							JOptionPane.showMessageDialog(null, "Bạn không được để trống ngày thuê");
 							return;
 						}
-						if (LectureBLL.gI().editLecture(person)) {
+						if (lectureBLL.editLecture(person)) {
 							LoadListLecture();
 							addPageLecture();
 							JOptionPane.showMessageDialog(null, "Đã sửa thành công");
@@ -1211,12 +1228,13 @@ public class MainFrame extends JFrame {
 						int dialogResult = JOptionPane.showConfirmDialog(null, "Bạn có muốn xoá không?", "Warning",
 								dialogButton);
 						if (dialogResult == JOptionPane.YES_OPTION) {
-							if (LectureBLL.gI().deleteLecture(ID)) {
+							if (lectureBLL.deleteLecture(ID)) {
 								LoadListLecture();
 								addPageLecture();
 								JOptionPane.showMessageDialog(null, "Đã xoá thành công");
 							} else {
-								JOptionPane.showMessageDialog(null, "Đã có lỗi xảy ra");
+								JOptionPane.showMessageDialog(null,
+										"Giáo viên này đã được phân công giảng dạy, bạn phải xoá phân công trước");
 							}
 						}
 
@@ -1310,7 +1328,7 @@ public class MainFrame extends JFrame {
 					JOptionPane.showMessageDialog(null, "Bạn không được để trống ngày đăng kí");
 					return;
 				}
-				if (StudentBLL.gI().addStudents(person)) {
+				if (studentBLL.addStudents(person)) {
 					LoadListStudents();
 					AddPageStudent();
 					JOptionPane.showMessageDialog(null, "Đã thêm thành công");
@@ -1344,7 +1362,7 @@ public class MainFrame extends JFrame {
 							JOptionPane.showMessageDialog(null, "Bạn không được để trống ngày đăng kí");
 							return;
 						}
-						if (StudentBLL.gI().editStudents(person)) {
+						if (studentBLL.editStudents(person)) {
 							LoadListStudents();
 							AddPageStudent();
 							JOptionPane.showMessageDialog(null, "Đã sửa thành công");
@@ -1371,7 +1389,7 @@ public class MainFrame extends JFrame {
 						int dialogResult = JOptionPane.showConfirmDialog(null, "Bạn có muốn xoá không?", "Warning",
 								dialogButton);
 						if (dialogResult == JOptionPane.YES_OPTION) {
-							if (StudentBLL.gI().deleteLecture(ID)) {
+							if (studentBLL.deleteLecture(ID)) {
 								LoadListStudents();
 								AddPageStudent();
 								JOptionPane.showMessageDialog(null, "Đã xoá thành công");
@@ -1389,7 +1407,7 @@ public class MainFrame extends JFrame {
 				}
 			}
 		});
-		// reload 
+		// reload
 		btnReloadStudents.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -1497,7 +1515,7 @@ public class MainFrame extends JFrame {
 						JOptionPane.showMessageDialog(null, "Tên học viên không được để trống");
 						return;
 					}
-					if (StudentGradeBLL.gI().addGrade(studentGrade)) {
+					if (studentGradeBLL.addGrade(studentGrade)) {
 						addPageCourseGrade();
 						LoadListGrade();
 						LoadListStudents();
@@ -1537,7 +1555,7 @@ public class MainFrame extends JFrame {
 								JOptionPane.showMessageDialog(null, "Tên học viên không được để trống");
 								return;
 							}
-							if (StudentGradeBLL.gI().editGrade(studentGrade)) {
+							if (studentGradeBLL.editGrade(studentGrade)) {
 								LoadListGrade();
 								LoadListStudents();
 								JOptionPane.showMessageDialog(null, "Đã sửa thành công");
@@ -1565,7 +1583,7 @@ public class MainFrame extends JFrame {
 						int dialogResult = JOptionPane.showConfirmDialog(null, "Bạn có muốn xoá không?", "Warning",
 								dialogButton);
 						if (dialogResult == JOptionPane.YES_OPTION) {
-							if (StudentGradeBLL.gI().deleteGrade(idEnrollment)) {
+							if (studentGradeBLL.deleteGrade(idEnrollment)) {
 								LoadListGrade();
 								JOptionPane.showMessageDialog(null, "Đã xoá thành công");
 							} else {
@@ -1673,7 +1691,7 @@ public class MainFrame extends JFrame {
 						JOptionPane.showMessageDialog(null, "Mã giảng viên không được để trống");
 						return;
 					}
-					if (CourseInstructorBLL.gI().addCourseInstructor(courseInstructor)) {
+					if (courseInstructorBLL.addCourseInstructor(courseInstructor)) {
 						addPageCourseInstructor();
 						JOptionPane.showMessageDialog(null, "Đã thêm thành công");
 					} else {
@@ -1704,7 +1722,7 @@ public class MainFrame extends JFrame {
 								JOptionPane.showMessageDialog(null, "Mã giảng viên không được để trống");
 								return;
 							}
-							if (BLL.CourseInstructorBLL.editCourseInstructor(courseInstructor1, courseInstructor2)) {
+							if (courseInstructorBLL.editCourseInstructor(courseInstructor1, courseInstructor2)) {
 								LoadListInstructor();
 								addPageCourseInstructor();
 								JOptionPane.showMessageDialog(null, "Đã chỉnh sửa phân công thành công");
@@ -1885,8 +1903,8 @@ public class MainFrame extends JFrame {
 	public static ArrayList<DTO.StudentGrade> studentGradeList;
 	public static ArrayList<DTO.CourseInstructor> courseInstructorList;
 	public static ArrayList<DTO.Course> coursesList;
-	public static ArrayList<DTO.Course> coursesOnsiteList;
-	public static ArrayList<DTO.Course> coursesOnLineList;
+	public static ArrayList<OnsiteCourse> coursesOnsiteList;
+	public static ArrayList<OnlineCourse> coursesOnLineList;
 	public JTable tblCourseOnline;
 	public JTextField txtdateCourse;
 	private JPanel panel_8;
@@ -1898,8 +1916,8 @@ public class MainFrame extends JFrame {
 
 	public void LoadListInstructor() {
 		courseInstructorList = null;
-		courseInstructorList = BLL.CourseInstructorBLL.gI().readAllCourseInstructor();
-		ArrayList<DTO.CourseInstructor> arrayList = BLL.CourseInstructorBLL.loadCourseInstructorByPage(1);
+		courseInstructorList = courseInstructorBLL.readAllCourseInstructor();
+		ArrayList<DTO.CourseInstructor> arrayList = courseInstructorBLL.loadCourseInstructorByPage(1);
 		dtmCourseInstructor.setRowCount(0);
 		int i = 0;
 		for (CourseInstructor courseInstructor : arrayList) {
@@ -1925,8 +1943,8 @@ public class MainFrame extends JFrame {
 
 	public void LoadListGrade() {
 		studentGradeList = null;
-		studentGradeList = BLL.StudentGradeBLL.gI().readAllGrade();
-		ArrayList<DTO.StudentGrade> arrayList = BLL.StudentGradeBLL.gI().LoaddGradeByPage(1);
+		studentGradeList = studentGradeBLL.readAllGrade();
+		ArrayList<DTO.StudentGrade> arrayList = studentGradeBLL.LoaddGradeByPage(1);
 		dtmStudentGrade.setRowCount(0);
 		LoadListStudents();
 		LoadListCoursetoComboBox();
@@ -1952,8 +1970,8 @@ public class MainFrame extends JFrame {
 
 	public void LoadListLecture() {
 		lecturesList = null;
-		lecturesList = BLL.LectureBLL.gI().readLectures();
-		ArrayList<Person> arrayList = LectureBLL.gI().loadLecturesByPage(1);
+		lecturesList = lectureBLL.readLectures();
+		ArrayList<Person> arrayList = lectureBLL.loadLecturesByPage(1);
 		dtmLecture.setRowCount(0);
 		for (Person person : arrayList) {
 			Vector<Object> vec = new Vector<Object>();
@@ -1971,8 +1989,8 @@ public class MainFrame extends JFrame {
 
 	public void LoadListStudents() {
 		studentsList = null;
-		studentsList = BLL.StudentBLL.gI().readStudens();
-		ArrayList<Person> arrayList = BLL.StudentBLL.gI().loadStudentsByPage(1);
+		studentsList = studentBLL.readStudens();
+		ArrayList<Person> arrayList = studentBLL.loadStudentsByPage(1);
 		dtmStudent.setRowCount(0);
 		cmbStudent.removeAllItems();
 		for (Person person : arrayList) {
@@ -1992,11 +2010,11 @@ public class MainFrame extends JFrame {
 
 	public void LoadListOnlineCourse() {
 		coursesOnLineList = null;
-		coursesOnLineList = BLL.CourseBLL.readOnlineCourse();
+		coursesOnLineList = onlineCourseBLL.readAllCourseOnline();
 		dtmcourseOnline.setRowCount(0);
-		ArrayList<Course> arrayList = BLL.CourseBLL.readOnlineCoursePage(1);
+		ArrayList<OnlineCourse> arrayList = onlineCourseBLL.loadCourseByPage(1);
 		int i = 0;
-		for (Course course : arrayList) {
+		for (OnlineCourse course : arrayList) {
 			i++;
 			Vector<Object> vec = new Vector<Object>();
 			vec.add(String.valueOf(i));
@@ -2008,18 +2026,18 @@ public class MainFrame extends JFrame {
 					break;
 				}
 			}
-			vec.add(course.getOnlineCourse().getUrl());
+			vec.add(course.getUrl());
 			dtmcourseOnline.addRow(vec);
 		}
 	}
 
 	public void LoadListOnsiteCourse() {
 		coursesOnsiteList = null;
-		coursesOnsiteList = new BLL.CourseBLL().readOnsiteCourse();
-		ArrayList<Course> arrayList = new BLL.CourseBLL().readOnsiteCoursePage(1);
+		coursesOnsiteList = onsiteCourseBLL.readAllOnsiteCourses();
+		ArrayList<OnsiteCourse> arrayList = onsiteCourseBLL.loadOnsiteCoursesByPage(1);
 		dtmcourseSite.setRowCount(0);
 		int i = 0;
-		for (Course course : arrayList) {
+		for (OnsiteCourse course : arrayList) {
 			i++;
 			Vector<Object> vec = new Vector<Object>();
 			vec.add(String.valueOf(i));
@@ -2031,9 +2049,9 @@ public class MainFrame extends JFrame {
 					break;
 				}
 			}
-			vec.add(course.getOnsiteCourse().getLocation());
-			vec.add(course.getOnsiteCourse().getDays());
-			vec.add(course.getOnsiteCourse().getTime());
+			vec.add(course.getLocation());
+			vec.add(course.getDays());
+			vec.add(course.getTime());
 			dtmcourseSite.addRow(vec);
 		}
 	}
@@ -2127,8 +2145,8 @@ public class MainFrame extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					dtmcourseOnline.setRowCount(0);
 					int j = 1;
-					ArrayList<Course> arrayList = new BLL.CourseBLL().readOnlineCoursePage(page);
-					for (Course course : arrayList) {
+					ArrayList<OnlineCourse> arrayList = onlineCourseBLL.loadCourseByPage(page);
+					for (OnlineCourse course : arrayList) {
 
 						Vector<Object> vec = new Vector<Object>();
 						vec.add(String.valueOf(j));
@@ -2140,7 +2158,7 @@ public class MainFrame extends JFrame {
 								break;
 							}
 						}
-						vec.add(course.getOnlineCourse().getUrl());
+						vec.add(course.getUrl());
 						dtmcourseOnline.addRow(vec);
 						j++;
 					}
@@ -2163,10 +2181,10 @@ public class MainFrame extends JFrame {
 			button.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					ArrayList<Course> arrayList = new BLL.CourseBLL().readOnsiteCoursePage(page);
+					ArrayList<OnsiteCourse> arrayList = onsiteCourseBLL.loadOnsiteCoursesByPage(1);
 					dtmcourseSite.setRowCount(0);
 					int i = 0;
-					for (Course course : arrayList) {
+					for (OnsiteCourse course : arrayList) {
 						i++;
 						Vector<Object> vec = new Vector<Object>();
 						vec.add(String.valueOf(i));
@@ -2178,9 +2196,9 @@ public class MainFrame extends JFrame {
 								break;
 							}
 						}
-						vec.add(course.getOnsiteCourse().getLocation());
-						vec.add(course.getOnsiteCourse().getDays());
-						vec.add(course.getOnsiteCourse().getTime());
+						vec.add(course.getLocation());
+						vec.add(course.getDays());
+						vec.add(course.getTime());
 						dtmcourseSite.addRow(vec);
 					}
 				}
@@ -2245,7 +2263,7 @@ public class MainFrame extends JFrame {
 			button.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					ArrayList<Person> arrayList = BLL.LectureBLL.gI().loadLecturesByPage(page);
+					ArrayList<Person> arrayList = lectureBLL.loadLecturesByPage(page);
 					dtmLecture.setRowCount(0);
 					for (Person person : arrayList) {
 						Vector<Object> vec = new Vector<Object>();
@@ -2275,7 +2293,7 @@ public class MainFrame extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					courseInstructorList = null;
-					courseInstructorList = BLL.CourseInstructorBLL.gI().loadCourseInstructorByPage(page);
+					courseInstructorList = courseInstructorBLL.loadCourseInstructorByPage(page);
 					dtmCourseInstructor.setRowCount(0);
 					int i = 0;
 					for (CourseInstructor courseInstructor : courseInstructorList) {
@@ -2317,7 +2335,7 @@ public class MainFrame extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					studentsList = null;
-					studentsList = BLL.StudentBLL.gI().loadStudentsByPage(page);
+					studentsList = studentBLL.loadStudentsByPage(page);
 					dtmStudent.setRowCount(0);
 					for (Person person : studentsList) {
 						Vector<Object> vec = new Vector<Object>();

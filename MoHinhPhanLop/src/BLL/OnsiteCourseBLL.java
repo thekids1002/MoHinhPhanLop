@@ -8,19 +8,32 @@ import DAL.OnsiteCourseDAL;
 import DTO.OnsiteCourse;
 
 public class OnsiteCourseBLL {
+
+	OnsiteCourseDAL onsiteCourseDAL;
+
 	public ArrayList<OnsiteCourse> readAllOnsiteCourses() {
-		return new OnsiteCourseDAL().readOnsiteCourses();
+		return onsiteCourseDAL.readOnsiteCourses();
+	}
+
+	public ArrayList<OnsiteCourse> loadOnsiteCoursesByPage(int page) {
+		return onsiteCourseDAL.loadOnsiteCoursesByPage(page);
 	}
 	
-	public ArrayList<OnsiteCourse> loadOnsiteCourses(int page) {
-		return new OnsiteCourseDAL().loadOnsiteCourses(page);
+	public OnsiteCourseBLL() {
+		super();
+		onsiteCourseDAL = new OnsiteCourseDAL();
+		// TODO Auto-generated constructor stub
 	}
 
 	public boolean addOnSiteCourse(OnsiteCourse course) {
-		
-		return new OnsiteCourseDAL().addOnsiteCourse(course);
+
+		return onsiteCourseDAL.addOnsiteCourse(course);
 
 	}
+	
+	public  ArrayList<DTO.OnsiteCourse> searchOnline(int ID) {
+	return onsiteCourseDAL.searchOnsiteByID(ID);
+}
 
 //	public boolean editOnSiteCourse(OnsiteCourse course) {
 ////		if (course.getDays().isEmpty() || course.getDays().isBlank()) {
@@ -35,15 +48,18 @@ public class OnsiteCourseBLL {
 ////			JOptionPane.showMessageDialog(null, "Thời gian sai");
 ////			return false;
 ////		}
-//		return new OnsiteCourseDAL().editOnsiteCourse(course);
+//		return onsiteCourseDAL.editOnsiteCourse(course);
 //
 //	}
-	
+
 	public boolean editOnSiteCourse(OnsiteCourse course) {
-		return new OnsiteCourseDAL().editOnsiteCourse(course);
+		return onsiteCourseDAL.editOnsiteCourse(course);
 	}
-	
+
 	public boolean deleteSiteCourse(int id) {
-		return new OnsiteCourseDAL().deleteOnsiteCourse(id);
+		if(onsiteCourseDAL.checkCourseInContrusctor(id)) {
+			return false;
+		}
+		return onsiteCourseDAL.deleteOnsiteCourse(id);
 	}
 }

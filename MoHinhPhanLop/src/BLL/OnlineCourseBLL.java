@@ -6,25 +6,38 @@ import DAL.OnlineCourseDAL;
 import DTO.OnlineCourse;
 
 public class OnlineCourseBLL {
+
+	private OnlineCourseDAL onlineCourseDAL;
+
+	public OnlineCourseBLL() {
+		super();
+		onlineCourseDAL = new OnlineCourseDAL();
+		// TODO Auto-generated constructor stub
+	}
+
 	public ArrayList<OnlineCourse> readAllCourseOnline() {
-		return new OnlineCourseDAL().readOnlineCourses();
+		return onlineCourseDAL.readOnlineCourses();
 	}
+
 	public ArrayList<OnlineCourse> loadCourseByPage(int pgae) {
-		return new OnlineCourseDAL().loadOnlineCourseByPage(pgae);
+		return onlineCourseDAL.loadOnlineCourseByPage(pgae);
 	}
+
 	public boolean addOnlineCourse(OnlineCourse course) {
-		
-		return new OnlineCourseDAL().addOnlineCourse(course);
+
+		return onlineCourseDAL.addOnlineCourse(course);
 	}
-	
-	
 
 	public boolean editOnlineCourse(OnlineCourse course) {
-		
-		return new OnlineCourseDAL().editOnlineCourse(course);
+
+		return onlineCourseDAL.editOnlineCourse(course);
 	}
-	
+
 	public boolean deleteOnlineCourse(int id) {
-		return new OnlineCourseDAL().deleteOnlineCourse(id);
+		return onlineCourseDAL.deleteOnlineCourse(id);
+	}
+
+	public ArrayList<OnlineCourse> searchOnlineCourse(int id) {
+		return onlineCourseDAL.searchOnlineByID(id);
 	}
 }

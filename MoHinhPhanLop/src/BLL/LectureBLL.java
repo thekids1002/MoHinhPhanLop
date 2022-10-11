@@ -9,44 +9,45 @@ import DAL.StudentDAL;
 import DTO.Person;
 
 public class LectureBLL {
-	public static LectureBLL gI;
-
-	public static LectureBLL gI() {
-		if (gI == null) {
-			gI = new LectureBLL();
-		}
-		return gI;
+	LectureDAL lectureDAL;
+	
+	public LectureBLL() {
+		super();
+		lectureDAL = new LectureDAL();
+		// TODO Auto-generated constructor stub
 	}
 
 	public ArrayList<Person> readLectures() {
-		return LectureDAL.gI().readLecture();
+		return lectureDAL.readLecture();
 	}
 
 	public ArrayList<Person> searchByID(int ID) {
-		return LectureDAL.gI().searchByID(ID);
+		return lectureDAL.searchByID(ID);
 	}
 
 	public ArrayList<Person> searchByName(String name) {
-		return LectureDAL.gI().searchByName(name);
+		return lectureDAL.searchByName(name);
 	}
 
 	public ArrayList<Person> loadLecturesByPage(int page) {
-		return LectureDAL.gI().loadLecturesByPage(page);
+		return lectureDAL.loadLecturesByPage(page);
 	}
 
 	public boolean editLecture(Person person) {
 
-		return LectureDAL.gI().editLecture(person);
+		return lectureDAL.editLecture(person);
 	}
 
 	public boolean addLecture(Person person) {
 
-		return LectureDAL.gI().addLecture(person);
+		return lectureDAL.addLecture(person);
 	}
 
 	public boolean deleteLecture(int id) {
-		
-		return LectureDAL.gI().deleteLecture(id);
+		if(lectureDAL.checkLectureInContrusctor(id)) {
+			return false;
+		}
+		return lectureDAL.deleteLecture(id);
 	}
 	public static void main(String[] args) {
 		System.out.println(new LectureBLL().loadLecturesByPage(1));

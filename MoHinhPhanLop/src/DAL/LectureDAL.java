@@ -163,7 +163,20 @@ public class LectureDAL {
 		}
 		return false;
 	}
+	
+	public boolean checkLectureInContrusctor(int id) {
+		try {
+			String sql = "SELECT * FROM courseinstructor WHERE PersonID = ?";
 
+			PreparedStatement pstm = conn.prepareStatement(sql);
+			pstm.setInt(1, id);
+			ResultSet rs = pstm.executeQuery();
+			return rs != null;
+		} catch (Exception e) {
+		}
+		return false;
+		
+	}
 	public boolean deleteLecture(int id) {
 		try {
 			String sql = "DELETE FROM `person` WHERE PersonID = ? ";

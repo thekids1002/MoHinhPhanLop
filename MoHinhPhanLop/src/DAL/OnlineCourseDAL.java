@@ -44,14 +44,16 @@ public class OnlineCourseDAL {
 			
 			Statement stmt = conn.createStatement();
 			ArrayList<OnlineCourse> listOnlineCourses = new ArrayList<>();
-			String query = "SELECT * FROM `onlinecourse` ";
+			String query = "SELECT * FROM `onlinecourse`, `course` WHERE onlinecourse.CourseID = course.CourseID;";
 			ResultSet rs = stmt.executeQuery(query);
 			if (rs != null) {
 				int i = 1;
 				while (rs.next()) {
 					int id = rs.getInt("CourseID");
 					String url = rs.getString("url");
-					OnlineCourse onlinecourse = new OnlineCourse(id, url);
+					String title = rs.getString("Title");
+					int department = rs.getInt("DepartmentID"); 
+					OnlineCourse onlinecourse = new OnlineCourse(id, title, 0, department, url);
 					listOnlineCourses.add(onlinecourse);
 				}
 			}
@@ -107,5 +109,38 @@ public class OnlineCourseDAL {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	public static void main(String[] args) {
+		System.out.println(new OnlineCourseDAL().readOnlineCourses());
+	}
+
+	
+	
+	public ArrayList<OnlineCourse> searchOnlineByID(int ID) {
+		try {
+
+			ArrayList<OnlineCourse> listCourses = new ArrayList<>();
+			String query = "SELECT course.CourseID, course.Title, course.Credits, course.DepartmentID,"
+					+ " onlinecourse.url FROM `course` , onlinecourse WHERE course.CourseID = ?";
+			PreparedStatement preparedStatement = conn.prepareStatement(query);
+			preparedStatement.setInt(1, ID);
+			ResultSet rs = preparedStatement.executeQuery();
+			if (rs != null) {
+				int i = 1;
+				while (rs.next()) {
+					int idCourse = rs.getInt("CourseID");
+					String title = rs.getString("Title");
+					int credit = rs.getInt("Credits");
+					int department = rs.getInt("DepartmentID");
+					String url = rs.getString("url");
+					OnlineCourse onlineCourse = new OnlineCourse(idCourse, title, credit, department, url);
+					listCourses.add(onlineCourse);
+				}
+			}
+			
+			return listCourses;
+		} catch (Exception e) {
+		}
+		return null;
 	}
 }

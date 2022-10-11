@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import DTO.Course;
+import DTO.OnlineCourse;
 import DTO.OnsiteCourse;
 import DTO.Person;
 import DTO.StudentGrade;
@@ -21,7 +23,7 @@ public class OnsiteCourseDAL {
 		conn = DBConnect.getConnection();
 	}
 	
-	public ArrayList<OnsiteCourse> loadOnsiteCourses(int page){
+	public ArrayList<OnsiteCourse> loadOnsiteCoursesByPage(int page){
 		try {
 			int num_record = Contrains.pagesize;
 			ArrayList<OnsiteCourse> list = this.readOnsiteCourses();
@@ -38,12 +40,13 @@ public class OnsiteCourseDAL {
 		}
 		return null;
 	}
+	
 	public ArrayList<OnsiteCourse> readOnsiteCourses() {
 		try {
 			
 			Statement stmt = conn.createStatement();
 			ArrayList<OnsiteCourse> listOnsiteCourses = new ArrayList<>();
-			String query = "SELECT * FROM `onsitecourse` ";
+			String query = "SELECT * FROM `onsitecourse`, `course` WHERE onsitecourse.CourseID = course.CourseID";
 			ResultSet rs = stmt.executeQuery(query);
 			if (rs != null) {
 				int i = 1;
@@ -52,7 +55,10 @@ public class OnsiteCourseDAL {
 					String location = rs.getString("Location");
 					String days = rs.getString("Days");
 					Time time = rs.getTime("Time");
-					OnsiteCourse onsitecourse = new OnsiteCourse(id, location, days, time);
+					int credtis = rs.getInt("credits");
+					String title = rs.getString("Title");
+					int department = rs.getInt("DepartmentID"); 
+					OnsiteCourse onsitecourse = new OnsiteCourse(id, title, credtis, department, location, days, time);
 					listOnsiteCourses.add(onsitecourse);
 				}
 			}
@@ -111,5 +117,53 @@ public class OnsiteCourseDAL {
 		}
 		return false;
 	}
+	
+	public boolean checkCourseInContrusctor(int id) {
+		try {
+			String sql = "SELECT * FROM courseinstructor WHERE CourseID = ?";
+
+			PreparedStatement pstm = conn.prepareStatement(sql);
+			pstm.setInt(1, id);
+			ResultSet rs = pstm.executeQuery();
+			return rs != null;
+		} catch (Exception e) {
+		}
+		return false;
+		
+	}
+	
+	public ArrayList<OnsiteCourse> searchOnsiteByID(int ID) {
+		try {
+
+			Statement stmt = conn.createStatement();
+			ArrayList<OnsiteCourse> listCourses = new ArrayList<>();
+			String query = "SELECT course.CourseID, course.Title, course.Credits, course.DepartmentID, onsitecourse.Location,"
+					+ " onsitecourse.Days, onsitecourse.Time "
+					+ "FROM `course` , onsitecourse"
+					+ " WHERE course.CourseID = ?";
+			PreparedStatement preparedStatement = conn.prepareStatement(query);
+			preparedStatement.setInt(1, ID);
+			ResultSet rs = preparedStatement.executeQuery();
+			if (rs != null) {
+				int i = 1;
+				while (rs.next()) {
+					int idCourse = rs.getInt("CourseID");
+					String title = rs.getString("Title");
+					int credit = rs.getInt("Credits");
+					int department = rs.getInt("DepartmentID");
+					String location = rs.getString("Location");
+					String Days = rs.getString("Days");
+					Time time = rs.getTime("Time");
+					OnsiteCourse onsiteCourse = new OnsiteCourse(idCourse, title, credit, department, location, Days, time);
+					listCourses.add(onsiteCourse);
+				}
+			}
+			
+			return listCourses;
+		} catch (Exception e) {
+		}
+		return null;
+	}
+	
 	
 }

@@ -11,44 +11,43 @@ import DTO.CourseInstructor;
 
 public class CourseInstructorBLL {
 
-	public static CourseInstructorBLL gI;
-
-	public static CourseInstructorBLL gI() {
-		if (gI == null) {
-			gI = new CourseInstructorBLL();
-		}
-		return gI;
+	CourseInstructorDAL courseInstructorDAL;
+	
+	public CourseInstructorBLL() {
+		super();
+		courseInstructorDAL = new CourseInstructorDAL();
+		// TODO Auto-generated constructor stub
 	}
 
-	public static ArrayList<DTO.CourseInstructor> searchByCourseID(int ID) {
-		return new CourseInstructorDAL().searchByCourseID(ID);
+	public  ArrayList<DTO.CourseInstructor> searchByCourseID(int ID) {
+		return courseInstructorDAL.searchByCourseID(ID);
 	}
 	
-	public static ArrayList<DTO.CourseInstructor> searchByLectureID(int ID) {
-		return new CourseInstructorDAL().searchByLectureID(ID);
+	public  ArrayList<DTO.CourseInstructor> searchByLectureID(int ID) {
+		return courseInstructorDAL.searchByLectureID(ID);
 	}
 
-	public static ArrayList<DTO.CourseInstructor> readAllCourseInstructor() {
-		return new CourseInstructorDAL().readCourseInstructors();
+	public  ArrayList<DTO.CourseInstructor> readAllCourseInstructor() {
+		return courseInstructorDAL.readCourseInstructors();
 	}
 
-	public static ArrayList<DTO.CourseInstructor> loadCourseInstructorByPage(int page) {
-		return new CourseInstructorDAL().loadCourseInstructorByPage(page);
+	public  ArrayList<DTO.CourseInstructor> loadCourseInstructorByPage(int page) {
+		return courseInstructorDAL.loadCourseInstructorByPage(page);
 	}
 
-	public static boolean addCourseInstructor(CourseInstructor instructor) {
+	public  boolean addCourseInstructor(CourseInstructor instructor) {
 		
-		return new CourseInstructorDAL().addCourseInstructor(instructor);
+		return courseInstructorDAL.addCourseInstructor(instructor);
 	}
 
-	public static boolean editCourseInstructor(CourseInstructor instructor, CourseInstructor instructor2) {
+	public  boolean editCourseInstructor(CourseInstructor instructor, CourseInstructor instructor2) {
 		
-		return new CourseInstructorDAL().editCourseInstructor(instructor, instructor2);
+		return courseInstructorDAL.editCourseInstructor(instructor, instructor2);
 	}
 
 	public boolean deleteCourseInstructor(int idCourse, int idPerson) {
 	
-		return new CourseInstructorDAL().deleteCourseInstructor(idCourse, idPerson);
+		return courseInstructorDAL.deleteCourseInstructor(idCourse, idPerson);
 	}
 
 }
